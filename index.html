@@ -68,8 +68,9 @@ textarea{resize:vertical}
 .float-table th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:8px 6px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card-solid)}
 .float-table td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
 .float-table tr:last-child td{border-bottom:0}
-#packBunTable{table-layout:fixed}
-#packBunTable th:first-child,#packBunTable td:first-child{width:min(28rem,45%);max-width:min(28rem,45%);overflow-wrap:anywhere}
+#packBunTable{table-layout:fixed;max-width:40rem;width:100%;margin-right:auto}
+#packBunTable th:first-child,#packBunTable td:first-child{padding-left:18px;overflow-wrap:anywhere}
+#packBunTable th:nth-child(n+2),#packBunTable td:nth-child(n+2){width:4.75rem;text-align:center}
 .float-table .delta-pos{color:var(--ok);font-weight:700}
 .float-table .delta-neg{color:var(--danger);font-weight:700}
 .float-table input.qty{width:56px;padding:8px 6px;text-align:center;font-weight:700;font-size:13px}
@@ -111,17 +112,17 @@ textarea{resize:vertical}
 .line-total.has{color:#1a1210;background:var(--brand-grad);border-color:transparent}
 .search-opt{margin-bottom:8px}
 .search-opt input{padding:9px 12px;font-size:14px;border-radius:10px}
-.sheet-scroll{overflow:auto;max-height:min(62vh,560px);border-radius:12px;border:1px solid var(--line);background:var(--card-solid);-webkit-overflow-scrolling:touch}
+.sheet-scroll{overflow:auto;max-height:min(62vh,560px);max-width:36rem;margin-right:auto;border-radius:12px;border:1px solid var(--line);background:var(--card-solid);-webkit-overflow-scrolling:touch}
 .sheet-sec{margin:0}
-.sheet-sticky{position:sticky;top:0;z-index:5;padding:7px 10px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#1a1210;background:var(--brand-grad);border-bottom:1px solid color-mix(in srgb,var(--brand2) 40%,transparent);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sheet-sticky{position:sticky;top:0;z-index:5;padding:7px 10px 7px 18px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#1a1210;background:var(--brand-grad);border-bottom:1px solid color-mix(in srgb,var(--brand2) 40%,transparent);display:flex;justify-content:space-between;align-items:center;gap:8px}
 .sheet-sticky .lead{font-weight:700;opacity:.85;letter-spacing:.02em;text-transform:none;font-size:10px}
-.sheet-row{display:flex;align-items:center;justify-content:flex-start;gap:12px;padding:8px 10px;border-bottom:1px solid var(--line);min-height:40px}
+.sheet-row{display:grid;grid-template-columns:minmax(0,1fr) 7.5rem;column-gap:1.25rem;align-items:center;padding:8px 10px 8px 18px;border-bottom:1px solid var(--line);min-height:40px}
 .sheet-row:last-child{border-bottom:0}
 .sheet-row:nth-child(even){background:rgba(255,255,255,.02)}
-.sheet-row .name{font-size:12px;font-weight:600;line-height:1.25;padding-right:4px;flex:0 1 auto;max-width:min(28rem,75%)}
+.sheet-row .name{font-size:12px;font-weight:600;line-height:1.25;min-width:0}
 .sheet-row.filled .name{color:var(--ink)}
 .sheet-row.filled{background:color-mix(in srgb,var(--brand) 10%,transparent)}
-.qty-cell{display:flex;align-items:center;gap:2px;flex:0 0 auto}
+.qty-cell{display:flex;align-items:center;gap:2px;justify-self:end}
 .qty-mini{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;line-height:1;padding:0;flex-shrink:0}
 .qty-mini:active{transform:scale(.94)}
 .qty-mini:disabled{opacity:.4;cursor:not-allowed}
@@ -217,8 +218,8 @@ html.landscape .form-grid .full { grid-column: 1 / -1; }
   .sticky-top{padding:12px 20px 14px}
   .main{padding:16px 20px 28px}
   .demo-badge{margin-left:20px;margin-right:20px}
-  .sheet-row{padding:10px 12px;min-height:44px}
-  .order-edit-row{padding:10px 12px;min-height:44px}
+  .sheet-row{padding:10px 12px 10px 20px;min-height:44px}
+  .order-edit-row{padding:10px 12px 10px 18px;min-height:44px}
   .sheet-scroll{max-height:min(64vh,600px)}
   .toast{max-width:min(680px,calc(100% - 40px))}
 }
