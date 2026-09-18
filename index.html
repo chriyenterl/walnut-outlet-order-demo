@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Walnut Bakery · Outlet Order (Preview DEMO)</title>
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -152,6 +152,53 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
 .order-edit-weekly-note{margin:0;padding:10px 12px;border-top:1px solid var(--line);font-size:11px}
 .order-edit-done{display:block;width:calc(100% - 20px);margin:10px}
 
+
+/* —— Responsive shell (fluid, walnut-only) —— */
+.form-grid{display:block}
+.form-grid .form-span-2{display:block}
+
+@media (max-width:900px) and (orientation:landscape),
+       (max-height:500px) and (orientation:landscape){
+  .app,.bg-decor,.bottom-nav{max-width:min(100%,720px)}
+  .app{padding-left:12px;padding-right:12px}
+  .sticky-top{padding:8px 12px 10px}
+  .main{padding:10px 12px 20px}
+  .hero{padding:10px 14px 8px}
+  .hero h1{font-size:16px}
+  .progress-wrap{margin-top:8px}
+  .sheet-scroll{max-height:min(48vh,360px)}
+  .toast{max-width:min(680px,calc(100% - 32px))}
+}
+
+@media (min-width:768px){
+  .app,.bg-decor,.bottom-nav{max-width:720px}
+  .sticky-top{padding:12px 20px 14px}
+  .main{padding:16px 20px 28px}
+  .demo-badge{margin-left:20px;margin-right:20px}
+  .sheet-row{padding:10px 12px;min-height:44px}
+  .order-edit-row{padding:10px 12px;min-height:44px}
+  .sheet-scroll{max-height:min(64vh,600px)}
+  .toast{max-width:min(680px,calc(100% - 40px))}
+}
+
+@media (min-width:1024px){
+  .app,.bg-decor,.bottom-nav{max-width:960px}
+  .sticky-top{padding:14px 24px 16px}
+  .main{padding:18px 24px 32px}
+  .demo-badge{margin-left:24px;margin-right:24px}
+  .hero{padding:18px 20px 16px}
+  .hero h1{font-size:20px}
+  .sheet-scroll{max-height:min(68vh,640px)}
+  .toast{max-width:min(720px,calc(100% - 48px))}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:16px;align-items:start}
+  .form-grid .form-span-2{grid-column:1/-1}
+}
+
+@media (min-width:1280px){
+  .app,.bg-decor,.bottom-nav{max-width:1100px}
+  .toast{max-width:min(800px,calc(100% - 48px))}
+}
+
 </style>
 
 </head>
@@ -182,17 +229,19 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
         <div class="glass">
           <h2>Outlet &amp; dates</h2>
           <p class="hint">Pick your outlet. Daily items order for tomorrow (T+1). Pack bun is for day-after (T+2). BN/PP bread also T+2.</p>
-          <div class="field-gap">
-            <label class="field">Outlet</label>
-            <select id="outletSelect"></select>
-          </div>
-          <div class="field-gap">
-            <label class="field">Order-for date (T+1)</label>
-            <input type="date" id="orderDate" />
-          </div>
-          <div class="field-gap">
-            <label class="field">Pack bun date (T+2)</label>
-            <input type="date" id="packBunDate" readonly />
+          <div class="form-grid">
+            <div class="field-gap form-span-2">
+              <label class="field">Outlet</label>
+              <select id="outletSelect"></select>
+            </div>
+            <div class="field-gap">
+              <label class="field">Order-for date (T+1)</label>
+              <input type="date" id="orderDate" />
+            </div>
+            <div class="field-gap">
+              <label class="field">Pack bun date (T+2)</label>
+              <input type="date" id="packBunDate" readonly />
+            </div>
           </div>
           <div class="badge-row">
             <span class="cutoff-badge" id="cutoffBadge">Cut-off ~5–6pm</span>
@@ -256,7 +305,7 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
           <h2>Special Order</h2>
           <p class="hint">Optional. Maps to SO sheet. Pickup slots every 30 min, 10:00–21:00. Customer fields restored from legacy.</p>
           <div id="soDisabled" class="empty hidden"><div class="ico">∅</div>This outlet does not raise special orders (JNY / MK / SA).</div>
-          <div id="soForm">
+          <div id="soForm" class="form-grid">
             <div class="field-gap"><label class="field">Pick up date</label><input type="date" id="soDate" /></div>
             <div class="field-gap"><label class="field">Pick up time</label><select id="soTime"></select></div>
             <div class="field-gap"><label class="field">Category</label>
@@ -281,7 +330,7 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
             <div class="field-gap"><label class="field">Bill No</label><input type="text" id="soBill" placeholder="POS bill no" /></div>
             <div class="field-gap"><label class="field">Customer name (optional)</label><input type="text" id="soCust" /></div>
             <div class="field-gap"><label class="field">Contact (optional)</label><input type="tel" id="soContact" /></div>
-            <div class="field-gap"><label class="field">Remark (optional)</label><textarea id="soRemark" rows="2"></textarea></div>
+            <div class="field-gap form-span-2"><label class="field">Remark (optional)</label><textarea id="soRemark" rows="2"></textarea></div>
           </div>
         </div>
       </section>
