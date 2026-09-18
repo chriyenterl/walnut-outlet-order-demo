@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Walnut Bakery · Outlet Order (Preview DEMO)</title>
   <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
@@ -153,24 +154,63 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
 .order-edit-done{display:block;width:calc(100% - 20px);margin:10px}
 
 
-/* —— Responsive shell (fluid, walnut-only) —— */
+/* —— Responsive shell defaults (before landscape so landscape can override) —— */
 .form-grid{display:block}
 .form-grid .form-span-2{display:block}
 
-@media (max-width:900px) and (orientation:landscape),
-       (max-height:500px) and (orientation:landscape){
-  .app,.bg-decor,.bottom-nav{max-width:min(100%,720px)}
-  .app{padding-left:12px;padding-right:12px}
-  .sticky-top{padding:8px 12px 10px}
-  .main{padding:10px 12px 20px}
-  .hero{padding:10px 14px 8px}
-  .hero h1{font-size:16px}
-  .progress-wrap{margin-top:8px}
-  .sheet-scroll{max-height:min(48vh,360px)}
-  .toast{max-width:min(680px,calc(100% - 32px))}
+/* —— Landscape FIRST: full usable width (phones + any landscape) —— */
+@media (orientation: landscape) {
+  .app, .bg-decor, .bottom-nav {
+    max-width: none;
+    width: 100%;
+  }
+  .app {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: calc(var(--nav-h) + 12px);
+  }
+  .sticky-top { padding: 8px 16px 8px; }
+  .hero { padding-top: 10px; padding-bottom: 10px; padding-left: 14px; padding-right: 14px; }
+  .hero h1 { font-size: 1.25rem; }
+  .progress-wrap { margin-top: 8px; }
+  .main { padding: 10px 16px 20px; }
+  .demo-badge { margin-left: 16px; margin-right: 16px; }
+  .sheet-scroll { max-height: min(48vh, 360px); }
+  .toast { max-width: min(960px, calc(100% - 32px)); }
+  /* Step 1 / SO: 2-col form-grid in landscape too */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+  .form-grid .form-span-2,
+  .form-grid .span-2,
+  .form-grid .full { grid-column: 1 / -1; }
 }
 
-@media (min-width:768px){
+/* JS fallback class (iOS orientation reliability) — mirrored below after breakpoints too */
+html.landscape .app,
+html.landscape .bg-decor,
+html.landscape .bottom-nav {
+  max-width: none;
+  width: 100%;
+}
+html.landscape .app {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+  padding-bottom: calc(var(--nav-h) + 12px);
+}
+html.landscape .sticky-top { padding: 8px 16px 8px; }
+html.landscape .hero { padding-top: 10px; padding-bottom: 10px; padding-left: 14px; padding-right: 14px; }
+html.landscape .hero h1 { font-size: 1.25rem; }
+html.landscape .progress-wrap { margin-top: 8px; }
+html.landscape .main { padding: 10px 16px 20px; }
+html.landscape .demo-badge { margin-left: 16px; margin-right: 16px; }
+html.landscape .sheet-scroll { max-height: min(48vh, 360px); }
+html.landscape .toast { max-width: min(960px, calc(100% - 32px)); }
+html.landscape .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+html.landscape .form-grid .form-span-2,
+html.landscape .form-grid .span-2,
+html.landscape .form-grid .full { grid-column: 1 / -1; }
+
+/* Portrait tablets / desktops only — do not re-cap landscape width */
+@media (min-width:768px) and (orientation: portrait){
   .app,.bg-decor,.bottom-nav{max-width:720px}
   .sticky-top{padding:12px 20px 14px}
   .main{padding:16px 20px 28px}
@@ -181,7 +221,7 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
   .toast{max-width:min(680px,calc(100% - 40px))}
 }
 
-@media (min-width:1024px){
+@media (min-width:1024px) and (orientation: portrait){
   .app,.bg-decor,.bottom-nav{max-width:960px}
   .sticky-top{padding:14px 24px 16px}
   .main{padding:18px 24px 32px}
@@ -194,15 +234,45 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
   .form-grid .form-span-2{grid-column:1/-1}
 }
 
-@media (min-width:1280px){
+@media (min-width:1280px) and (orientation: portrait){
   .app,.bg-decor,.bottom-nav{max-width:1100px}
   .toast{max-width:min(800px,calc(100% - 48px))}
+}
+
+/* Re-assert JS landscape class AFTER breakpoints (beats any cascade fights) */
+html.landscape .app,
+html.landscape .bg-decor,
+html.landscape .bottom-nav {
+  max-width: none !important;
+  width: 100%;
 }
 
 </style>
 
 </head>
 <body>
+
+<script>
+(function () {
+  function syncLandscapeClass() {
+    var landscape = false;
+    try {
+      if (window.matchMedia) {
+        landscape = window.matchMedia('(orientation: landscape)').matches;
+      }
+    } catch (e) {}
+    if (!landscape) {
+      landscape = window.innerWidth > window.innerHeight;
+    }
+    document.documentElement.classList.toggle('landscape', !!landscape);
+  }
+  syncLandscapeClass();
+  window.addEventListener('resize', syncLandscapeClass);
+  window.addEventListener('orientationchange', syncLandscapeClass);
+  document.addEventListener('DOMContentLoaded', syncLandscapeClass);
+})();
+</script>
+
   <div class="bg-decor" aria-hidden="true"></div>
   <div class="app" id="app">
     <header class="sticky-top">
