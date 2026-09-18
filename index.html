@@ -163,7 +163,7 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
         <div class="hero-row">
           <div>
             <h1>Walnut Bakery</h1>
-            <p class="sub">Outlet ordering · factory T+1 / pack bun T+2</p>
+            <p class="sub">Outlet ordering · Order for tomorrow (T+1)</p>
           </div>
           <span class="step-pill" id="stepPill">Step 1 / 6</span>
         </div>
@@ -181,7 +181,7 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
       <section class="panel active" data-step="0">
         <div class="glass">
           <h2>Outlet &amp; dates</h2>
-          <p class="hint">Pick your outlet. Daily items order for tomorrow (T+1). Pack bun is for day-after (T+2). BN/PP bread also T+2.</p>
+          <p class="hint">Pick your outlet. All items (daily and pack bun) order for tomorrow (T+1).</p>
           <div class="field-gap">
             <label class="field">Outlet</label>
             <select id="outletSelect"></select>
@@ -190,10 +190,7 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
             <label class="field">Order-for date (T+1)</label>
             <input type="date" id="orderDate" />
           </div>
-          <div class="field-gap">
-            <label class="field">Pack bun date (T+2)</label>
-            <input type="date" id="packBunDate" readonly />
-          </div>
+          <input type="hidden" id="packBunDate" />
           <div class="badge-row">
             <span class="cutoff-badge" id="cutoffBadge">Cut-off ~5–6pm</span>
             <span class="cutoff-badge" id="leadNote">Bread lead: T+1</span>
@@ -208,7 +205,7 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
           <div class="daily-head">
             <div>
               <h2>Daily order sheet</h2>
-              <p class="hint" style="margin-bottom:0;">All products · type qty like a sheet. Blank = 0. Pack Bun = T+2.</p>
+              <p class="hint" style="margin-bottom:0;">All products · type qty like a sheet. Blank = 0. Order for = T+1.</p>
             </div>
             <span class="line-total" id="lineTotalHead">0 lines</span>
           </div>
@@ -332,8 +329,8 @@ window.MOCK = (function () {
     { code:'KK', name:'Karamunsing', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
     { code:'BV', name:'Beverly', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
     { code:'CC', name:'Cyber City', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
-    { code:'PP', name:'Papar', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:2 } },
-    { code:'BN', name:'Benoni', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:2 } },
+    { code:'PP', name:'Papar', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
+    { code:'BN', name:'Benoni', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
     { code:'JNY', name:'Jenny', flags:{ cakes:true, so:false, weekly:false, dailyFresh:true, breadLead:1 } },
     { code:'MK1', name:'Market Booth 1', flags:{ cakes:false, so:false, weekly:true, dailyFresh:false, breadLead:1 } },
     { code:'MK2', name:'Market Booth 2', flags:{ cakes:false, so:false, weekly:true, dailyFresh:false, breadLead:1 } },
@@ -369,7 +366,7 @@ window.MOCK = (function () {
       add('pastry_puff','Pastry Puff',CAT.pastry_puff,1);
       if(o&&o.flags.cakes){ add('cake_half','Cake ½kg',CAT.cake_half,1); add('cake_1kg','Cake 1kg',CAT.cake_1kg,1); add('cartoon','Cartoon',CAT.cartoon,1); add('slice','Slice',CAT.slice,1); add('others','Others',CAT.others,1); }
       else if(o&&o.code==='SA'){ add('slice','Slice',CAT.slice,1); add('others','Others',CAT.others,1); }
-      add('pack_bun','Pack Bun',CAT.pack_bun,2);
+      add('pack_bun','Pack Bun',CAT.pack_bun,1);
       if(o&&o.flags.dailyFresh) add('fresh_bun','Fresh Bun',CAT.fresh_bun,1);
       return { outlet:code, demo:true, label:'SAMPLE CATALOGUE — DEMO ONLY', categories:cats, flags:o?o.flags:{} };
     },
@@ -857,7 +854,7 @@ window.MOCK = (function () {
     function row(k, v) { html += '<div class="row"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>'; }
     row('Outlet', state.outlet || '—');
     row('Order-for (T+1)', state.orderDate || '—');
-    row('Pack bun (T+2)', state.packBunDate || '—');
+    row('Pack bun (T+1)', state.packBunDate || '—');
     row('Daily lines (DEMO)', dc.lines + ' · ' + dc.units + ' units');
     row('Pack bun changes', changed + ' of ' + state.packBun.length);
     row('Weekly fresh bun', state.flags.weekly === false ? 'Skipped (daily fresh)' : 'Included (SAMPLE)');
@@ -1071,13 +1068,14 @@ window.MOCK = (function () {
   function initDates() {
     var t = todayIso();
     $('orderDate').value = addDays(t, 1);
-    $('packBunDate').value = addDays(t, 2);
     state.orderDate = $('orderDate').value;
-    state.packBunDate = $('packBunDate').value;
+    // DEMO: pack bun same day as order-for (T+1)
+    $('packBunDate').value = state.orderDate;
+    state.packBunDate = state.orderDate;
     $('orderDate').onchange = function () {
       state.orderDate = $('orderDate').value;
-      $('packBunDate').value = addDays(state.orderDate, 1);
-      state.packBunDate = $('packBunDate').value;
+      $('packBunDate').value = state.orderDate;
+      state.packBunDate = state.orderDate;
     };
   }
 
