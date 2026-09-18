@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>WALNUT BAKERY · Bill For Print (DEMO CLONE)</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --chrome-grad: linear-gradient(135deg, #c4a484 0%, #8b5a2b 45%, #5c3a1e 100%);
+  --ink: #202124;
+  --muted: #5f6368;
+  --line: #bdbdbd;
+  --warn: #b06000;
+  --brand-ink: #1a1210;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#1c1410;color:var(--ink)}
+.chrome{
+  background:var(--chrome-grad);color:var(--brand-ink);padding:12px 16px;
+  box-shadow:0 4px 20px rgba(0,0,0,.35);position:sticky;top:0;z-index:40
+}
+.chrome h1{margin:0;font-size:16px;font-weight:800}
+.chrome .sub{margin:4px 0 0;font-size:11px;font-weight:600;opacity:.88;line-height:1.4;max-width:640px}
+.badge{
+  display:inline-flex;margin-top:8px;font-size:10px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;background:rgba(255,240,180,.95);color:var(--warn);
+  border:1px solid rgba(176,96,0,.35);padding:5px 10px;border-radius:8px
+}
+.site-nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:11px;font-weight:700}
+.site-nav a{color:rgba(26,18,16,.75);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid rgba(26,18,16,.15);background:rgba(255,255,255,.25)}
+.site-nav a:hover,.site-nav a.active{background:rgba(255,255,255,.55);color:var(--brand-ink)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.btn{
+  border:0;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;
+  font-family:inherit;cursor:pointer;background:rgba(255,255,255,.9);color:var(--brand-ink);
+  border:1px solid rgba(26,18,16,.2)
+}
+.btn-primary{background:#1a1210;color:#f7efe6;border:0}
+label.out{font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+select{
+  font:inherit;font-size:12px;font-weight:700;padding:6px 8px;border-radius:8px;
+  border:1px solid rgba(26,18,16,.25);background:#fff
+}
+.meta{font-size:11px;font-weight:600;opacity:.85}
+.page{background:#e8eaed;padding:14px 10px 48px;min-height:70vh}
+.sheet{
+  max-width:900px;margin:0 auto 18px;background:#fff;border:1px solid #c0c0c0;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);padding:10px 12px 14px
+}
+.sheet-header{
+  display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;
+  border-bottom:2px solid #333;padding-bottom:8px;margin-bottom:8px
+}
+.sheet-header .co{font-size:15px;font-weight:800;letter-spacing:.04em}
+.sheet-header .outlet{font-size:13px;font-weight:700;margin-top:4px}
+.sheet-header .right{text-align:right;font-size:12px;font-weight:600}
+.sheet-header .code{
+  display:inline-block;margin-top:6px;font-family:ui-monospace,Menlo,monospace;
+  font-size:14px;font-weight:800;border:1px solid #333;padding:2px 8px
+}
+.demo-tag{font-size:10px;font-weight:700;color:var(--warn);margin-top:4px}
+.sec-title{
+  margin:12px 0 6px;font-size:11px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.06em;color:#444;border-left:3px solid #8b5a2b;padding-left:8px
+}
+.grid2{display:grid;grid-template-columns:1.2fr 0.8fr;gap:10px}
+@media (max-width:720px){.grid2{grid-template-columns:1fr}}
+table.bill{
+  width:100%;border-collapse:collapse;font-size:11px;
+  font-variant-numeric:tabular-nums
+}
+table.bill th,table.bill td{
+  border:1px solid var(--line);padding:3px 5px;text-align:center;background:#fff
+}
+table.bill th{background:#f1f3f4;font-size:9px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+table.bill td:first-child,table.bill th:first-child{text-align:left;font-weight:500}
+table.bill td.num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+table.bill td.from-order{background:#e8f5e9}
+table.bill td.dash{color:#9aa0a6}
+table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.sign{
+  margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:11px;font-weight:600
+}
+.sign .line{border-bottom:1px solid #333;min-height:28px;padding-top:4px}
+.sign .lbl{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px}
+.hint{max-width:900px;margin:0 auto 10px;font-size:11px;color:#c4a990;line-height:1.45}
+@media print{
+  body{background:#fff}
+  .chrome,.site-nav,.toolbar,.hint,.no-print{display:none!important}
+  .page{padding:0;background:#fff}
+  .sheet{box-shadow:none;max-width:100%;page-break-after:always;border:0}
+  .sheet:last-child{page-break-after:auto}
+  .sign{page-break-inside:avoid}
+}
+  </style>
+</head>
+<body>
+  <header class="chrome no-print">
+    <h1>WALNUT BAKERY · Bill For Print <span style="font-weight:700;opacity:.8">(DEMO CLONE — NOT LIVE)</span></h1>
+    <p class="sub">Per-outlet delivery form clone. Filled from latest DEMO Order UI submit when present; otherwise SAMPLE placeholders. Not the live Bill For Print spreadsheet.</p>
+    <div class="badge">DEMO CLONE — Order UI localStorage + SAMPLE · not live Production</div>
+    <div class="site-nav">
+      <a href="index.html" id="navOrder">Order</a>
+      <a href="production.html">Production clone</a>
+      <a href="bill.html" class="active">Bill clone</a>
+      <a href="backend.html">Backend</a>
+      <a href="baker.html">Baker (legacy)</a>
+    </div>
+    <div class="toolbar">
+      <label class="out">Outlet
+        <select id="outletSelect"></select>
+      </label>
+      <button type="button" class="btn btn-primary" id="btnReload">Reload from Order UI</button>
+      <button type="button" class="btn" id="btnPrint">Print</button>
+      <span class="meta" id="statusMeta">…</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <p class="hint no-print">Green qty cells come from the latest DEMO submit for the selected outlet. Empty 1ST/2ND (and 2ND/3RD on pack) left blank for factory fill-in — same as the paper bill workflow.</p>
+    <div id="billRoot"></div>
+  </main>
+
+  <script src="demo-store.js"></script>
+  <script>
+(function () {
+  var S = window.WalnutDemoStore;
+  if (!S) { document.getElementById('statusMeta').textContent = 'demo-store.js missing'; return; }
+
+  try {
+    if (location.pathname.indexOf('walnut-outlet-order') >= 0 && location.pathname.indexOf('pages') < 0) {
+      var n = document.getElementById('navOrder');
+      if (n) n.href = 'Index-preview.html';
+    }
+  } catch (e) {}
+
+  var sel = document.getElementById('outletSelect');
+  S.OUTLETS.forEach(function (o) {
+    var opt = document.createElement('option');
+    opt.value = o;
+    opt.textContent = o + ' — ' + (S.OUTLET_NAMES[o] || o);
+    sel.appendChild(opt);
+  });
+  try {
+    var q = new URLSearchParams(location.search).get('outlet');
+    if (q && S.OUTLETS.indexOf(q.toUpperCase()) >= 0) sel.value = q.toUpperCase();
+  } catch (e2) {}
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function qtyCell(map, name, fromOrderSet) {
+    var v = map[name];
+    var cls = 'num';
+    if (fromOrderSet[name]) cls += ' from-order';
+    if (v == null) cls += ' dash';
+    return '<td class="' + cls + '">' + esc(S.cellDisplay(v)) + '</td>';
+  }
+
+  function productRows(names, map, fromOrderSet, cols) {
+    // cols: qty + optional 1ST 2ND or 2ND 3RD
+    var html = '';
+    names.forEach(function (name) {
+      html += '<tr><td>' + esc(name) + '</td>';
+      html += qtyCell(map, name, fromOrderSet);
+      for (var i = 1; i < cols; i++) html += '<td></td>';
+      html += '</tr>';
+    });
+    return html;
+  }
+
+  function soSidePanel(special) {
+    if (!special || !special.product) {
+      return '<table class="bill"><thead><tr><th>Special Order</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead>' +
+        '<tbody><tr><td colspan="4" style="text-align:left;color:#9aa0a6;font-size:10px">None in latest DEMO submit</td></tr></tbody></table>';
+    }
+    return '<table class="bill"><thead><tr><th>Special Order</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead><tbody>' +
+      '<tr><td>' + esc(special.product) + (special.customer ? ' · ' + esc(special.customer) : '') + '</td>' +
+      '<td class="num from-order">' + esc(special.qty || special.quantity || 1) + '</td><td></td><td></td></tr>' +
+      '</tbody></table>';
+  }
+
+  function signBlock(includeDistributed) {
+    var lines = [
+      ['Double check by:', 'Received by cashier:'],
+      ['Delivery by driver:', 'Driver arrived time:'],
+      ['Driver out time:', includeDistributed ? 'Distributed by:' : '']
+    ];
+    var html = '<div class="sign">';
+    lines.forEach(function (pair) {
+      pair.forEach(function (lbl) {
+        if (!lbl) { html += '<div></div>'; return; }
+        html += '<div><div class="lbl">' + esc(lbl) + '</div><div class="line"></div></div>';
+      });
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function sheetHeader(code, dateStr, meta) {
+    var name = S.OUTLET_BILL_NAMES[code] || S.OUTLET_NAMES[code] || code;
+    return '<div class="sheet-header">' +
+      '<div><div class="co">WALNUT BAKERY SDN BHD</div>' +
+      '<div class="outlet">OUTLET : ' + esc(name) + '</div>' +
+      '<div class="demo-tag">' + esc(meta.label) + (meta.hasOrder ? '' : ' · DEMO SAMPLE') + '</div></div>' +
+      '<div class="right">Date: ' + esc(dateStr) + '<div class="code">' + esc(code) + '</div></div>' +
+      '</div>';
+  }
+
+  function render() {
+    var code = sel.value;
+    var data = S.billQtyMap(code);
+    var map = data.qty;
+    var meta = data.meta;
+    var special = data.special;
+    var dateStr = S.fmtDisplayDate(meta.orderDate || meta.packBunDate || '');
+
+    // which keys came from order (approx: all daily keys + fresh + pack when hasOrder)
+    var fromOrderSet = {};
+    if (meta.hasOrder) {
+      var latest = S.latestByOutlet()[code];
+      var p = (latest && latest.payload) || {};
+      Object.keys(p.daily || {}).forEach(function (k) { fromOrderSet[k] = 1; });
+      S.FRESH_BUN.forEach(function (n) {
+        // if weekly/daily provided value, mark
+        if (p.daily && p.daily[n] != null) fromOrderSet[n] = 1;
+        if (p.weekly) fromOrderSet[n] = 1;
+      });
+      (p.packBunChanges || []).forEach(function (it) {
+        if (it && it.product) fromOrderSet[it.product] = 1;
+      });
+    }
+
+    document.getElementById('statusMeta').textContent = meta.hasOrder
+      ? ('Latest DEMO: ' + meta.orderId + (meta.at ? ' · ' + meta.at : ''))
+      : ('No submit for ' + code + ' — SAMPLE placeholders');
+
+    var freshSpec = S.FRESH_BUN.concat(S.SPECIALTY);
+    // normalize alias MINI HAM AND CHEESE
+    if (map['MINI HAM & CHEESE'] != null && map['MINI HAM AND CHEESE'] == null) {
+      map['MINI HAM AND CHEESE'] = map['MINI HAM & CHEESE'];
+    }
+
+    var pastryNames = S.PASTRY.filter(function (n) {
+      return n.indexOf('PUFF') < 0 && n.indexOf('ECLAIR') < 0;
+    });
+    var puffNames = S.PASTRY.filter(function (n) {
+      return n.indexOf('PUFF') >= 0 || n.indexOf('ECLAIR') >= 0;
+    });
+    var packNames = S.PACK_BUN.map(function (p) { return p.name; });
+
+    var html = '';
+
+    // Section 1 — Fresh bun + specialty + SO side
+    html += '<section class="sheet">';
+    html += sheetHeader(code, dateStr, meta);
+    html += '<div class="sec-title">(1) Fresh bun + specialty</div>';
+    html += '<div class="grid2"><div>';
+    html += '<table class="bill"><thead><tr><th>Products</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead><tbody>';
+    html += productRows(freshSpec, map, fromOrderSet, 3);
+    html += '</tbody></table></div><div>';
+    html += soSidePanel(special);
+    html += '</div></div>';
+    html += signBlock(false);
+    html += '</section>';
+
+    // Section 2 — Pastry
+    html += '<section class="sheet">';
+    html += sheetHeader(code, dateStr, meta);
+    html += '<div class="sec-title">(2) Pastry</div>';
+    html += '<div class="grid2"><div>';
+    html += '<table class="bill"><thead><tr><th>Products</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead><tbody>';
+    html += productRows(pastryNames, map, fromOrderSet, 3);
+    html += '</tbody></table></div><div>';
+    html += soSidePanel(null);
+    html += '</div></div>';
+    html += '<div class="sign"><div><div class="lbl">Double check by:</div><div class="line"></div></div><div></div></div>';
+    html += '</section>';
+
+    // Section 3 — Cake / cartoon / slice / others
+    html += '<section class="sheet">';
+    html += sheetHeader(code, dateStr, meta);
+    html += '<div class="sec-title">(3) Cake / cartoon / slice / others</div>';
+    html += '<div class="grid2"><div>';
+    html += '<table class="bill"><thead><tr><th>Cake ½kg / 1kg / Others</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead><tbody>';
+    html += '<tr class="sec"><td colspan="4">Cake ½kg</td></tr>';
+    html += productRows(S.CAKE_HALF, map, fromOrderSet, 3);
+    html += '<tr class="sec"><td colspan="4">Cake 1kg</td></tr>';
+    html += productRows(S.CAKE_1KG, map, fromOrderSet, 3);
+    html += '<tr class="sec"><td colspan="4">Others</td></tr>';
+    html += productRows(S.OTHERS, map, fromOrderSet, 3);
+    html += '</tbody></table></div><div>';
+    html += '<table class="bill"><thead><tr><th>Cartoon / Slice</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead><tbody>';
+    html += '<tr class="sec"><td colspan="4">Cartoon</td></tr>';
+    html += productRows(S.CARTOON, map, fromOrderSet, 3);
+    html += '<tr class="sec"><td colspan="4">Slice</td></tr>';
+    html += productRows(S.SLICE, map, fromOrderSet, 3);
+    html += '</tbody></table>';
+    html += '</div></div>';
+    html += signBlock(false);
+    html += '</section>';
+
+    // Section 4 — Pack bun + bread + puff
+    html += '<section class="sheet">';
+    html += sheetHeader(code, dateStr, meta);
+    html += '<div class="sec-title">(4) Pack bun + bread + pastry puff</div>';
+    html += '<div class="grid2"><div>';
+    html += '<table class="bill"><thead><tr><th>Products</th><th>QTY</th><th>2ND</th><th>3RD</th></tr></thead><tbody>';
+    html += '<tr class="sec"><td colspan="4">Pack bun</td></tr>';
+    html += productRows(packNames, map, fromOrderSet, 3);
+    html += '<tr class="sec"><td colspan="4">Bread</td></tr>';
+    html += productRows(S.BREAD, map, fromOrderSet, 3);
+    html += '</tbody></table></div><div>';
+    html += '<table class="bill"><thead><tr><th>Products</th><th>QTY</th><th>2ND</th><th>3RD</th></tr></thead><tbody>';
+    html += productRows(puffNames, map, fromOrderSet, 3);
+    html += '</tbody></table>';
+    html += soSidePanel(special);
+    html += '</div></div>';
+    html += signBlock(true);
+    html += '</section>';
+
+    document.getElementById('billRoot').innerHTML = html;
+  }
+
+  sel.onchange = function () {
+    try {
+      history.replaceState(null, '', '?outlet=' + encodeURIComponent(sel.value));
+    } catch (e) {}
+    render();
+  };
+  document.getElementById('btnReload').onclick = render;
+  document.getElementById('btnPrint').onclick = function () { window.print(); };
+  window.addEventListener('storage', function (ev) {
+    if (ev.key === S.KEY || ev.key === null) render();
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) render();
+  });
+
+  render();
+})();
+  </script>
+</body>
+</html>

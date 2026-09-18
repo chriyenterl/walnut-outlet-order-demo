@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>WALNUT BAKERY · Production Sheet (DEMO CLONE)</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --chrome: #5c3a1e;
+  --chrome2: #8b5a2b;
+  --chrome-grad: linear-gradient(135deg, #c4a484 0%, #8b5a2b 45%, #5c3a1e 100%);
+  --sheet-bg: #f3f3f3;
+  --cell: #ffffff;
+  --cell-alt: #f8f9fa;
+  --header-cell: #e8eaed;
+  --total-cell: #fff8e1;
+  --order-cell: #e8f5e9;
+  --ink: #202124;
+  --muted: #5f6368;
+  --line: #c0c0c0;
+  --brand-ink: #1a1210;
+  --warn: #b06000;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#1c1410;color:var(--ink)}
+.chrome{
+  background:var(--chrome-grad);color:var(--brand-ink);
+  padding:12px 16px 10px;box-shadow:0 4px 20px rgba(0,0,0,.35);
+  position:sticky;top:0;z-index:40;
+}
+.chrome-top{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between}
+.chrome h1{margin:0;font-size:16px;font-weight:800;letter-spacing:.02em}
+.chrome .sub{margin:4px 0 0;font-size:11px;font-weight:600;opacity:.88;max-width:640px;line-height:1.4}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;
+  letter-spacing:.05em;text-transform:uppercase;background:rgba(255,240,180,.95);
+  color:var(--warn);border:1px solid rgba(176,96,0,.35);padding:5px 10px;border-radius:8px;
+}
+.site-nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:11px;font-weight:700}
+.site-nav a{color:rgba(26,18,16,.75);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid rgba(26,18,16,.15);background:rgba(255,255,255,.25)}
+.site-nav a:hover,.site-nav a.active{background:rgba(255,255,255,.55);color:var(--brand-ink)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.btn{
+  border:0;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;
+  font-family:inherit;cursor:pointer;background:rgba(255,255,255,.9);color:var(--brand-ink);
+  border:1px solid rgba(26,18,16,.2)
+}
+.btn-primary{background:#1a1210;color:#f7efe6;border-color:transparent}
+.meta{font-size:11px;font-weight:600;opacity:.85}
+.tabs{
+  display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;background:#2a1f18;
+  border-bottom:1px solid rgba(210,180,140,.2);position:sticky;top:0;z-index:30;
+}
+/* tabs stick under chrome — chrome already sticky; keep tabs sticky within scroll */
+.tabs-wrap{position:sticky;top:0;z-index:35;background:#2a1f18}
+.chip{
+  border:1px solid rgba(210,180,140,.25);background:#1c1410;color:#c4a990;
+  font-size:11px;font-weight:700;padding:7px 12px;border-radius:999px;cursor:pointer;font-family:inherit
+}
+.chip.active{color:#1a1210;background:var(--chrome-grad);border-color:transparent}
+.sheet-wrap{background:var(--sheet-bg);min-height:70vh;padding:12px 10px 40px}
+.panel{display:none}
+.panel.active{display:block}
+.board-card{
+  background:#fff;border:1px solid #dadce0;border-radius:4px;margin-bottom:14px;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);overflow:hidden
+}
+.board-head{
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;
+  padding:8px 10px;background:#f1f3f4;border-bottom:1px solid #dadce0;font-size:12px;font-weight:700
+}
+.board-head .date{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--muted);font-weight:600}
+.table-scroll{overflow:auto;-webkit-overflow-scrolling:touch;max-height:min(70vh,720px)}
+table.sheet{
+  width:100%;min-width:860px;border-collapse:collapse;font-size:11px;
+  font-variant-numeric:tabular-nums;font-family:"Google Sans",Roboto,Inter,system-ui,sans-serif
+}
+table.sheet th,table.sheet td{
+  border:1px solid var(--line);padding:4px 6px;text-align:center;white-space:nowrap;
+  background:var(--cell)
+}
+table.sheet th{
+  background:var(--header-cell);font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.03em;color:var(--muted);position:sticky;top:0;z-index:3
+}
+table.sheet th:first-child,table.sheet td:first-child{
+  text-align:left;position:sticky;left:0;z-index:2;min-width:160px;max-width:220px;
+  white-space:normal;background:var(--header-cell);font-weight:600;color:var(--ink)
+}
+table.sheet th:first-child{z-index:4}
+table.sheet td:first-child{background:var(--cell-alt);font-weight:500}
+table.sheet td.num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px}
+table.sheet td.tot,table.sheet th.tot{background:var(--total-cell);font-weight:800}
+table.sheet tr.total-row td{background:#fff3cd;font-weight:800}
+table.sheet td.from-order{background:var(--order-cell)}
+table.sheet td.dash{color:#9aa0a6}
+.hint{margin:0 0 10px;font-size:11px;color:#c4a990;line-height:1.45;padding:0 2px}
+.placeholder-note{
+  margin:0;padding:16px;font-size:12px;color:var(--muted);background:#fff;border:1px dashed #dadce0;border-radius:4px
+}
+.so-table{min-width:640px}
+@media print{
+  body{background:#fff}
+  .chrome,.tabs-wrap,.site-nav,.toolbar,.no-print{display:none!important}
+  .sheet-wrap{padding:0;background:#fff}
+  .panel{display:block!important}
+  table.sheet{min-width:0}
+}
+@media (max-width:700px){
+  .chrome h1{font-size:14px}
+  table.sheet{font-size:10px;min-width:760px}
+}
+  </style>
+</head>
+<body>
+  <header class="chrome">
+    <div class="chrome-top">
+      <div>
+        <h1>WALNUT BAKERY · Production Sheet <span style="font-weight:700;opacity:.8">(DEMO CLONE — NOT LIVE)</span></h1>
+        <p class="sub">Factory view clone. Data from Order UI <code>localStorage</code> + SAMPLE baselines. Not Patrick Production file. No Drive writes.</p>
+      </div>
+      <div class="badge">DEMO CLONE — Order UI + SAMPLE · not live Production</div>
+    </div>
+    <div class="site-nav no-print">
+      <a href="index.html" id="navOrder">Order</a>
+      <a href="production.html" class="active">Production clone</a>
+      <a href="bill.html">Bill clone</a>
+      <a href="backend.html">Backend</a>
+      <a href="baker.html">Baker (legacy)</a>
+    </div>
+    <div class="toolbar no-print">
+      <button type="button" class="btn btn-primary" id="btnReload">Reload from Order UI</button>
+      <span class="meta" id="statusMeta">Loading…</span>
+    </div>
+  </header>
+
+  <div class="tabs-wrap no-print">
+    <div class="tabs" id="tabs">
+      <button type="button" class="chip" data-tab="brsp">BR &amp; SP</button>
+      <button type="button" class="chip" data-tab="pastry">Pastry</button>
+      <button type="button" class="chip" data-tab="cake">Cakeroom</button>
+      <button type="button" class="chip active" data-tab="baker">BAKER</button>
+      <button type="button" class="chip" data-tab="packer">PACKER</button>
+      <button type="button" class="chip" data-tab="so">SO DATA</button>
+    </div>
+  </div>
+
+  <main class="sheet-wrap">
+    <p class="hint no-print">Green cells = qty overridden by a DEMO Order UI submit for that outlet. Other cells = SAMPLE fill. TOTAL recomputed. SO column from special-order lines when product matches.</p>
+
+    <section class="panel" id="panel-brsp">
+      <div class="board-card">
+        <div class="board-head"><span>BR &amp; SP — Specialty + Bread (SAMPLE board)</span><span class="date" id="dateBrsp"></span></div>
+        <div class="table-scroll" id="brspTable"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-pastry">
+      <div class="board-card">
+        <div class="board-head"><span>Pastry — SAMPLE placeholder (1ST style columns)</span><span class="date" id="datePastry"></span></div>
+        <div class="table-scroll" id="pastryTable"></div>
+      </div>
+      <p class="placeholder-note">DEMO: single QTY column per outlet (not full 1ST/2ND split). Structure matches Production column codes FS…SA + SO.</p>
+    </section>
+
+    <section class="panel" id="panel-cake">
+      <div class="board-card">
+        <div class="board-head"><span>Cakeroom — Cake / Cartoon / Slice / Others (SAMPLE)</span><span class="date" id="dateCake"></span></div>
+        <div class="table-scroll" id="cakeTable"></div>
+      </div>
+    </section>
+
+    <section class="panel active" id="panel-baker">
+      <div class="board-card">
+        <div class="board-head"><span>BAKER · Fresh Bun</span><span class="date" id="dateFresh"></span></div>
+        <div class="table-scroll" id="freshTable"></div>
+      </div>
+      <div class="board-card">
+        <div class="board-head"><span>BAKER · Pack Bun (BAKER BUAT = Σ outlets)</span><span class="date" id="datePack"></span></div>
+        <div class="table-scroll" id="packTable"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-packer">
+      <div class="board-card">
+        <div class="board-head"><span>PACKER · Fresh Bun (alternate layout — TOTAL at right)</span><span class="date" id="datePackerFresh"></span></div>
+        <div class="table-scroll" id="packerFreshTable"></div>
+      </div>
+      <div class="board-card">
+        <div class="board-head"><span>PACKER · Pack Bun</span><span class="date" id="datePackerPack"></span></div>
+        <div class="table-scroll" id="packerPackTable"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-so">
+      <div class="board-card">
+        <div class="board-head"><span>SO DATA — Special orders from DEMO submits</span><span class="date">DEMO only</span></div>
+        <div class="table-scroll" id="soTable"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="demo-store.js"></script>
+  <script>
+(function () {
+  var S = window.WalnutDemoStore;
+  if (!S) { document.getElementById('statusMeta').textContent = 'demo-store.js missing'; return; }
+
+  try {
+    if (location.pathname.indexOf('walnut-outlet-order') >= 0 && location.pathname.indexOf('pages') < 0) {
+      var n = document.getElementById('navOrder');
+      if (n) n.href = 'Index-preview.html';
+    }
+  } catch (e) {}
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function renderMatrix(el, rows, opts) {
+    opts = opts || {};
+    var bakerBuat = !!opts.bakerBuat;
+    var totalRight = !!opts.totalRight;
+    var html = '<table class="sheet"><thead><tr><th>Product</th>';
+    if (bakerBuat) html += '<th class="tot">BAKER BUAT</th>';
+    if (!totalRight) html += '<th class="tot">TOTAL</th>';
+    S.OUTLETS.forEach(function (o) { html += '<th>' + o + '</th>'; });
+    html += '<th>SO</th>';
+    if (totalRight) html += '<th class="tot">TOTAL</th>';
+    html += '</tr></thead><tbody>';
+
+    var colTot = {};
+    S.OUTLETS.forEach(function (o) { colTot[o] = 0; });
+    var grand = 0, soGrand = 0, buatGrand = 0;
+
+    rows.forEach(function (r) {
+      html += '<tr><td>' + esc(r.product) + '</td>';
+      var buat = 0;
+      S.OUTLETS.forEach(function (o) {
+        var v = r.cells[o];
+        if (typeof v === 'number') buat += v;
+      });
+      if (typeof r.so === 'number') buat += r.so;
+      if (bakerBuat) html += '<td class="num tot">' + esc(S.cellDisplay(buat)) + '</td>';
+      if (!totalRight) html += '<td class="num tot">' + esc(S.cellDisplay(r.total)) + '</td>';
+
+      S.OUTLETS.forEach(function (o) {
+        var v = r.cells[o];
+        var cls = 'num';
+        if (r.sources[o] === 'order') cls += ' from-order';
+        if (v == null) cls += ' dash';
+        html += '<td class="' + cls + '">' + esc(S.cellDisplay(v)) + '</td>';
+        if (typeof v === 'number') colTot[o] += v;
+      });
+      html += '<td class="num' + (r.so ? ' from-order' : '') + '">' + esc(S.cellDisplay(r.so || 0)) + '</td>';
+      if (totalRight) html += '<td class="num tot">' + esc(S.cellDisplay(r.total)) + '</td>';
+      html += '</tr>';
+      grand += r.total || 0;
+      soGrand += r.so || 0;
+      buatGrand += buat;
+    });
+
+    html += '<tr class="total-row"><td>TOTAL</td>';
+    if (bakerBuat) html += '<td class="num tot">' + buatGrand + '</td>';
+    if (!totalRight) html += '<td class="num tot">' + grand + '</td>';
+    S.OUTLETS.forEach(function (o) { html += '<td class="num">' + colTot[o] + '</td>'; });
+    html += '<td class="num">' + soGrand + '</td>';
+    if (totalRight) html += '<td class="num tot">' + grand + '</td>';
+    html += '</tr></tbody></table>';
+    el.innerHTML = html;
+  }
+
+  function renderSO(el) {
+    var orders = S.loadOrders();
+    var rows = [];
+    orders.forEach(function (entry) {
+      var p = entry.payload || {};
+      var sp = p.special;
+      if (!sp || !sp.product) return;
+      rows.push({
+        pickup: sp.pickupDate || sp.date || p.orderDate || '—',
+        time: sp.pickupTime || sp.time || '—',
+        outlet: entry.outlet || p.outlet || '—',
+        cat: sp.category || '—',
+        product: sp.product,
+        qty: sp.qty || sp.quantity || 1,
+        bill: sp.billNo || sp.bill || '—',
+        bake: p.orderDate || '—',
+        id: entry.orderId || entry.id || ''
+      });
+    });
+    if (!rows.length) {
+      el.innerHTML = '<p class="placeholder-note">No DEMO special orders yet. Submit an SO from Order UI to see rows here (SAMPLE empty board).</p>';
+      return;
+    }
+    var html = '<table class="sheet so-table"><thead><tr>' +
+      '<th>Pick Up Date</th><th>Time</th><th>Outlet</th><th>Category</th><th>Product</th><th>Qty</th><th>Bill No</th><th>Baking Date</th><th>DEMO id</th>' +
+      '</tr></thead><tbody>';
+    rows.forEach(function (r) {
+      html += '<tr>' +
+        '<td>' + esc(r.pickup) + '</td><td class="num">' + esc(r.time) + '</td><td>' + esc(r.outlet) + '</td>' +
+        '<td>' + esc(r.cat) + '</td><td>' + esc(r.product) + '</td><td class="num from-order">' + esc(r.qty) + '</td>' +
+        '<td>' + esc(r.bill) + '</td><td>' + esc(r.bake) + '</td><td class="num">' + esc(r.id) + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    el.innerHTML = html;
+  }
+
+  function refresh() {
+    var latest = S.latestByOutlet();
+    var codes = Object.keys(latest);
+    var meta = document.getElementById('statusMeta');
+    meta.textContent = codes.length
+      ? ('DEMO outlets with submits: ' + codes.join(', ') + ' · ' + S.loadOrders().length + ' inbox entries')
+      : ('No Order UI submits yet — showing SAMPLE fill only · key ' + S.KEY);
+
+    // bake date = tomorrow-ish from first order or today label
+    var bakeIso = '';
+    if (codes.length) {
+      var p0 = latest[codes[0]].payload || {};
+      bakeIso = p0.orderDate || '';
+    }
+    var dateLabel = S.fmtSheetDate(bakeIso);
+    ['dateFresh', 'datePack', 'datePackerFresh', 'datePackerPack', 'dateBrsp', 'datePastry', 'dateCake'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = dateLabel + ' · DEMO';
+    });
+
+    var freshRows = S.buildMatrix(S.FRESH_BUN, { source: 'fresh', base: 1 });
+    var packRows = S.buildMatrix(S.PACK_BUN, { source: 'pack', base: 4 });
+    renderMatrix(document.getElementById('freshTable'), freshRows, { bakerBuat: false, totalRight: false });
+    renderMatrix(document.getElementById('packTable'), packRows, { bakerBuat: true, totalRight: false });
+    renderMatrix(document.getElementById('packerFreshTable'), freshRows, { bakerBuat: false, totalRight: true });
+    renderMatrix(document.getElementById('packerPackTable'), packRows, { bakerBuat: false, totalRight: true });
+
+    var brsp = S.SPECIALTY.concat(S.BREAD);
+    renderMatrix(document.getElementById('brspTable'), S.buildMatrix(brsp, { source: 'daily', base: 7 }), {});
+    renderMatrix(document.getElementById('pastryTable'), S.buildMatrix(S.PASTRY, { source: 'daily', base: 3 }), {});
+    var cakeAll = S.CAKE_HALF.concat(S.CAKE_1KG, S.CARTOON, S.SLICE, S.OTHERS);
+    renderMatrix(document.getElementById('cakeTable'), S.buildMatrix(cakeAll, { source: 'daily', base: 2 }), {});
+    renderSO(document.getElementById('soTable'));
+  }
+
+  document.getElementById('tabs').addEventListener('click', function (ev) {
+    var btn = ev.target.closest('.chip');
+    if (!btn) return;
+    document.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('active'); });
+    btn.classList.add('active');
+    var tab = btn.getAttribute('data-tab');
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+    var panel = document.getElementById('panel-' + tab);
+    if (panel) panel.classList.add('active');
+  });
+
+  document.getElementById('btnReload').onclick = refresh;
+  window.addEventListener('storage', function (ev) {
+    if (ev.key === S.KEY || ev.key === null) refresh();
+  });
+  // same-tab submit won't fire storage — poll lightly when visible
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) refresh();
+  });
+
+  refresh();
+})();
+  </script>
+</body>
+</html>
