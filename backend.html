@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Walnut Bakery · Backend inbox (DEMO)</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg: #1c1410;
+  --brand: #8b5a2b;
+  --brand2: #5c3a1e;
+  --brand-grad: linear-gradient(135deg, #c4a484 0%, #8b5a2b 45%, #5c3a1e 100%);
+  --card: rgba(255,236,210,.08);
+  --card-solid: #2a1f18;
+  --ink: #f7efe6;
+  --muted: #c4a990;
+  --line: rgba(210,180,140,.16);
+  --ok: #3ecf8e;
+  --warn: #f5c542;
+  --danger: #f07178;
+  --shadow: 0 12px 40px rgba(0,0,0,.35);
+  --radius: 16px;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+body{background:radial-gradient(ellipse 80% 50% at 10% -10%,color-mix(in srgb,var(--brand) 28%,transparent),transparent 50%),radial-gradient(ellipse 60% 40% at 100% 0%,color-mix(in srgb,var(--brand2) 20%,transparent),transparent 45%),var(--bg)}
+.app{max-width:960px;margin:0 auto;min-height:100dvh;padding:12px 14px 40px;position:relative;z-index:1}
+.hero{background:var(--brand-grad);border-radius:var(--radius);padding:16px;color:#1a1210;box-shadow:var(--shadow);margin-bottom:12px}
+.hero h1{margin:0;font-size:18px;font-weight:800}
+.hero .sub{margin:4px 0 0;font-size:12px;font-weight:500;opacity:.85}
+.demo-badge{display:inline-flex;margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(245,197,66,.2);color:var(--warn);border:1px solid rgba(245,197,66,.35);padding:4px 8px;border-radius:8px}
+.glass{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);margin-bottom:12px}
+.glass h2{margin:0 0 4px;font-size:15px;font-weight:700}
+.hint{margin:0 0 12px;font-size:12px;color:var(--muted);line-height:1.45}
+.site-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:4px 0 16px;font-size:11px;font-weight:600}
+.site-nav a{color:var(--muted);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid transparent}
+.site-nav a:hover,.site-nav a.active{color:var(--ink);border-color:var(--line);background:var(--card)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--card-solid);color:var(--muted);font-size:11px;font-weight:700;padding:6px 10px;border-radius:999px;cursor:pointer;font-family:inherit}
+.chip.active{color:#1a1210;background:var(--brand-grad);border-color:transparent}
+.table-scroll{overflow:auto;border-radius:12px;border:1px solid var(--line);background:var(--card-solid);-webkit-overflow-scrolling:touch}
+table.board{width:100%;min-width:720px;border-collapse:separate;border-spacing:0;font-size:12px}
+table.board th,table.board td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+table.board th:first-child,table.board td:first-child{text-align:left;position:sticky;left:0;background:var(--card-solid);z-index:2;min-width:140px;padding-left:12px}
+table.board th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);position:sticky;top:0;background:var(--card-solid);z-index:3}
+table.board th:first-child{z-index:4}
+table.board tr.total td{font-weight:800;background:color-mix(in srgb,var(--brand) 12%,transparent)}
+table.board td.tot{font-weight:800}
+.section-anchor{scroll-margin-top:12px}
+.btn{border:0;border-radius:14px;padding:12px 14px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--card-solid);color:var(--ink);border:1px solid var(--line)}
+.btn-danger{background:color-mix(in srgb,var(--danger) 18%,var(--card-solid));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,transparent)}
+.btn-primary{background:var(--brand-grad);color:#1a1210;border:0}
+.empty{text-align:center;padding:28px 16px;color:var(--muted);font-size:13px}
+.order-card{border:1px solid var(--line);border-radius:12px;background:var(--card-solid);margin-bottom:10px;overflow:hidden}
+.order-card-head{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:flex-start;padding:12px;cursor:pointer}
+.order-card-head:hover{background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.order-meta{font-size:12px;line-height:1.45}
+.order-meta .id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--warn)}
+.order-meta .sum{color:var(--muted);font-size:11px;margin-top:4px}
+.order-body{display:none;border-top:1px solid var(--line);padding:10px 12px;background:#1a1511}
+.order-card.open .order-body{display:block}
+.order-body pre{margin:0;white-space:pre-wrap;word-break:break-word;font-size:11px;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;max-height:320px;overflow:auto}
+.map-table{width:100%;border-collapse:collapse;font-size:12px}
+.map-table th,.map-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.map-table th{color:var(--muted);font-size:10px;text-transform:uppercase}
+@media (max-width:600px){
+  .app{padding:10px 10px 32px}
+  .hero h1{font-size:16px}
+}
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="site-nav">
+      <a href="index.html" id="navOrder">Order UI</a>
+      <a href="baker.html">Baker board</a>
+      <a href="backend.html" class="active">Backend inbox</a>
+    </div>
+    <div class="hero">
+      <h1>Walnut Bakery · Backend inbox (DEMO)</h1>
+      <p class="sub">How a submitted outlet order looks when received — localStorage only. Not Production.</p>
+    </div>
+    <div class="demo-badge">DEMO SAMPLE — key <code style="text-transform:none">walnutDemoOrders</code> · never live stock</div>
+
+    <div class="glass">
+      <h2>Destination mapping reminder</h2>
+      <p class="hint">When live wiring exists, UI steps write to that outlet’s Ordering spreadsheet tabs:</p>
+      <table class="map-table">
+        <thead><tr><th>UI step</th><th>Sheet tab</th></tr></thead>
+        <tbody>
+          <tr><td>Daily products</td><td><b>Daily</b></td></tr>
+          <tr><td>Pack Bun Change</td><td><b>Add Cancel</b></td></tr>
+          <tr><td>Weekly Fresh Bun</td><td><b>Weekly</b> / Daily Bun Weekly</td></tr>
+          <tr><td>Special Order</td><td><b>SO</b> / Special Order</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="glass">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <h2 style="margin:0">Received DEMO orders</h2>
+        <button type="button" class="btn btn-danger" id="btnClear">Clear DEMO inbox</button>
+      </div>
+      <p class="hint">Newest first. Expand a card for pretty JSON payload.</p>
+      <div id="list"></div>
+    </div>
+  </div>
+<script>
+(function(){
+  try {
+    if (location.pathname.indexOf('walnut-outlet-order')>=0 && location.pathname.indexOf('pages')<0) {
+      var n=document.getElementById('navOrder'); if(n) n.href='Index-preview.html';
+    }
+  } catch(e){}
+
+  var KEY='walnutDemoOrders';
+
+  function load(){
+    try {
+      var arr=JSON.parse(localStorage.getItem(KEY)||'[]');
+      return Array.isArray(arr)?arr:[];
+    } catch(e){ return []; }
+  }
+
+  function fmtTime(iso){
+    try {
+      return new Intl.DateTimeFormat('en-GB',{
+        timeZone:'Asia/Kuching', dateStyle:'medium', timeStyle:'short'
+      }).format(new Date(iso)) + ' MYT';
+    } catch(e){ return iso; }
+  }
+
+  function render(){
+    var list=document.getElementById('list');
+    var arr=load();
+    if(!arr.length){
+      list.innerHTML='<div class="empty"><div style="font-size:28px;margin-bottom:8px;opacity:.7">📭</div>No DEMO submissions yet — submit from the outlet UI</div>';
+      return;
+    }
+    list.innerHTML='';
+    arr.forEach(function(entry, idx){
+      var s=entry.summary||{};
+      var card=document.createElement('div');
+      card.className='order-card';
+      var head=document.createElement('div');
+      head.className='order-card-head';
+      head.innerHTML='<div class="order-meta"><div><b>'+(entry.outlet||'?')+'</b> · '+fmtTime(entry.at||entry.payload&&entry.payload.submittedAt||'')+'</div>'+
+        '<div class="id">'+(entry.orderId||entry.id||'')+'</div>'+
+        '<div class="sum">Daily lines: '+(s.dailyLines||0)+' · units: '+(s.dailyUnits||0)+
+        ' · Pack Δ: '+(s.packBunChanges||0)+
+        ' · Weekly: '+(s.hasWeekly?'yes':'no')+
+        ' · SO: '+(s.hasSO?'yes':'no')+'</div></div><div style="font-size:11px;color:var(--muted)">▾ JSON</div>';
+      var body=document.createElement('div');
+      body.className='order-body';
+      var pre=document.createElement('pre');
+      pre.textContent=JSON.stringify(entry.payload||entry, null, 2);
+      body.appendChild(pre);
+      head.onclick=function(){ card.classList.toggle('open'); };
+      card.appendChild(head); card.appendChild(body);
+      list.appendChild(card);
+    });
+  }
+
+  document.getElementById('btnClear').onclick=function(){
+    if(!confirm('Clear all DEMO submissions from this browser inbox?')) return;
+    localStorage.removeItem(KEY);
+    render();
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>

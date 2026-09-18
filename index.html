@@ -78,6 +78,26 @@ textarea{resize:vertical}
 .week-grid th,.week-grid td{padding:8px 6px;border-bottom:1px solid var(--line)}
 .week-grid th{font-size:10px;text-transform:uppercase;color:var(--muted);position:sticky;top:0;background:var(--card-solid)}
 .week-grid input.qty{width:44px;padding:6px 2px;font-size:12px;text-align:center;font-weight:700}
+.week-block{margin-bottom:14px}
+.week-block:last-child{margin-bottom:0}
+.week-block-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.week-block-head h3{margin:0;font-size:13px;font-weight:800}
+.week-lock-pill{font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;border-radius:999px;border:1px solid var(--line)}
+.week-lock-pill.locked{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,transparent);background:color-mix(in srgb,var(--danger) 12%,transparent)}
+.week-lock-pill.open{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.week-outlet-label{font-size:12px;font-weight:700;color:var(--ink);margin:0 0 8px}
+.week-instruction{font-size:11px;color:var(--muted);margin:0 0 8px;line-height:1.4;font-style:italic}
+.week-grid th .day-name{display:block}
+.week-grid th .day-date{display:block;font-size:9px;font-weight:600;text-transform:none;letter-spacing:0;opacity:.85;margin-top:2px}
+.week-grid tr.inactive td{color:var(--muted);opacity:.75}
+.week-grid tr.inactive .dash{display:block;text-align:center;font-weight:700}
+.week-grid tr.total-row td{font-weight:800;border-top:2px solid var(--line);background:color-mix(in srgb,var(--brand) 10%,transparent)}
+.week-grid input.qty:disabled{opacity:.55;cursor:not-allowed;background:color-mix(in srgb,var(--card) 60%,transparent)}
+.demo-toggle{display:flex;align-items:center;gap:8px;margin:10px 0 0;padding:8px 10px;border-radius:10px;border:1px dashed rgba(245,197,66,.4);background:rgba(245,197,66,.08);font-size:11px;color:var(--warn);font-weight:600}
+.demo-toggle input{width:auto;accent-color:var(--brand)}
+.site-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:8px 14px 4px;font-size:11px;font-weight:600}
+.site-nav a{color:var(--muted);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid transparent}
+.site-nav a:hover,.site-nav a.active{color:var(--ink);border-color:var(--line);background:var(--card)}
 .summary-box{background:var(--card-solid);border:1px dashed var(--line);border-radius:14px;padding:14px;font-size:13px;line-height:1.5}
 .summary-box .row{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
 .summary-box .row:last-child{border-bottom:0}
@@ -366,8 +386,13 @@ html.landscape .bottom-nav {
       <section class="panel" data-step="3">
         <div class="glass">
           <h2 id="weeklyTitle">Weekly Fresh Bun</h2>
-          <p class="hint" id="weeklyHint">Mon–Sun projection. Edit next week on Friday / before 9pm Saturday.</p>
-          <div class="week-grid" id="weekGrid"></div>
+          <p class="hint" id="weeklyHint">Two weeks like the sheet: current locked · next editable Fri / before 9pm Sat (Asia/Kuching). DEMO SAMPLE only.</p>
+          <p class="week-outlet-label hidden" id="weeklyOutletLabel"></p>
+          <label class="demo-toggle" id="weeklyForceWrap">
+            <input type="checkbox" id="weeklyForceEdit" />
+            DEMO toggle — Force weekly edit window open
+          </label>
+          <div id="weekGrid"></div>
         </div>
       </section>
 
@@ -411,7 +436,7 @@ html.landscape .bottom-nav {
       <section class="panel" data-step="5">
         <div class="glass" id="reviewPanel">
           <h2>Review &amp; submit</h2>
-          <p class="hint">Explicit submit — improvement over “whatever is in the cell”. DEMO stores in Script Properties only.</p>
+          <p class="hint">Explicit submit — DEMO payload goes to browser <code>localStorage</code> inbox (Backend page). Not Production.</p>
           <div class="summary-box" id="summaryBox"></div>
           <div class="order-edit" id="orderEdit">
             <button type="button" class="order-edit-toggle" id="orderEditToggle" aria-expanded="false">
@@ -435,6 +460,12 @@ html.landscape .bottom-nav {
         </div>
       </section>
     </main>
+
+    <div class="site-nav" id="siteNav">
+      <a href="index.html" class="active">Order UI</a>
+      <a href="baker.html">Baker board</a>
+      <a href="backend.html">Backend inbox</a>
+    </div>
 
     <nav class="bottom-nav" id="bottomNav">
       <button type="button" class="btn btn-ghost" id="btnBack">Back</button>
@@ -472,7 +503,8 @@ window.MOCK = (function () {
     slice:['SLICE CHOCOLATE','SLICE VANILLA','SLICE PANDAN','SLICE RED VELVET','SLICE OREO','SLICE TIRAMISU','SLICE CHEESECAKE','SLICE FRUIT'],
     others:['MINI CUPCAKE BOX','BROWNIE BOX','COOKIE ASSORT','GIFT BOX SMALL','GIFT BOX LARGE','CUSTOM OTHER'],
     pack_bun:["BUTTER BUN 2's","BURGER BUN 5'S","BUTTER MILK BUN 4'S","CHEESE BUN 6'S","CHOCOLATE CHIP BUN 4'S","HOT DOG BUN 5'S","KAYA BUN 4'S",'TAU SAR BUN',"WHOLEMEAL ROLL 6'S","PANDESA ROLL 8'S",'BUTTER CREAM BUN'],
-    fresh_bun:['CHEESE ROLL BUN','CHICKEN FLOSS BUN','CHICKEN FRANKIE','CHOC.RICE BUN','DOUBLE SAUSAGE','DONUT CHOCOLATE','DONUT RING','FRANKIE CHEESE','MILK SHAKE BUN','MINI HAWAII','POLO BUN','RAISIN CREAM CHEESE','SPICY CHICKEN FLOSS','SUGAR CHEESE STICK BUN','TUNA MINCE']
+    fresh_bun:['CHEESE ROLL BUN','CHICKEN FLOSS BUN','CHICKEN FRANKIE','CHOC.RICE BUN','DOUBLE SAUSAGE','DONUT CHOCOLATE','DONUT RING','FRANKIE CHEESE','MILK SHAKE BUN','MINI HAWAII','POLO BUN','RAISIN CREAM CHEESE','SPICY CHICKEN FLOSS','SUGAR CHEESE STICK BUN','TUNA MINCE'],
+    fresh_bun_inactive:['CHOCO BUN','HAM BONETO','SUGAR BUN','UFO MAYO']
   };
   function outlet(code){ for (var i=0;i<OUTLETS.length;i++) if(OUTLETS[i].code===code) return OUTLETS[i]; return null; }
   var store = [];
@@ -500,17 +532,95 @@ window.MOCK = (function () {
       return { outlet:code, demo:true, label:'DEMO Ordered baseline (SAMPLE)', items:items };
     },
     getWeeklyFreshBun: function(code){
-      var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-      var rows=CAT.fresh_bun.map(function(name,i){ var qty={}; days.forEach(function(d,di){ qty[d]=((i+di)%5===0)?0:((i+di)%6)+4; }); return {product:name,qty:qty}; });
-      return { outlet:code, demo:true, label:'DEMO weekly (SAMPLE)', days:days, note:'Edit next-week Fri / before 9pm Sat (design note).', rows:rows };
+      var dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      function mondayOf(d){
+        var x=new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        var dow=x.getDay(); // 0 Sun
+        var diff=dow===0?-6:1-dow;
+        x.setDate(x.getDate()+diff);
+        x.setHours(12,0,0,0);
+        return x;
+      }
+      function fmtDate(d){
+        var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var dd=d.getDate();
+        return (dd<10?'0':'')+dd+'-'+months[d.getMonth()]+'-'+d.getFullYear();
+      }
+      function iso(d){
+        var y=d.getFullYear();
+        var m=d.getMonth()+1; var day=d.getDate();
+        return y+'-'+(m<10?'0':'')+m+'-'+(day<10?'0':'')+day;
+      }
+      // DEMO clock = Asia/Kuching wall time via Intl parts
+      var parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kuching',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+      var map={}; parts.forEach(function(p){ if(p.type!=='literal') map[p.type]=p.value; });
+      var nowLocal=new Date(Number(map.year), Number(map.month)-1, Number(map.day), 12, 0, 0);
+      var curMon=mondayOf(nowLocal);
+      var nextMon=new Date(curMon); nextMon.setDate(nextMon.getDate()+7);
+      function buildWeek(monday, seedOff){
+        var dates=[]; var isos=[];
+        for(var i=0;i<7;i++){
+          var d=new Date(monday); d.setDate(monday.getDate()+i);
+          dates.push(fmtDate(d)); isos.push(iso(d));
+        }
+        var active=CAT.fresh_bun.map(function(name,i){
+          var qty={}; dayNames.forEach(function(dn,di){
+            qty[dn]=((i+di+seedOff)%5===0)?0:((i+di+seedOff)%6)+4;
+          });
+          return {product:name,qty:qty,inactive:false};
+        });
+        var inactive=CAT.fresh_bun_inactive.map(function(name){
+          var qty={}; dayNames.forEach(function(dn){ qty[dn]=null; });
+          return {product:name,qty:qty,inactive:true};
+        });
+        // keep sheet order: actives then inactive placeholders interleaved near end like sheet
+        // Sheet lists inactives among list; DEMO appends after actives for clarity
+        return { mondayIso:iso(monday), dates:dates, dateIsos:isos, rows:active.concat(inactive) };
+      }
+      var current=buildWeek(curMon, 0);
+      var next=buildWeek(nextMon, 3);
+      return {
+        outlet:code, demo:true, label:'DEMO weekly dual-week (SAMPLE)',
+        days:dayNames,
+        note:'Change next-week projection only on Friday / before 9pm Saturday (Asia/Kuching). Current week: do not change anything.',
+        currentWeek:current,
+        nextWeek:next,
+        // legacy single-grid alias = next week (editable target)
+        rows:next.rows,
+        dates:next.dates
+      };
     },
     submitOrder: function(payload){
       var id='DEMO-LOCAL-'+Date.now()+'-'+(payload&&payload.outlet||'XX');
-      store.unshift({id:id,at:new Date().toISOString(),payload:payload});
       var daily=(payload&&payload.daily)||{};
-      var lines=0;
-      Object.keys(daily).forEach(function(k){ if(Number(daily[k])>0) lines++; });
-      return { ok:true, demo:true, orderId:id, message:'DEMO order saved locally in browser (not Production).', summary:{ dailyLineCount:lines } };
+      var lines=0, units=0;
+      Object.keys(daily).forEach(function(k){ var n=Number(daily[k])||0; if(n>0){ lines++; units+=n; } });
+      var packChanges=0;
+      ((payload&&payload.packBunChanges)||[]).forEach(function(it){
+        if(it && Number(it.newAmount)!==Number(it.ordered)) packChanges++;
+      });
+      var so = payload && payload.special && payload.special.product ? 1 : 0;
+      var weeklyNext = payload && payload.weekly && payload.weekly.nextWeek ? true : !!(payload && payload.weekly);
+      var entry={
+        id:id,
+        at:new Date().toISOString(),
+        outlet:(payload&&payload.outlet)||'',
+        orderId:id,
+        summary:{ dailyLines:lines, dailyUnits:units, packBunChanges:packChanges, hasWeekly:weeklyNext, hasSO:!!so },
+        payload:payload,
+        demo:true,
+        label:'DEMO SAMPLE — not live Production'
+      };
+      store.unshift(entry);
+      try{
+        var arr=JSON.parse(localStorage.getItem('walnutDemoOrders')||'[]');
+        if(!Array.isArray(arr)) arr=[];
+        arr.unshift(entry);
+        // keep last 40 DEMO submissions
+        if(arr.length>40) arr=arr.slice(0,40);
+        localStorage.setItem('walnutDemoOrders', JSON.stringify(arr));
+      }catch(e){}
+      return { ok:true, demo:true, orderId:id, message:'DEMO order saved to Backend inbox (localStorage). Not Production.', summary:{ dailyLineCount:lines } };
     }
   };
 })();
@@ -540,6 +650,7 @@ window.MOCK = (function () {
     locked: false,
     submitted: false,
     orderEditOpen: false,
+    forceWeeklyEdit: false,
     bootstrap: null
   };
 
@@ -795,42 +906,150 @@ window.MOCK = (function () {
     });
   }
 
+  function kuchingParts() {
+    var parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Kuching',
+      weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: false,
+      year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date());
+    var map = {};
+    parts.forEach(function (p) { if (p.type !== 'literal') map[p.type] = p.value; });
+    return map;
+  }
+
+  function isWeeklyEditWindowOpen() {
+    if (state.forceWeeklyEdit) return true;
+    var map = kuchingParts();
+    var wd = (map.weekday || '').toLowerCase(); // fri / sat / …
+    var h = Number(map.hour);
+    var m = Number(map.minute);
+    if (wd.indexOf('fri') === 0) return true;
+    if (wd.indexOf('sat') === 0) {
+      return (h * 60 + m) < (21 * 60);
+    }
+    return false;
+  }
+
+  function weekDayTotals(rows, days) {
+    var tot = {};
+    days.forEach(function (d) { tot[d] = 0; });
+    (rows || []).forEach(function (row) {
+      if (row.inactive) return;
+      days.forEach(function (d) { tot[d] += Number(row.qty[d]) || 0; });
+    });
+    return tot;
+  }
+
+  function buildWeekTableHtml(weekObj, days, editable, weekKey) {
+    var dates = (weekObj && weekObj.dates) || [];
+    var html = '<div class="week-grid"><table class="float-table"><thead><tr><th>Product</th>';
+    days.forEach(function (d, i) {
+      html += '<th><span class="day-name">' + d + '</span><span class="day-date">' + (dates[i] || '') + '</span></th>';
+    });
+    html += '</tr></thead><tbody>';
+    (weekObj.rows || []).forEach(function (row, ri) {
+      if (row.inactive) {
+        html += '<tr class="inactive"><td>' + row.product + '</td>';
+        days.forEach(function () { html += '<td><span class="dash">-</span></td>'; });
+        html += '</tr>';
+        return;
+      }
+      html += '<tr><td>' + row.product + '</td>';
+      days.forEach(function (d) {
+        var val = row.qty[d] || 0;
+        if (editable) {
+          html += '<td><input class="qty" type="number" min="0" data-week="' + weekKey + '" data-r="' + ri + '" data-d="' + d + '" value="' + val + '" /></td>';
+        } else {
+          html += '<td><input class="qty" type="number" min="0" value="' + val + '" disabled /></td>';
+        }
+      });
+      html += '</tr>';
+    });
+    var totals = weekDayTotals(weekObj.rows, days);
+    html += '<tr class="total-row"><td>TOTAL</td>';
+    days.forEach(function (d) { html += '<td>' + totals[d] + '</td>'; });
+    html += '</tr></tbody></table></div>';
+    return html;
+  }
+
   function renderWeekly() {
     var title = $('weeklyTitle');
     var hint = $('weeklyHint');
     var grid = $('weekGrid');
+    var forceWrap = $('weeklyForceWrap');
+    var outletLabel = $('weeklyOutletLabel');
+    if (forceWrap) forceWrap.classList.toggle('hidden', state.flags.weekly === false);
     if (state.flags.weekly === false) {
       title.textContent = 'Fresh Bun (daily)';
-      hint.textContent = 'JNY / SA use daily fresh bun on the Daily step — weekly grid skipped.';
-      grid.innerHTML = '<div class="empty"><div class="ico">✓</div>Skipped for this outlet. Continue.</div>';
+      hint.textContent = 'JNY / SA skip weekly tabs — enter Fresh Bun on the Daily step instead.';
+      if (outletLabel) { outletLabel.classList.add('hidden'); outletLabel.textContent = ''; }
+      grid.innerHTML = '<div class="empty"><div class="ico">✓</div>Weekly skipped for this outlet. Continue.</div>';
       return;
     }
     title.textContent = 'Weekly Fresh Bun';
-    hint.textContent = (state.weekly && state.weekly.note) || 'Mon–Sun projection (DEMO SAMPLE).';
+    hint.textContent = (state.weekly && state.weekly.note) || 'Current week locked · next week Fri / before 9pm Sat only (DEMO SAMPLE).';
+    var outletName = '';
+    if (state.bootstrap && state.bootstrap.outlets) {
+      state.bootstrap.outlets.forEach(function (o) {
+        if (o.code === state.outlet) outletName = o.name;
+      });
+    }
+    if (outletLabel) {
+      outletLabel.classList.remove('hidden');
+      outletLabel.textContent = (state.outlet || '') + (outletName ? ' — ' + outletName : '') + ' · Weekly (DEMO)';
+    }
     if (!state.weekly) {
       grid.innerHTML = '<div class="empty">Loading DEMO weekly…</div>';
       return;
     }
-    var days = state.weekly.days;
-    var html = '<table class="float-table"><thead><tr><th>Product</th>';
-    days.forEach(function (d) { html += '<th>' + d + '</th>'; });
-    html += '</tr></thead><tbody>';
-    state.weekly.rows.forEach(function (row, ri) {
-      html += '<tr><td>' + row.product + '</td>';
-      days.forEach(function (d) {
-        html += '<td><input class="qty" type="number" min="0" data-r="' + ri + '" data-d="' + d + '" value="' + (row.qty[d] || 0) + '" /></td>';
-      });
-      html += '</tr>';
-    });
-    html += '</tbody></table>';
+    // normalize dual-week shape for older payloads
+    if (!state.weekly.currentWeek || !state.weekly.nextWeek) {
+      var days0 = state.weekly.days || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      state.weekly.nextWeek = { dates: state.weekly.dates || [], rows: state.weekly.rows || [] };
+      state.weekly.currentWeek = { dates: [], rows: (state.weekly.rows || []).map(function (r) {
+        var qty = {}; days0.forEach(function (d) { qty[d] = r.qty[d]; });
+        return { product: r.product, qty: qty, inactive: !!r.inactive };
+      }) };
+    }
+    var days = state.weekly.days || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    var nextOpen = isWeeklyEditWindowOpen();
+    var html = '';
+    html += '<div class="week-block" id="weekCurrentBlock">';
+    html += '<div class="week-block-head"><h3>Current week</h3><span class="week-lock-pill locked">LOCKED</span></div>';
+    html += '<p class="week-instruction">← do not change anything</p>';
+    html += buildWeekTableHtml(state.weekly.currentWeek, days, false, 'current');
+    html += '</div>';
+    html += '<div class="week-block" id="weekNextBlock">';
+    html += '<div class="week-block-head"><h3>Next week</h3><span class="week-lock-pill ' + (nextOpen ? 'open' : 'locked') + '">' + (nextOpen ? 'EDITABLE' : 'LOCKED') + '</span></div>';
+    if (nextOpen) {
+      html += '<p class="week-instruction">← change this weekly projection for next week only on friday / before 9pm saturday</p>';
+    } else {
+      html += '<div class="locked-banner">Next week is locked. Edit only on Friday / before 9pm Saturday (Asia/Kuching). Use the DEMO toggle above to try editing now.</div>';
+    }
+    html += buildWeekTableHtml(state.weekly.nextWeek, days, nextOpen, 'next');
+    html += '</div>';
     grid.innerHTML = html;
-    grid.querySelectorAll('input').forEach(function (inp) {
-      inp.onchange = function () {
-        var ri = Number(inp.getAttribute('data-r'));
-        var d = inp.getAttribute('data-d');
-        state.weekly.rows[ri].qty[d] = Math.max(0, parseInt(inp.value, 10) || 0);
-      };
-    });
+    // keep legacy rows alias in sync with next week
+    state.weekly.rows = state.weekly.nextWeek.rows;
+    if (nextOpen) {
+      grid.querySelectorAll('input[data-week="next"]').forEach(function (inp) {
+        inp.onchange = function () {
+          var ri = Number(inp.getAttribute('data-r'));
+          var d = inp.getAttribute('data-d');
+          var v = Math.max(0, parseInt(inp.value, 10) || 0);
+          state.weekly.nextWeek.rows[ri].qty[d] = v;
+          state.weekly.rows = state.weekly.nextWeek.rows;
+          // refresh TOTAL cells without full re-render (keep focus)
+          var totals = weekDayTotals(state.weekly.nextWeek.rows, days);
+          var totalRow = grid.querySelector('#weekNextBlock tr.total-row');
+          if (totalRow) {
+            for (var i = 0; i < days.length; i++) {
+              totalRow.cells[i + 1].textContent = String(totals[days[i]]);
+            }
+          }
+        };
+      });
+    }
   }
 
   function renderSO() {
@@ -1147,7 +1366,15 @@ window.MOCK = (function () {
       packBunDate: state.packBunDate,
       daily: dailyMap,
       packBunChanges: state.packBun,
-      weekly: state.flags.weekly === false ? null : state.weekly,
+      weekly: state.flags.weekly === false ? null : (state.weekly ? {
+        demo: true,
+        label: state.weekly.label || 'DEMO weekly',
+        days: state.weekly.days,
+        note: state.weekly.note,
+        currentWeek: state.weekly.currentWeek,
+        nextWeek: state.weekly.nextWeek,
+        rows: state.weekly.nextWeek ? state.weekly.nextWeek.rows : state.weekly.rows
+      } : null),
       special: collectSpecial(),
       demo: true,
       label: 'DEMO submission'
@@ -1216,6 +1443,17 @@ window.MOCK = (function () {
       $('orderEditDone').onclick = function () {
         setOrderEditOpen(false);
         updateSummaryBox();
+      };
+    }
+    var navOrder = document.querySelector('#siteNav a[href="index.html"]');
+    if (navOrder && /Index-preview/i.test(location.pathname || '')) navOrder.setAttribute('href', 'Index-preview.html');
+    if ($('weeklyForceEdit')) {
+      try { state.forceWeeklyEdit = localStorage.getItem('walnutDemoForceWeekly') === '1'; } catch (e) {}
+      $('weeklyForceEdit').checked = !!state.forceWeeklyEdit;
+      $('weeklyForceEdit').onchange = function () {
+        state.forceWeeklyEdit = !!$('weeklyForceEdit').checked;
+        try { localStorage.setItem('walnutDemoForceWeekly', state.forceWeeklyEdit ? '1' : '0'); } catch (e2) {}
+        if (state.step === 3) renderWeekly();
       };
     }
     initDates();

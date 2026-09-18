@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Walnut Bakery · Baker board (DEMO)</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg: #1c1410;
+  --brand: #8b5a2b;
+  --brand2: #5c3a1e;
+  --brand-grad: linear-gradient(135deg, #c4a484 0%, #8b5a2b 45%, #5c3a1e 100%);
+  --card: rgba(255,236,210,.08);
+  --card-solid: #2a1f18;
+  --ink: #f7efe6;
+  --muted: #c4a990;
+  --line: rgba(210,180,140,.16);
+  --ok: #3ecf8e;
+  --warn: #f5c542;
+  --danger: #f07178;
+  --shadow: 0 12px 40px rgba(0,0,0,.35);
+  --radius: 16px;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+body{background:radial-gradient(ellipse 80% 50% at 10% -10%,color-mix(in srgb,var(--brand) 28%,transparent),transparent 50%),radial-gradient(ellipse 60% 40% at 100% 0%,color-mix(in srgb,var(--brand2) 20%,transparent),transparent 45%),var(--bg)}
+.app{max-width:960px;margin:0 auto;min-height:100dvh;padding:12px 14px 40px;position:relative;z-index:1}
+.hero{background:var(--brand-grad);border-radius:var(--radius);padding:16px;color:#1a1210;box-shadow:var(--shadow);margin-bottom:12px}
+.hero h1{margin:0;font-size:18px;font-weight:800}
+.hero .sub{margin:4px 0 0;font-size:12px;font-weight:500;opacity:.85}
+.demo-badge{display:inline-flex;margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(245,197,66,.2);color:var(--warn);border:1px solid rgba(245,197,66,.35);padding:4px 8px;border-radius:8px}
+.glass{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);margin-bottom:12px}
+.glass h2{margin:0 0 4px;font-size:15px;font-weight:700}
+.hint{margin:0 0 12px;font-size:12px;color:var(--muted);line-height:1.45}
+.site-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:4px 0 16px;font-size:11px;font-weight:600}
+.site-nav a{color:var(--muted);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid transparent}
+.site-nav a:hover,.site-nav a.active{color:var(--ink);border-color:var(--line);background:var(--card)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--card-solid);color:var(--muted);font-size:11px;font-weight:700;padding:6px 10px;border-radius:999px;cursor:pointer;font-family:inherit}
+.chip.active{color:#1a1210;background:var(--brand-grad);border-color:transparent}
+.table-scroll{overflow:auto;border-radius:12px;border:1px solid var(--line);background:var(--card-solid);-webkit-overflow-scrolling:touch}
+table.board{width:100%;min-width:720px;border-collapse:separate;border-spacing:0;font-size:12px}
+table.board th,table.board td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+table.board th:first-child,table.board td:first-child{text-align:left;position:sticky;left:0;background:var(--card-solid);z-index:2;min-width:140px;padding-left:12px}
+table.board th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);position:sticky;top:0;background:var(--card-solid);z-index:3}
+table.board th:first-child{z-index:4}
+table.board tr.total td{font-weight:800;background:color-mix(in srgb,var(--brand) 12%,transparent)}
+table.board td.tot{font-weight:800}
+.section-anchor{scroll-margin-top:12px}
+.btn{border:0;border-radius:14px;padding:12px 14px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--card-solid);color:var(--ink);border:1px solid var(--line)}
+.btn-danger{background:color-mix(in srgb,var(--danger) 18%,var(--card-solid));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,transparent)}
+.btn-primary{background:var(--brand-grad);color:#1a1210;border:0}
+.empty{text-align:center;padding:28px 16px;color:var(--muted);font-size:13px}
+.order-card{border:1px solid var(--line);border-radius:12px;background:var(--card-solid);margin-bottom:10px;overflow:hidden}
+.order-card-head{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:flex-start;padding:12px;cursor:pointer}
+.order-card-head:hover{background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.order-meta{font-size:12px;line-height:1.45}
+.order-meta .id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--warn)}
+.order-meta .sum{color:var(--muted);font-size:11px;margin-top:4px}
+.order-body{display:none;border-top:1px solid var(--line);padding:10px 12px;background:#1a1511}
+.order-card.open .order-body{display:block}
+.order-body pre{margin:0;white-space:pre-wrap;word-break:break-word;font-size:11px;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;max-height:320px;overflow:auto}
+.map-table{width:100%;border-collapse:collapse;font-size:12px}
+.map-table th,.map-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.map-table th{color:var(--muted);font-size:10px;text-transform:uppercase}
+@media (max-width:600px){
+  .app{padding:10px 10px 32px}
+  .hero h1{font-size:16px}
+}
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="site-nav">
+      <a href="index.html" id="navOrder">Order UI</a>
+      <a href="baker.html" class="active">Baker board</a>
+      <a href="backend.html">Backend inbox</a>
+    </div>
+    <div class="hero">
+      <h1>Walnut Bakery · Baker board (DEMO)</h1>
+      <p class="sub">Total qty per product across outlets — inspired by Production BAKER tab. SAMPLE numbers only.</p>
+    </div>
+    <div class="demo-badge">DEMO SAMPLE NOT LIVE — invented rollup for UI testing · not Production stock</div>
+
+    <div class="chips" id="chips">
+      <button type="button" class="chip active" data-target="sec-fresh">Fresh Bun</button>
+      <button type="button" class="chip" data-target="sec-pack">Pack Bun</button>
+      <button type="button" class="chip" data-target="sec-spec">Specialty / Bread</button>
+    </div>
+
+    <div class="glass section-anchor" id="sec-fresh">
+      <h2>Fresh Bun totals</h2>
+      <p class="hint">One bake-day × all outlets (DEMO SAMPLE). Real BAKER pulls weekday column from outlet Weekly — not Daily clear-cycle.</p>
+      <div class="table-scroll" id="freshTable"></div>
+    </div>
+
+    <div class="glass section-anchor" id="sec-pack">
+      <h2>Pack Bun totals</h2>
+      <p class="hint">DEMO SAMPLE tray-style pack bun rollup (not live PACKER / BAKER BUAT).</p>
+      <div class="table-scroll" id="packTable"></div>
+    </div>
+
+    <div class="glass section-anchor" id="sec-spec">
+      <h2>Specialty / Bread summary</h2>
+      <p class="hint">High-level DEMO SAMPLE counts for specialty + bread only — not a full BR&amp;SP board.</p>
+      <div class="table-scroll" id="specTable"></div>
+    </div>
+
+    <p class="hint" style="text-align:center;">← Back via Order UI · Backend inbox shows DEMO submissions</p>
+  </div>
+<script>
+(function(){
+  var OUTLETS = ['FS', 'TC', 'KK', 'BV', 'CC', 'PP', 'BN', 'JNY', 'MK1', 'MK2', 'SA'];
+  if (/Index-preview/i.test(document.referrer||'')) {
+    var a=document.getElementById('navOrder'); if(a) a.href='Index-preview.html';
+  }
+  // If opened beside Index-preview in same folder, prefer preview link when that file exists — keep index.html default for Pages.
+  try {
+    if (location.pathname.indexOf('walnut-outlet-order')>=0 && location.pathname.indexOf('pages')<0) {
+      var n=document.getElementById('navOrder'); if(n) n.href='Index-preview.html';
+    }
+  } catch(e){}
+
+  function seed(name, outlet, base){
+    var n=0;
+    for(var i=0;i<name.length;i++) n+=name.charCodeAt(i);
+    for(var j=0;j<outlet.length;j++) n+=outlet.charCodeAt(j)*3;
+    return ((n + base) % 9) + (base%3);
+  }
+
+  function buildRows(products, base){
+    return products.map(function(p, pi){
+      var row={product:p};
+      var tot=0;
+      OUTLETS.forEach(function(o){
+        // JNY/SA lighter fresh in SAMPLE; MK smaller
+        var v=seed(p,o,base+pi);
+        if(o==='MK1'||o==='MK2') v=Math.max(0, Math.floor(v/2));
+        if(o==='SA') v=Math.max(0, Math.floor(v/3));
+        if(o==='JNY' && base===1) v=Math.max(1, Math.floor(v*0.8));
+        row[o]=v; tot+=v;
+      });
+      row.TOTAL=tot;
+      return row;
+    });
+  }
+
+  var FRESH = ['CHEESE ROLL BUN','CHICKEN FLOSS BUN','CHICKEN FRANKIE','CHOC.RICE BUN','DOUBLE SAUSAGE','DONUT CHOCOLATE','DONUT RING','FRANKIE CHEESE','MILK SHAKE BUN','MINI HAWAII','POLO BUN','RAISIN CREAM CHEESE','SPICY CHICKEN FLOSS','SUGAR CHEESE STICK BUN','TUNA MINCE'];
+  var PACK = ["BUTTER BUN 2's","BURGER BUN 5'S","BUTTER MILK BUN 4'S","CHEESE BUN 6'S","CHOCOLATE CHIP BUN 4'S","HOT DOG BUN 5'S","KAYA BUN 4'S",'TAU SAR BUN',"WHOLEMEAL ROLL 6'S"];
+  var SPEC = ['MINI HAM & CHEESE','MIX GRAIN','PEEL & CHEESE','WHOLEMEAL LOAF','FRENCH LOAF','EGG BREAD','SANDWICH BREAD',"SCONE 2'S"];
+
+  function renderBoard(el, rows){
+    var html='<table class="board"><thead><tr><th>Product</th>';
+    OUTLETS.forEach(function(o){ html+='<th>'+o+'</th>'; });
+    html+='<th>TOTAL</th></tr></thead><tbody>';
+    var colTot={}; OUTLETS.forEach(function(o){ colTot[o]=0; }); var grand=0;
+    rows.forEach(function(r){
+      html+='<tr><td>'+r.product+'</td>';
+      OUTLETS.forEach(function(o){ html+='<td>'+r[o]+'</td>'; colTot[o]+=r[o]; });
+      html+='<td class="tot">'+r.TOTAL+'</td></tr>';
+      grand+=r.TOTAL;
+    });
+    html+='<tr class="total"><td>TOTAL</td>';
+    OUTLETS.forEach(function(o){ html+='<td>'+colTot[o]+'</td>'; });
+    html+='<td class="tot">'+grand+'</td></tr></tbody></table>';
+    el.innerHTML=html;
+  }
+
+  renderBoard(document.getElementById('freshTable'), buildRows(FRESH, 1));
+  renderBoard(document.getElementById('packTable'), buildRows(PACK, 4));
+  renderBoard(document.getElementById('specTable'), buildRows(SPEC, 7));
+
+  document.getElementById('chips').addEventListener('click', function(ev){
+    var btn=ev.target.closest('.chip'); if(!btn) return;
+    document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    btn.classList.add('active');
+    var t=document.getElementById(btn.getAttribute('data-target'));
+    if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+})();
+</script>
+</body>
+</html>
