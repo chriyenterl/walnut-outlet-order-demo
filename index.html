@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <title>Walnut Bakery · Outlet Order (Preview DEMO)</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #1c1410;
+  --brand: #8b5a2b;
+  --brand2: #5c3a1e;
+  --brand-grad: linear-gradient(135deg, #c4a484 0%, #8b5a2b 45%, #5c3a1e 100%);
+  --card: rgba(255,236,210,.08);
+  --card-solid: #2a1f18;
+  --ink: #f7efe6;
+  --muted: #c4a990;
+  --line: rgba(210,180,140,.16);
+  --ok: #3ecf8e;
+  --warn: #f5c542;
+  --danger: #f07178;
+  --shadow: 0 12px 40px rgba(0,0,0,.35);
+  --radius: 16px;
+  --ease: cubic-bezier(.22,1,.36,1);
+  --nav-h: 76px;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+body{background:radial-gradient(ellipse 80% 50% at 10% -10%,color-mix(in srgb,var(--brand) 28%,transparent),transparent 50%),radial-gradient(ellipse 60% 40% at 100% 0%,color-mix(in srgb,var(--brand2) 20%,transparent),transparent 45%),var(--bg)}
+.bg-decor{pointer-events:none;position:fixed;inset:0;max-width:430px;margin:0 auto;z-index:0;overflow:hidden}
+.bg-decor::before{content:'';position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--brand) 25%,transparent),transparent 70%);top:-40px;right:-60px}
+.bg-decor::after{content:'';position:absolute;inset:0;opacity:.07;background-image:radial-gradient(circle,var(--muted) 1px,transparent 1px);background-size:18px 18px}
+.app{max-width:430px;margin:0 auto;min-height:100dvh;position:relative;z-index:1;padding-bottom:calc(var(--nav-h) + 18px)}
+.sticky-top{position:sticky;top:0;z-index:40;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 92%,transparent),color-mix(in srgb,var(--bg) 72%,transparent));padding:10px 14px 12px;border-bottom:1px solid var(--line)}
+.hero{background:var(--brand-grad);border-radius:var(--radius);padding:16px 16px 14px;color:#1a1210;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.15);right:-30px;top:-30px}
+.hero-row{display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}
+.hero h1{margin:0;font-size:18px;font-weight:800;letter-spacing:-.02em}
+.hero .sub{margin:4px 0 0;font-size:12px;font-weight:500;opacity:.85}
+.step-pill{flex-shrink:0;background:rgba(26,18,16,.18);font-size:11px;font-weight:700;padding:6px 10px;border-radius:999px;height:fit-content}
+.progress-wrap{margin-top:12px;position:relative;z-index:1}
+.progress-track{height:6px;background:rgba(26,18,16,.2);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:16%;background:#1a1210;border-radius:99px;transition:width .4s var(--ease)}
+.steps-label{margin-top:8px;font-size:11px;font-weight:600;opacity:.9}
+.demo-badge{display:inline-flex;margin:10px 14px 0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(245,197,66,.2);color:var(--warn);border:1px solid rgba(245,197,66,.35);padding:4px 8px;border-radius:8px}
+.main{padding:12px 14px 24px}
+.panel{display:none;animation:rise .45s var(--ease) both}
+.panel.active{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.glass{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.glass+.glass{margin-top:12px}
+.glass h2{margin:0 0 4px;font-size:15px;font-weight:700}
+.hint{margin:0 0 12px;font-size:12px;color:var(--muted);line-height:1.45}
+.field{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.field-gap{margin-bottom:12px}
+select,input[type=text],input[type=date],input[type=number],input[type=tel],input[type=search],textarea{width:100%;appearance:none;background:var(--card-solid);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:15px;font-family:inherit;outline:none}
+select:focus,input:focus,textarea:focus{border-color:var(--brand)}
+textarea{resize:vertical}
+.cutoff-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted)}
+.cutoff-badge.open{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}
+.cutoff-badge.locked{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,transparent)}
+.search{margin-bottom:12px}
+.table-scroll{overflow:auto;max-height:52vh;border-radius:12px;border:1px solid var(--line);background:var(--card-solid)}
+.float-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+.float-table th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:8px 6px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card-solid)}
+.float-table td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+.float-table tr:last-child td{border-bottom:0}
+.float-table .delta-pos{color:var(--ok);font-weight:700}
+.float-table .delta-neg{color:var(--danger);font-weight:700}
+.float-table input.qty{width:56px;padding:8px 6px;text-align:center;font-weight:700;font-size:13px}
+.week-grid{overflow-x:auto;border-radius:12px;border:1px solid var(--line);background:var(--card-solid)}
+.week-grid table{min-width:520px;width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+.week-grid th,.week-grid td{padding:8px 6px;border-bottom:1px solid var(--line)}
+.week-grid th{font-size:10px;text-transform:uppercase;color:var(--muted);position:sticky;top:0;background:var(--card-solid)}
+.week-grid input.qty{width:44px;padding:6px 2px;font-size:12px;text-align:center;font-weight:700}
+.summary-box{background:var(--card-solid);border:1px dashed var(--line);border-radius:14px;padding:14px;font-size:13px;line-height:1.5}
+.summary-box .row{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.summary-box .row:last-child{border-bottom:0}
+.summary-box .k{color:var(--muted)}
+.summary-box .v{font-weight:700;text-align:right}
+.empty{text-align:center;padding:28px 16px;color:var(--muted);font-size:13px}
+.empty .ico{font-size:32px;margin-bottom:8px;opacity:.7}
+.locked-banner{background:color-mix(in srgb,var(--danger) 12%,transparent);border:1px solid color-mix(in srgb,var(--danger) 35%,transparent);color:var(--danger);border-radius:12px;padding:12px;font-size:12px;font-weight:600;margin-bottom:12px}
+.hidden{display:none!important}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:50;max-width:430px;margin:0 auto;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--bg) 95%,transparent) 28%);display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+.btn{border:0;border-radius:14px;padding:14px 16px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:transform .15s var(--ease),opacity .2s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-ghost{background:var(--card-solid);color:var(--ink);border:1px solid var(--line)}
+.btn-primary{background:var(--brand-grad);color:#1a1210;box-shadow:0 8px 24px color-mix(in srgb,var(--brand) 35%,transparent)}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 16px);transform:translateX(-50%) translateY(20px);max-width:380px;width:calc(100% - 32px);padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;z-index:60;opacity:0;pointer-events:none;transition:all .35s var(--ease);box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:#14532d;color:#bbf7d0;border:1px solid #22c55e}
+.toast.err{background:#450a0a;color:#fecaca;border:1px solid #ef4444}
+.done-card{text-align:center;padding:28px 18px}
+.done-card .check{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:var(--brand-grad);display:grid;place-items:center;font-size:30px;color:#1a1210;box-shadow:var(--shadow);animation:rise .5s var(--ease)}
+.done-card h2{margin:0 0 6px;font-size:20px}
+.done-card p{margin:0;color:var(--muted);font-size:13px}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* —— Sheet-style Daily (v2) —— */
+.daily-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.daily-head h2{margin:0}
+.line-total{flex-shrink:0;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;background:var(--card-solid);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.line-total.has{color:#1a1210;background:var(--brand-grad);border-color:transparent}
+.search-opt{margin-bottom:8px}
+.search-opt input{padding:9px 12px;font-size:14px;border-radius:10px}
+.sheet-scroll{overflow:auto;max-height:min(62vh,560px);border-radius:12px;border:1px solid var(--line);background:var(--card-solid);-webkit-overflow-scrolling:touch}
+.sheet-sec{margin:0}
+.sheet-sticky{position:sticky;top:0;z-index:5;padding:7px 10px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#1a1210;background:var(--brand-grad);border-bottom:1px solid color-mix(in srgb,var(--brand2) 40%,transparent);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sheet-sticky .lead{font-weight:700;opacity:.85;letter-spacing:.02em;text-transform:none;font-size:10px}
+.sheet-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);min-height:40px}
+.sheet-row:last-child{border-bottom:0}
+.sheet-row:nth-child(even){background:rgba(255,255,255,.02)}
+.sheet-row .name{font-size:12px;font-weight:600;line-height:1.25;padding-right:4px}
+.sheet-row.filled .name{color:var(--ink)}
+.sheet-row.filled{background:color-mix(in srgb,var(--brand) 10%,transparent)}
+.qty-cell{display:flex;align-items:center;gap:2px}
+.qty-mini{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;line-height:1;padding:0;flex-shrink:0}
+.qty-mini:active{transform:scale(.94)}
+.qty-mini:disabled{opacity:.4;cursor:not-allowed}
+input.sheet-qty{width:52px;text-align:center;padding:6px 4px;font-size:14px;font-weight:700;border-radius:8px;appearance:textfield;-moz-appearance:textfield}
+input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.sheet-empty{padding:20px 12px;text-align:center;color:var(--muted);font-size:12px}
+.daily-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:12px;font-weight:600;position:sticky;bottom:calc(var(--nav-h) + 4px);z-index:30;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.daily-foot .muted{color:var(--muted);font-weight:500;font-size:11px}
+.daily-foot .count{font-weight:800}
+/* denser glass on Daily */
+.glass.daily-glass{padding:12px 10px 10px}
+.glass.daily-glass .hint{margin-bottom:8px;font-size:11px}
+/* keep chips unused but harmless if present */
+.chips{display:none!important}
+
+/* —— Review order-edit accordion —— */
+.order-edit{margin-top:12px}
+.order-edit-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card-solid);color:var(--ink);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;text-align:left}
+.order-edit-toggle:active{transform:scale(.99)}
+.order-edit-toggle[aria-expanded="true"]{border-color:color-mix(in srgb,var(--brand) 45%,var(--line));background:color-mix(in srgb,var(--brand) 12%,var(--card-solid))}
+.order-edit-caret{flex-shrink:0;font-size:12px;color:var(--muted);transition:transform .2s var(--ease)}
+.order-edit-panel{margin-top:8px;border:1px solid var(--line);border-radius:12px;background:var(--card-solid);overflow:hidden}
+.order-edit-group{border-bottom:1px solid var(--line)}
+.order-edit-group:last-of-type{border-bottom:0}
+.order-edit-group-title{padding:8px 10px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#1a1210;background:var(--brand-grad)}
+.order-edit-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);min-height:40px}
+.order-edit-row:last-child{border-bottom:0}
+.order-edit-row .name{font-size:12px;font-weight:600;line-height:1.25}
+.order-edit-row .meta{display:block;font-size:10px;font-weight:500;color:var(--muted);margin-top:2px}
+.order-edit-empty{padding:16px 12px;text-align:center;color:var(--muted);font-size:12px}
+.order-edit-weekly-note{margin:0;padding:10px 12px;border-top:1px solid var(--line);font-size:11px}
+.order-edit-done{display:block;width:calc(100% - 20px);margin:10px}
+
+</style>
+
+</head>
+<body>
+  <div class="bg-decor" aria-hidden="true"></div>
+  <div class="app" id="app">
+    <header class="sticky-top">
+      <div class="hero">
+        <div class="hero-row">
+          <div>
+            <h1>Walnut Bakery</h1>
+            <p class="sub">Outlet ordering · factory T+1 / pack bun T+2</p>
+          </div>
+          <span class="step-pill" id="stepPill">Step 1 / 6</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="steps-label" id="stepsLabel">Outlet &amp; dates</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="demo-badge" id="demoBadge">OFFLINE PREVIEW · DEMO SAMPLE DATA — not live Production</div>
+
+    <main class="main">
+      <!-- STEP 1 -->
+      <section class="panel active" data-step="0">
+        <div class="glass">
+          <h2>Outlet &amp; dates</h2>
+          <p class="hint">Pick your outlet. Daily items order for tomorrow (T+1). Pack bun is for day-after (T+2). BN/PP bread also T+2.</p>
+          <div class="field-gap">
+            <label class="field">Outlet</label>
+            <select id="outletSelect"></select>
+          </div>
+          <div class="field-gap">
+            <label class="field">Order-for date (T+1)</label>
+            <input type="date" id="orderDate" />
+          </div>
+          <div class="field-gap">
+            <label class="field">Pack bun date (T+2)</label>
+            <input type="date" id="packBunDate" readonly />
+          </div>
+          <div class="badge-row">
+            <span class="cutoff-badge" id="cutoffBadge">Cut-off ~5–6pm</span>
+            <span class="cutoff-badge" id="leadNote">Bread lead: T+1</span>
+          </div>
+        </div>
+        <div class="glass" id="outletRules"></div>
+      </section>
+
+      <!-- STEP 2 — sheet-style Daily -->
+      <section class="panel" data-step="1">
+        <div class="glass daily-glass">
+          <div class="daily-head">
+            <div>
+              <h2>Daily order sheet</h2>
+              <p class="hint" style="margin-bottom:0;">All products · type qty like a sheet. Blank = 0. Pack Bun = T+2.</p>
+            </div>
+            <span class="line-total" id="lineTotalHead">0 lines</span>
+          </div>
+          <div id="lockedDaily" class="locked-banner hidden">Cut-off passed — daily order is locked in this DEMO UI.</div>
+          <div class="search-opt">
+            <input type="search" id="prodSearch" placeholder="Filter (optional) — leave empty to show all" inputmode="search" autocomplete="off" />
+          </div>
+          <div class="sheet-scroll" id="prodSheet"></div>
+          <div class="daily-foot" id="dailyFoot">
+            <span class="muted">Running total</span>
+            <span class="count" id="lineTotalFoot">0 lines · 0 units</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3 -->
+      <section class="panel" data-step="2">
+        <div class="glass">
+          <h2>Pack Bun Change</h2>
+          <p class="hint">Maps to sheet <b>Add Cancel</b>. New Amount is prefilled = Ordered — leave as-is if no change. Delta = New − Ordered.</p>
+          <div class="table-scroll">
+            <table class="float-table" id="packBunTable">
+              <thead>
+                <tr><th>Product</th><th>Ordered</th><th>New</th><th>Δ</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="hint" style="margin-top:10px;margin-bottom:0;">DEMO Ordered column = SAMPLE baseline (not live pbtoday).</p>
+        </div>
+      </section>
+
+      <!-- STEP 4 -->
+      <section class="panel" data-step="3">
+        <div class="glass">
+          <h2 id="weeklyTitle">Weekly Fresh Bun</h2>
+          <p class="hint" id="weeklyHint">Mon–Sun projection. Edit next week on Friday / before 9pm Saturday.</p>
+          <div class="week-grid" id="weekGrid"></div>
+        </div>
+      </section>
+
+      <!-- STEP 5 -->
+      <section class="panel" data-step="4">
+        <div class="glass">
+          <h2>Special Order</h2>
+          <p class="hint">Optional. Maps to SO sheet. Pickup slots every 30 min, 10:00–21:00. Customer fields restored from legacy.</p>
+          <div id="soDisabled" class="empty hidden"><div class="ico">∅</div>This outlet does not raise special orders (JNY / MK / SA).</div>
+          <div id="soForm">
+            <div class="field-gap"><label class="field">Pick up date</label><input type="date" id="soDate" /></div>
+            <div class="field-gap"><label class="field">Pick up time</label><select id="soTime"></select></div>
+            <div class="field-gap"><label class="field">Category</label>
+              <select id="soCat">
+                <option value="">—</option>
+                <option value="SPECIALTY">SPECIALTY</option>
+                <option value="BREAD">BREAD</option>
+                <option value="PASTRY">PASTRY</option>
+                <option value="PASTRYPUFF">PASTRYPUFF</option>
+                <option value="CAKE">CAKE</option>
+                <option value="FRESH BUN">FRESH BUN</option>
+                <option value="PACK BUN">PACK BUN</option>
+                <option value="OTHERS">OTHERS</option>
+              </select>
+            </div>
+            <div class="field-gap"><label class="field">Product</label>
+              <select id="soProduct">
+                <option value="">—</option>
+              </select>
+            </div>
+            <div class="field-gap"><label class="field">Qty</label><input type="number" id="soQty" min="0" step="1" value="1" /></div>
+            <div class="field-gap"><label class="field">Bill No</label><input type="text" id="soBill" placeholder="POS bill no" /></div>
+            <div class="field-gap"><label class="field">Customer name (optional)</label><input type="text" id="soCust" /></div>
+            <div class="field-gap"><label class="field">Contact (optional)</label><input type="tel" id="soContact" /></div>
+            <div class="field-gap"><label class="field">Remark (optional)</label><textarea id="soRemark" rows="2"></textarea></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 6 -->
+      <section class="panel" data-step="5">
+        <div class="glass" id="reviewPanel">
+          <h2>Review &amp; submit</h2>
+          <p class="hint">Explicit submit — improvement over “whatever is in the cell”. DEMO stores in Script Properties only.</p>
+          <div class="summary-box" id="summaryBox"></div>
+          <div class="order-edit" id="orderEdit">
+            <button type="button" class="order-edit-toggle" id="orderEditToggle" aria-expanded="false">
+              <span id="orderEditToggleLabel">What was ordered (0 lines)</span>
+              <span class="order-edit-caret" id="orderEditCaret">▾</span>
+            </button>
+            <div class="order-edit-panel hidden" id="orderEditPanel">
+              <div id="orderEditList"></div>
+              <p class="hint order-edit-weekly-note hidden" id="orderEditWeeklyNote">Weekly included — edit on Weekly step</p>
+              <button type="button" class="btn btn-ghost order-edit-done" id="orderEditDone">Done</button>
+            </div>
+          </div>
+        </div>
+        <div class="glass hidden" id="donePanel">
+          <div class="done-card">
+            <div class="check">✓</div>
+            <h2>Order submitted</h2>
+            <p id="doneMsg">DEMO confirmation</p>
+            <p class="mono" id="doneId" style="margin-top:10px;"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" id="bottomNav">
+      <button type="button" class="btn btn-ghost" id="btnBack">Back</button>
+      <button type="button" class="btn btn-primary" id="btnNext">Continue</button>
+    </nav>
+  </div>
+  <div class="toast" id="toast"></div>
+
+
+<script>
+/* OFFLINE DEMO MOCK — mirrors Code.gs DEMO APIs. SAMPLE quantities only. */
+window.MOCK = (function () {
+  var OUTLETS = [
+    { code:'FS', name:'Foh Sang', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
+    { code:'TC', name:'Taman Cantek', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
+    { code:'KK', name:'Karamunsing', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
+    { code:'BV', name:'Beverly', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
+    { code:'CC', name:'Cyber City', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:1 } },
+    { code:'PP', name:'Papar', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:2 } },
+    { code:'BN', name:'Benoni', flags:{ cakes:true, so:true, weekly:true, dailyFresh:false, breadLead:2 } },
+    { code:'JNY', name:'Jenny', flags:{ cakes:true, so:false, weekly:false, dailyFresh:true, breadLead:1 } },
+    { code:'MK1', name:'Market Booth 1', flags:{ cakes:false, so:false, weekly:true, dailyFresh:false, breadLead:1 } },
+    { code:'MK2', name:'Market Booth 2', flags:{ cakes:false, so:false, weekly:true, dailyFresh:false, breadLead:1 } },
+    { code:'SA', name:'Staff', flags:{ cakes:false, so:false, weekly:false, dailyFresh:true, breadLead:1, staff:true } }
+  ];
+  var CAT = {
+    specialty:['MINI HAM & CHEESE','MIX GRAIN','PEEL & CHEESE','PEEL & NUTS','WHOLEMEAL MINI','WHOLEMEAL LOAF','CHARCOAL WALNUT','MATCHA RED BEAN'],
+    bread:['FRENCH LOAF','EGG BREAD','HIGH FIBER','OATMEAL','RAISIN BREAD','SANDWICH BREAD','WHOLEMEAL BREAD',"SCONE 2'S"],
+    pastry_pack:['BAKED CHEESE PACK','BANANA LOAF','BANANA PACK','BELGIUM PACK','CARROT CAKE PACK','FRUIT CAKE PACK','PARMESAN','PURE BUTTER CAKE','MUFFIN BLUEBERRY (set)','MUFFIN CHOC CHEESE (set)','MUFFIN CHOCOLATE CHIP (set)','MUFFIN FRUIT (set)','S/R CHOCOLATE','S/R COFFEE','S/R PANDAN','S/R VANILLA'],
+    pastry_other:['EGG TART','COCONUT TART','KAYA PIANG','LOU POH PIANG','TAU SAR PIANG',"EGG COOKIES 4'S","PEANUT COOKIES 4'S","PINEAPPLE TART 5'S",'GARLIC SLICE','PANDAN JADE PIANG','BREAD PUDDING','LEMON TART','CHOCOLATE TART','CHICKEN PIE','QUICHE','MERINGUE COOKIE','FLOSSY ORI','FLOSSY TOM YUM'],
+    pastry_puff:['PASTRY PUFF','CHOCOLATE PUFF (5PCS)','MINI CHOC ECLAIRS (5PCS)','MINI CUSTARD CREAM PUFF (5PCS)'],
+    cake_half:['CHOCOLATE 1/2KG','VANILLA 1/2KG','PANDAN 1/2KG','RED VELVET 1/2KG','MOIST CHOC 1/2KG','OREO 1/2KG','TIRAMISU 1/2KG','FRUIT 1/2KG'],
+    cake_1kg:['CHOCOLATE 1KG','VANILLA 1KG','PANDAN 1KG','RED VELVET 1KG','MOIST CHOC 1KG','OREO 1KG','BLACK FOREST 1KG','FRUIT 1KG'],
+    cartoon:['CARTOON BEAR','CARTOON HELLO KITTY','CARTOON DORAEMON','CARTOON POKEMON','CARTOON SPONGEBOB','CARTOON FROZEN','CARTOON MARVEL','CARTOON CUSTOM'],
+    slice:['SLICE CHOCOLATE','SLICE VANILLA','SLICE PANDAN','SLICE RED VELVET','SLICE OREO','SLICE TIRAMISU','SLICE CHEESECAKE','SLICE FRUIT'],
+    others:['MINI CUPCAKE BOX','BROWNIE BOX','COOKIE ASSORT','GIFT BOX SMALL','GIFT BOX LARGE','CUSTOM OTHER'],
+    pack_bun:["BUTTER BUN 2's","BURGER BUN 5'S","BUTTER MILK BUN 4'S","CHEESE BUN 6'S","CHOCOLATE CHIP BUN 4'S","HOT DOG BUN 5'S","KAYA BUN 4'S",'TAU SAR BUN',"WHOLEMEAL ROLL 6'S","PANDESA ROLL 8'S",'BUTTER CREAM BUN'],
+    fresh_bun:['CHEESE ROLL BUN','CHICKEN FLOSS BUN','CHICKEN FRANKIE','CHOC.RICE BUN','DOUBLE SAUSAGE','DONUT CHOCOLATE','DONUT RING','FRANKIE CHEESE','MILK SHAKE BUN','MINI HAWAII','POLO BUN','RAISIN CREAM CHEESE','SPICY CHICKEN FLOSS','SUGAR CHEESE STICK BUN','TUNA MINCE']
+  };
+  function outlet(code){ for (var i=0;i<OUTLETS.length;i++) if(OUTLETS[i].code===code) return OUTLETS[i]; return null; }
+  var store = [];
+  return {
+    getBootstrap: function(){
+      return { demoMode:true, outlets:OUTLETS, cutoff:{hour:17,minute:0}, timezone:'Asia/Kuching', serverNow:new Date().toISOString(), note:'DEMO — sample quantities only.' };
+    },
+    getCatalogue: function(code){
+      var o = outlet(code); var cats=[];
+      function add(id,label,products,leadDays){ cats.push({id:id,label:label,products:products,leadDays:leadDays||1}); }
+      if(!o||!o.flags.staff) add('specialty','Specialty',CAT.specialty,1);
+      add('bread','Bread',CAT.bread,o?o.flags.breadLead:1);
+      add('pastry_pack','Pastry Pack',CAT.pastry_pack,1);
+      add('pastry_other','Pastry Other',CAT.pastry_other,1);
+      add('pastry_puff','Pastry Puff',CAT.pastry_puff,1);
+      if(o&&o.flags.cakes){ add('cake_half','Cake ½kg',CAT.cake_half,1); add('cake_1kg','Cake 1kg',CAT.cake_1kg,1); add('cartoon','Cartoon',CAT.cartoon,1); add('slice','Slice',CAT.slice,1); add('others','Others',CAT.others,1); }
+      else if(o&&o.code==='SA'){ add('slice','Slice',CAT.slice,1); add('others','Others',CAT.others,1); }
+      add('pack_bun','Pack Bun',CAT.pack_bun,2);
+      if(o&&o.flags.dailyFresh) add('fresh_bun','Fresh Bun',CAT.fresh_bun,1);
+      return { outlet:code, demo:true, label:'SAMPLE CATALOGUE — DEMO ONLY', categories:cats, flags:o?o.flags:{} };
+    },
+    getPackBunBaseline: function(code){
+      var seed=(code||'X').charCodeAt(0)%7;
+      var items=CAT.pack_bun.map(function(name,i){ var ordered=((seed+i*3)%9)+2; return {product:name,ordered:ordered,newAmount:ordered,demo:true}; });
+      return { outlet:code, demo:true, label:'DEMO Ordered baseline (SAMPLE)', items:items };
+    },
+    getWeeklyFreshBun: function(code){
+      var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      var rows=CAT.fresh_bun.map(function(name,i){ var qty={}; days.forEach(function(d,di){ qty[d]=((i+di)%5===0)?0:((i+di)%6)+4; }); return {product:name,qty:qty}; });
+      return { outlet:code, demo:true, label:'DEMO weekly (SAMPLE)', days:days, note:'Edit next-week Fri / before 9pm Sat (design note).', rows:rows };
+    },
+    submitOrder: function(payload){
+      var id='DEMO-LOCAL-'+Date.now()+'-'+(payload&&payload.outlet||'XX');
+      store.unshift({id:id,at:new Date().toISOString(),payload:payload});
+      var daily=(payload&&payload.daily)||{};
+      var lines=0;
+      Object.keys(daily).forEach(function(k){ if(Number(daily[k])>0) lines++; });
+      return { ok:true, demo:true, orderId:id, message:'DEMO order saved locally in browser (not Production).', summary:{ dailyLineCount:lines } };
+    }
+  };
+})();
+</script>
+
+<script>
+(function () {
+  var STEPS = [
+    'Outlet & dates',
+    'Daily products',
+    'Pack Bun Change',
+    'Weekly Fresh Bun',
+    'Special Order',
+    'Review & Submit'
+  ];
+
+  var state = {
+    step: 0,
+    outlet: '',
+    flags: {},
+    orderDate: '',
+    packBunDate: '',
+    catalogue: null,
+    daily: {},
+    packBun: [],
+    weekly: null,
+    locked: false,
+    submitted: false,
+    orderEditOpen: false,
+    bootstrap: null
+  };
+
+  function $(id) { return document.getElementById(id); }
+
+  function toast(msg, kind) {
+    var el = $('toast');
+    el.textContent = msg;
+    el.className = 'toast show ' + (kind || 'ok');
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.classList.remove('show'); }, 2800);
+  }
+
+  function todayIso() {
+    var n = new Date();
+    var off = n.getTimezoneOffset();
+    return new Date(n.getTime() - off * 60000).toISOString().slice(0, 10);
+  }
+
+  function addDays(iso, n) {
+    var d = new Date(iso + 'T12:00:00');
+    d.setDate(d.getDate() + n);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function api(fn, args, cb) {
+    args = args || [];
+    if (window.google && google.script && google.script.run) {
+      var r = google.script.run
+        .withSuccessHandler(cb)
+        .withFailureHandler(function (e) { toast(String(e && e.message || e), 'err'); });
+      r[fn].apply(r, args);
+    } else if (window.MOCK && typeof MOCK[fn] === 'function') {
+      setTimeout(function () { cb(MOCK[fn].apply(null, args)); }, 30);
+    } else {
+      toast('Open Index-preview.html for offline DEMO', 'err');
+    }
+  }
+
+
+  function updateCutoff() {
+    var locked = false;
+    state.locked = locked;
+    var badge = $('cutoffBadge');
+    try {
+      var parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kuching', hour: 'numeric', minute: 'numeric', hour12: false }).formatToParts(new Date());
+      var h = Number(parts.find(function(p){ return p.type==='hour'; }).value);
+      var m = Number(parts.find(function(p){ return p.type==='minute'; }).value);
+      var mins = (17 * 60) - (h * 60 + m);
+      if (mins < 0) {
+        badge.textContent = 'DEMO try open · real cut-off ~5–6pm (past)';
+      } else {
+        badge.textContent = 'DEMO try open · clears ~5–6pm (' + Math.floor(mins / 60) + 'h ' + (mins % 60) + 'm)';
+      }
+    } catch (e) {
+      badge.textContent = 'DEMO try open · cut-off ~5–6pm';
+    }
+    badge.className = 'cutoff-badge open';
+    $('lockedDaily').classList.add('hidden');
+  }
+
+  function onOutletChange() {
+    var code = $('outletSelect').value;
+    state.outlet = code;
+    var o = (state.bootstrap.outlets || []).filter(function (x) { return x.code === code; })[0];
+    state.flags = (o && o.flags) || {};
+    var lead = state.flags.breadLead || 1;
+    $('leadNote').textContent = 'Bread lead: T+' + lead + (lead === 2 ? ' (BN/PP)' : '');
+
+    var rules = [];
+    if (state.flags.staff) rules.push('SA = staff requisition style (simpler catalogue).');
+    if (state.flags.cakes === false) rules.push('No whole cakes for this outlet (MK1/MK2/SA).');
+    if (state.flags.weekly === false) rules.push('No weekly fresh-bun grid — daily fresh bun instead (JNY/SA).');
+    if (state.flags.dailyFresh) rules.push('Fresh bun ordered daily on Daily step.');
+    if (state.flags.so === false) rules.push('Special Order step will be skipped / disabled.');
+    $('outletRules').innerHTML = '<h2>Outlet rules</h2><p class="hint" style="margin:0;">' +
+      (rules.length ? rules.join(' ') : 'Full retail ordering (Daily · Add Cancel · Weekly · SO).') + '</p>';
+
+    if (!code) return;
+
+    api('getCatalogue', [code], function (cat) {
+      state.catalogue = cat;
+      state.daily = {};
+      fillSoProductList();
+      if (state.step === 1) renderProducts();
+    });
+
+    api('getPackBunBaseline', [code], function (pb) {
+      state.packBun = (pb.items || []).map(function (r) {
+        return { product: r.product, ordered: r.ordered, newAmount: r.newAmount };
+      });
+    });
+
+    if (state.flags.weekly !== false) {
+      api('getWeeklyFreshBun', [code], function (w) { state.weekly = w; });
+    } else {
+      state.weekly = null;
+    }
+  }
+
+  function dailyStats() {
+    var lines = 0, units = 0;
+    Object.keys(state.daily).forEach(function (k) {
+      var v = Number(state.daily[k]) || 0;
+      if (v > 0) { lines++; units += v; }
+    });
+    return { lines: lines, units: units };
+  }
+
+  function updateLineTotals() {
+    var dc = dailyStats();
+    var head = $('lineTotalHead');
+    var foot = $('lineTotalFoot');
+    if (head) {
+      head.textContent = dc.lines + ' line' + (dc.lines === 1 ? '' : 's');
+      head.classList.toggle('has', dc.lines > 0);
+    }
+    if (foot) foot.textContent = dc.lines + ' lines · ' + dc.units + ' units';
+  }
+
+  function setQty(key, raw, inp, row) {
+    var blank = raw === '' || raw === null || typeof raw === 'undefined';
+    if (blank) {
+      delete state.daily[key];
+      if (inp) inp.value = '';
+      if (row) row.classList.remove('filled');
+      updateLineTotals();
+      return;
+    }
+    var v = Math.max(0, parseInt(raw, 10) || 0);
+    if (v === 0) {
+      delete state.daily[key];
+      if (inp) inp.value = '';
+      if (row) row.classList.remove('filled');
+    } else {
+      state.daily[key] = v;
+      if (inp) inp.value = String(v);
+      if (row) row.classList.add('filled');
+    }
+    updateLineTotals();
+  }
+
+  function renderStep() {
+    document.querySelectorAll('.panel').forEach(function (p) {
+      p.classList.toggle('active', Number(p.getAttribute('data-step')) === state.step);
+    });
+    $('stepPill').textContent = 'Step ' + (state.step + 1) + ' / ' + STEPS.length;
+    $('stepsLabel').textContent = STEPS[state.step];
+    $('progressFill').style.width = (((state.step + 1) / STEPS.length) * 100) + '%';
+    $('btnBack').disabled = state.step === 0 || state.submitted;
+
+    var nextLabel = 'Continue';
+    if (state.step === STEPS.length - 1) nextLabel = state.submitted ? 'New order' : 'Submit order';
+    if (state.step === 4 && state.flags.so === false) nextLabel = 'Skip · Continue';
+    $('btnNext').textContent = nextLabel;
+    $('btnNext').disabled = false;
+
+    if (state.step === 1) renderProducts();
+    if (state.step === 2) renderPackBun();
+    if (state.step === 3) renderWeekly();
+    if (state.step === 4) renderSO();
+    if (state.step === 5) renderReview();
+  }
+
+  function renderProducts() {
+    var sheet = $('prodSheet');
+    sheet.innerHTML = '';
+    if (!state.catalogue) {
+      sheet.innerHTML = '<div class="sheet-empty">Select an outlet first.</div>';
+      updateLineTotals();
+      return;
+    }
+    var q = ($('prodSearch').value || '').trim().toLowerCase();
+    var any = false;
+    state.catalogue.categories.forEach(function (cat) {
+      var products = (cat.products || []).filter(function (n) {
+        return !q || n.toLowerCase().indexOf(q) >= 0;
+      });
+      if (!products.length) return;
+      any = true;
+      var sec = document.createElement('div');
+      sec.className = 'sheet-sec';
+      var sticky = document.createElement('div');
+      sticky.className = 'sheet-sticky';
+      sticky.innerHTML = '<span></span><span class="lead"></span>';
+      sticky.querySelector('span').textContent = cat.label;
+      sticky.querySelector('.lead').textContent = 'T+' + (cat.leadDays || 1) + ' · ' + products.length;
+      sec.appendChild(sticky);
+
+      products.forEach(function (name) {
+        var key = cat.id + '::' + name;
+        var cur = state.daily[key];
+        var row = document.createElement('div');
+        row.className = 'sheet-row' + (cur > 0 ? ' filled' : '');
+        row.innerHTML =
+          '<div class="name"></div>' +
+          '<div class="qty-cell">' +
+          '<button type="button" class="qty-mini" data-act="-" aria-label="Decrease">−</button>' +
+          '<input class="sheet-qty" type="number" min="0" step="1" inputmode="numeric" pattern="[0-9]*" placeholder="" />' +
+          '<button type="button" class="qty-mini" data-act="+" aria-label="Increase">+</button>' +
+          '</div>';
+        row.querySelector('.name').textContent = name;
+        var inp = row.querySelector('input');
+        inp.value = (cur > 0) ? String(cur) : '';
+        inp.disabled = state.locked;
+        row.querySelectorAll('.qty-mini').forEach(function (btn) {
+          btn.disabled = state.locked;
+          btn.onclick = function () {
+            var curV = parseInt(inp.value, 10) || 0;
+            var next = btn.getAttribute('data-act') === '+' ? curV + 1 : curV - 1;
+            if (next <= 0) setQty(key, '', inp, row);
+            else setQty(key, next, inp, row);
+          };
+        });
+        inp.oninput = function () { setQty(key, inp.value, inp, row); };
+        inp.onchange = function () { setQty(key, inp.value, inp, row); };
+        sec.appendChild(row);
+      });
+      sheet.appendChild(sec);
+    });
+    if (!any) {
+      sheet.innerHTML = '<div class="sheet-empty">No products match filter.</div>';
+    }
+    updateLineTotals();
+  }
+
+  function renderPackBun() {
+    var tb = $('packBunTable').querySelector('tbody');
+    tb.innerHTML = '';
+    if (!state.packBun.length) {
+      tb.innerHTML = '<tr><td colspan="4"><div class="empty">Select outlet to load DEMO baseline…</div></td></tr>';
+      return;
+    }
+    state.packBun.forEach(function (r) {
+      var tr = document.createElement('tr');
+      var delta = Number(r.newAmount) - Number(r.ordered);
+      tr.innerHTML = '<td></td><td></td><td></td><td></td>';
+      tr.cells[0].textContent = r.product;
+      tr.cells[1].textContent = r.ordered + ' · SAMPLE';
+      var inp = document.createElement('input');
+      inp.type = 'number';
+      inp.className = 'qty';
+      inp.min = 0;
+      inp.value = r.newAmount;
+      inp.onchange = function () {
+        r.newAmount = Math.max(0, parseInt(inp.value, 10) || 0);
+        renderPackBun();
+      };
+      tr.cells[2].appendChild(inp);
+      tr.cells[3].textContent = (delta > 0 ? '+' : '') + delta;
+      tr.cells[3].className = delta > 0 ? 'delta-pos' : (delta < 0 ? 'delta-neg' : '');
+      tb.appendChild(tr);
+    });
+  }
+
+  function renderWeekly() {
+    var title = $('weeklyTitle');
+    var hint = $('weeklyHint');
+    var grid = $('weekGrid');
+    if (state.flags.weekly === false) {
+      title.textContent = 'Fresh Bun (daily)';
+      hint.textContent = 'JNY / SA use daily fresh bun on the Daily step — weekly grid skipped.';
+      grid.innerHTML = '<div class="empty"><div class="ico">✓</div>Skipped for this outlet. Continue.</div>';
+      return;
+    }
+    title.textContent = 'Weekly Fresh Bun';
+    hint.textContent = (state.weekly && state.weekly.note) || 'Mon–Sun projection (DEMO SAMPLE).';
+    if (!state.weekly) {
+      grid.innerHTML = '<div class="empty">Loading DEMO weekly…</div>';
+      return;
+    }
+    var days = state.weekly.days;
+    var html = '<table class="float-table"><thead><tr><th>Product</th>';
+    days.forEach(function (d) { html += '<th>' + d + '</th>'; });
+    html += '</tr></thead><tbody>';
+    state.weekly.rows.forEach(function (row, ri) {
+      html += '<tr><td>' + row.product + '</td>';
+      days.forEach(function (d) {
+        html += '<td><input class="qty" type="number" min="0" data-r="' + ri + '" data-d="' + d + '" value="' + (row.qty[d] || 0) + '" /></td>';
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    grid.innerHTML = html;
+    grid.querySelectorAll('input').forEach(function (inp) {
+      inp.onchange = function () {
+        var ri = Number(inp.getAttribute('data-r'));
+        var d = inp.getAttribute('data-d');
+        state.weekly.rows[ri].qty[d] = Math.max(0, parseInt(inp.value, 10) || 0);
+      };
+    });
+  }
+
+  function renderSO() {
+    var disabled = state.flags.so === false;
+    $('soDisabled').classList.toggle('hidden', !disabled);
+    $('soForm').classList.toggle('hidden', disabled);
+    if (!disabled && !$('soTime').options.length) {
+      for (var h = 10; h <= 21; h++) {
+        for (var m = 0; m < 60; m += 30) {
+          if (h === 21 && m > 0) break;
+          var label = (h < 10 ? '0' : '') + h + ':' + (m === 0 ? '00' : '30');
+          var opt = document.createElement('option');
+          opt.value = label;
+          opt.textContent = label;
+          $('soTime').appendChild(opt);
+        }
+      }
+      $('soDate').value = state.orderDate || todayIso();
+    }
+    fillSoProductList();
+  }
+
+
+  var SO_CAT_MAP = {
+    'SPECIALTY': ['specialty'],
+    'BREAD': ['bread'],
+    'PASTRY': ['pastry_pack', 'pastry_other'],
+    'PASTRYPUFF': ['pastry_puff'],
+    'CAKE': ['cake_half', 'cake_1kg', 'cartoon', 'slice'],
+    'FRESH BUN': ['fresh_bun'],
+    'PACK BUN': ['pack_bun'],
+    'OTHERS': ['others']
+  };
+
+  function fillSoProductList() {
+    var sel = $('soProduct');
+    if (!sel) return;
+    var prev = sel.value;
+    sel.innerHTML = '';
+    var empty = document.createElement('option');
+    empty.value = '';
+    empty.textContent = '—';
+    sel.appendChild(empty);
+
+    var soKey = ($('soCat') && $('soCat').value) || '';
+    if (!soKey || !state.catalogue || !state.catalogue.categories) {
+      sel.value = '';
+      return;
+    }
+    var ids = SO_CAT_MAP[soKey] || [];
+    if (!ids.length) {
+      sel.value = '';
+      return;
+    }
+    var idSet = {};
+    ids.forEach(function (id) { idSet[id] = true; });
+    var names = [];
+    var seen = {};
+    (state.catalogue.categories || []).forEach(function (c) {
+      if (!idSet[c.id]) return;
+      (c.products || []).forEach(function (n) {
+        if (!seen[n]) {
+          seen[n] = true;
+          names.push(n);
+        }
+      });
+    });
+    names.forEach(function (n) {
+      var opt = document.createElement('option');
+      opt.value = n;
+      opt.textContent = n;
+      sel.appendChild(opt);
+    });
+    if (prev && seen[prev]) sel.value = prev;
+    else sel.value = '';
+  }
+
+  function collectSpecial() {
+    if (state.flags.so === false) return null;
+    var product = $('soProduct').value.trim();
+    if (!product) return null;
+    return {
+      pickUpDate: $('soDate').value,
+      pickUpTime: $('soTime').value,
+      outlet: state.outlet,
+      category: $('soCat').value,
+      product: product,
+      qty: Number($('soQty').value) || 0,
+      billNo: $('soBill').value,
+      customerName: $('soCust').value,
+      contact: $('soContact').value,
+      remark: $('soRemark').value
+    };
+  }
+
+  function dailyKeyName(key) {
+    var i = String(key).indexOf('::');
+    return i >= 0 ? String(key).slice(i + 2) : String(key);
+  }
+
+  function packBunChangeRows() {
+    return state.packBun.filter(function (r) {
+      return Number(r.newAmount) !== Number(r.ordered);
+    });
+  }
+
+  function countOrderedEditLines() {
+    var n = 0;
+    Object.keys(state.daily).forEach(function (k) {
+      if ((Number(state.daily[k]) || 0) > 0) n++;
+    });
+    n += packBunChangeRows().length;
+    if (state.flags.so !== false) {
+      var p = $('soProduct');
+      if (p && p.value.trim()) n++;
+    }
+    return n;
+  }
+
+  function updateOrderEditToggleLabel() {
+    var n = countOrderedEditLines();
+    var label = $('orderEditToggleLabel');
+    if (label) {
+      label.textContent = 'What was ordered (' + n + ' line' + (n === 1 ? '' : 's') + ')';
+    }
+  }
+
+  function setOrderEditOpen(open) {
+    state.orderEditOpen = !!open;
+    var panel = $('orderEditPanel');
+    var toggle = $('orderEditToggle');
+    var caret = $('orderEditCaret');
+    if (panel) panel.classList.toggle('hidden', !state.orderEditOpen);
+    if (toggle) toggle.setAttribute('aria-expanded', state.orderEditOpen ? 'true' : 'false');
+    if (caret) caret.textContent = state.orderEditOpen ? '▴' : '▾';
+    if (state.orderEditOpen) renderOrderEditList();
+    updateOrderEditToggleLabel();
+  }
+
+  function updateSummaryBox() {
+    var dc = dailyStats();
+    var changed = packBunChangeRows().length;
+    var so = collectSpecial();
+    var html = '';
+    function row(k, v) { html += '<div class="row"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>'; }
+    row('Outlet', state.outlet || '—');
+    row('Order-for (T+1)', state.orderDate || '—');
+    row('Pack bun (T+2)', state.packBunDate || '—');
+    row('Daily lines (DEMO)', dc.lines + ' · ' + dc.units + ' units');
+    row('Pack bun changes', changed + ' of ' + state.packBun.length);
+    row('Weekly fresh bun', state.flags.weekly === false ? 'Skipped (daily fresh)' : 'Included (SAMPLE)');
+    row('Special order', so ? (so.product + ' × ' + so.qty) : 'None');
+    row('Data mode', 'DEMO SAMPLE — not Production');
+    $('summaryBox').innerHTML = html;
+  }
+
+  function afterOrderEditChange(rerenderList) {
+    updateSummaryBox();
+    updateOrderEditToggleLabel();
+    updateLineTotals();
+    if (rerenderList && state.orderEditOpen) renderOrderEditList();
+  }
+
+  function appendOrderEditRow(list, opts) {
+    var row = document.createElement('div');
+    row.className = 'order-edit-row';
+    var nameEl = document.createElement('div');
+    nameEl.className = 'name';
+    nameEl.textContent = opts.name;
+    if (opts.meta) {
+      var meta = document.createElement('span');
+      meta.className = 'meta';
+      meta.textContent = opts.meta;
+      nameEl.appendChild(meta);
+    }
+    var cell = document.createElement('div');
+    cell.className = 'qty-cell';
+    var minus = document.createElement('button');
+    minus.type = 'button';
+    minus.className = 'qty-mini';
+    minus.setAttribute('aria-label', 'Decrease');
+    minus.textContent = '−';
+    var inp = document.createElement('input');
+    inp.className = 'sheet-qty';
+    inp.type = 'number';
+    inp.min = '0';
+    inp.step = '1';
+    inp.inputMode = 'numeric';
+    inp.value = String(opts.qty);
+    var plus = document.createElement('button');
+    plus.type = 'button';
+    plus.className = 'qty-mini';
+    plus.setAttribute('aria-label', 'Increase');
+    plus.textContent = '+';
+    function applyRaw(raw, rerender) {
+      opts.setQty(raw);
+      afterOrderEditChange(!!rerender);
+    }
+    minus.onclick = function () {
+      var cur = parseInt(inp.value, 10) || 0;
+      applyRaw(Math.max(0, cur - 1), true);
+    };
+    plus.onclick = function () {
+      var cur = parseInt(inp.value, 10) || 0;
+      applyRaw(cur + 1, true);
+    };
+    inp.oninput = function () { applyRaw(inp.value, false); };
+    inp.onchange = function () { applyRaw(inp.value, true); };
+    cell.appendChild(minus);
+    cell.appendChild(inp);
+    cell.appendChild(plus);
+    row.appendChild(nameEl);
+    row.appendChild(cell);
+    list.appendChild(row);
+  }
+
+  function renderOrderEditList() {
+    var list = $('orderEditList');
+    var weeklyNote = $('orderEditWeeklyNote');
+    if (!list) return;
+    list.innerHTML = '';
+
+    var dailyKeys = Object.keys(state.daily).filter(function (k) {
+      return (Number(state.daily[k]) || 0) > 0;
+    }).sort();
+    var pbRows = packBunChangeRows();
+    var soProduct = '';
+    if (state.flags.so !== false) {
+      var soEl = $('soProduct');
+      soProduct = soEl ? soEl.value.trim() : '';
+    }
+
+    if (!dailyKeys.length && !pbRows.length && !soProduct) {
+      list.innerHTML = '<div class="order-edit-empty">Nothing ordered yet — add qty on Daily / Pack Bun / Special steps.</div>';
+    } else {
+      if (dailyKeys.length) {
+        var g = document.createElement('div');
+        g.className = 'order-edit-group';
+        g.innerHTML = '<div class="order-edit-group-title">Daily</div>';
+        dailyKeys.forEach(function (key) {
+          appendOrderEditRow(g, {
+            name: dailyKeyName(key),
+            qty: Number(state.daily[key]) || 0,
+            setQty: function (raw) {
+              var blank = raw === '' || raw === null || typeof raw === 'undefined';
+              var v = blank ? 0 : Math.max(0, parseInt(raw, 10) || 0);
+              if (v <= 0) delete state.daily[key];
+              else state.daily[key] = v;
+            }
+          });
+        });
+        list.appendChild(g);
+      }
+      if (pbRows.length) {
+        var g2 = document.createElement('div');
+        g2.className = 'order-edit-group';
+        g2.innerHTML = '<div class="order-edit-group-title">Pack bun changes</div>';
+        pbRows.forEach(function (r) {
+          appendOrderEditRow(g2, {
+            name: r.product,
+            meta: 'was ' + r.ordered,
+            qty: Number(r.newAmount) || 0,
+            setQty: function (raw) {
+              var blank = raw === '' || raw === null || typeof raw === 'undefined';
+              r.newAmount = blank ? 0 : Math.max(0, parseInt(raw, 10) || 0);
+            }
+          });
+        });
+        list.appendChild(g2);
+      }
+      if (soProduct) {
+        var g3 = document.createElement('div');
+        g3.className = 'order-edit-group';
+        g3.innerHTML = '<div class="order-edit-group-title">Special order</div>';
+        appendOrderEditRow(g3, {
+          name: soProduct,
+          qty: Number($('soQty').value) || 0,
+          setQty: function (raw) {
+            var blank = raw === '' || raw === null || typeof raw === 'undefined';
+            var v = blank ? 0 : Math.max(0, parseInt(raw, 10) || 0);
+            $('soQty').value = String(v);
+          }
+        });
+        list.appendChild(g3);
+      }
+    }
+
+    if (weeklyNote) {
+      var showWeekly = state.flags.weekly !== false;
+      weeklyNote.classList.toggle('hidden', !showWeekly);
+    }
+  }
+
+  function renderReview() {
+    if (state.submitted) {
+      $('reviewPanel').classList.add('hidden');
+      $('donePanel').classList.remove('hidden');
+      return;
+    }
+    $('reviewPanel').classList.remove('hidden');
+    $('donePanel').classList.add('hidden');
+    updateSummaryBox();
+    setOrderEditOpen(state.orderEditOpen);
+  }
+
+  function buildPayload() {
+    var dailyMap = {};
+    Object.keys(state.daily).forEach(function (k) {
+      if (state.daily[k] > 0) dailyMap[k] = state.daily[k];
+    });
+    return {
+      outlet: state.outlet,
+      orderDate: state.orderDate,
+      packBunDate: state.packBunDate,
+      daily: dailyMap,
+      packBunChanges: state.packBun,
+      weekly: state.flags.weekly === false ? null : state.weekly,
+      special: collectSpecial(),
+      demo: true,
+      label: 'DEMO submission'
+    };
+  }
+
+  function goNext() {
+    if (state.submitted && state.step === STEPS.length - 1) {
+      location.reload();
+      return;
+    }
+    if (state.step === 0) {
+      if (!$('outletSelect').value) { toast('Select an outlet', 'err'); return; }
+      state.orderDate = $('orderDate').value;
+      state.packBunDate = $('packBunDate').value;
+      onOutletChange();
+    }
+    if (state.step === STEPS.length - 1) {
+      $('btnNext').disabled = true;
+      api('submitOrder', [buildPayload()], function (res) {
+        $('btnNext').disabled = false;
+        if (!res || !res.ok) { toast((res && res.error) || 'Submit failed', 'err'); return; }
+        state.submitted = true;
+        $('doneMsg').textContent = res.message || 'Saved (DEMO)';
+        $('doneId').textContent = res.orderId || '';
+        toast('Submitted · DEMO only', 'ok');
+        renderStep();
+      });
+      return;
+    }
+    state.step += 1;
+    renderStep();
+  }
+
+  function goBack() {
+    if (state.step > 0 && !state.submitted) {
+      state.step -= 1;
+      renderStep();
+    }
+  }
+
+  function initDates() {
+    var t = todayIso();
+    $('orderDate').value = addDays(t, 1);
+    $('packBunDate').value = addDays(t, 2);
+    state.orderDate = $('orderDate').value;
+    state.packBunDate = $('packBunDate').value;
+    $('orderDate').onchange = function () {
+      state.orderDate = $('orderDate').value;
+      $('packBunDate').value = addDays(state.orderDate, 1);
+      state.packBunDate = $('packBunDate').value;
+    };
+  }
+
+  function boot() {
+    $('btnBack').onclick = goBack;
+    $('btnNext').onclick = goNext;
+    $('prodSearch').oninput = function () { if (state.step === 1) renderProducts(); };
+    $('soCat').onchange = fillSoProductList;
+    if ($('orderEditToggle')) {
+      $('orderEditToggle').onclick = function () {
+        setOrderEditOpen(!state.orderEditOpen);
+      };
+    }
+    if ($('orderEditDone')) {
+      $('orderEditDone').onclick = function () {
+        setOrderEditOpen(false);
+        updateSummaryBox();
+      };
+    }
+    initDates();
+    updateCutoff();
+    setInterval(updateCutoff, 60000);
+
+    api('getBootstrap', [], function (boot) {
+      state.bootstrap = boot || { outlets: [], demoMode: true };
+      var sel = $('outletSelect');
+      sel.innerHTML = '<option value="">Select outlet…</option>';
+      (state.bootstrap.outlets || []).forEach(function (o) {
+        var opt = document.createElement('option');
+        opt.value = o.code;
+        opt.textContent = o.code + ' — ' + o.name;
+        sel.appendChild(opt);
+      });
+      sel.onchange = onOutletChange;
+      if (state.bootstrap.demoMode === false) $('demoBadge').classList.add('hidden');
+      renderStep();
+    });
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>
