@@ -7,6 +7,7 @@
   'use strict';
 
   var KEY = 'walnutDemoOrders';
+  var FULFIL_KEY = 'walnutDemoFulfilment';
 
   var OUTLETS = ['FS', 'TC', 'KK', 'BV', 'CC', 'PP', 'BN', 'JNY', 'MK1', 'MK2', 'SA'];
   var OUTLET_NAMES = {
@@ -179,11 +180,24 @@
     return (day < 10 ? '0' : '') + day + '/' + months[Number(p[1]) - 1] + '/' + p[0] + ', ' + days[d.getDay()];
   }
 
+  /** Daily map may store "category::Product" (Order UI) or a bare product name. */
+  function lookupDaily(payload, product) {
+    if (!payload || !payload.daily || !product) return null;
+    var daily = payload.daily;
+    if (daily[product] != null) return Number(daily[product]) || 0;
+    var suffix = '::' + product;
+    var keys = Object.keys(daily);
+    for (var i = 0; i < keys.length; i++) {
+      if (keys[i].slice(-suffix.length) === suffix) return Number(daily[keys[i]]) || 0;
+    }
+    return null;
+  }
+
   /** Fresh bun qty for one outlet from DEMO order (weekly day column or daily fresh). */
   function freshFromPayload(payload, product) {
     if (!payload) return null;
-    var daily = payload.daily || {};
-    if (daily[product] != null && Number(daily[product]) > 0) return Number(daily[product]);
+    var dailyHit = lookupDaily(payload, product);
+    if (dailyHit != null && dailyHit > 0) return dailyHit;
     var weekly = payload.weekly;
     if (!weekly) return null;
     var dayKey = dayKeyFromIso(payload.orderDate);
@@ -217,9 +231,7 @@
   }
 
   function dailyFromPayload(payload, product) {
-    if (!payload || !payload.daily) return null;
-    if (payload.daily[product] == null) return null;
-    return Number(payload.daily[product]) || 0;
+    return lookupDaily(payload, product);
   }
 
   function soFromPayload(payload, product) {
@@ -321,7 +333,7 @@
       map[p.label] = map[p.name];
     });
 
-    if (!entry) return { qty: map, meta: meta, special: null };
+    if (!entry) return { qty: map, meta: meta, special: null, specialLines: [] };
 
     var payload = payloadOf(entry);
     meta.hasOrder = true;
@@ -331,9 +343,12 @@
     meta.packBunDate = payload.packBunDate || '';
     meta.label = 'DEMO submit ' + meta.orderId;
 
-    // Override from daily
+    // Override from daily (bare name and category::name)
     Object.keys(payload.daily || {}).forEach(function (k) {
-      map[k] = Number(payload.daily[k]) || 0;
+      var n = Number(payload.daily[k]) || 0;
+      map[k] = n;
+      var bare = k.indexOf('::') >= 0 ? k.slice(k.lastIndexOf('::') + 2) : k;
+      map[bare] = n;
     });
 
     // Fresh from weekly / daily
@@ -351,7 +366,106 @@
       }
     });
 
-    return { qty: map, meta: meta, special: payload.special || null };
+    var specialLines = [];
+    if (payload.specialLines && payload.specialLines.length) specialLines = payload.specialLines;
+    else if (payload.special && payload.special.product) specialLines = [payload.special];
+    return { qty: map, meta: meta, special: payload.special || specialLines[0] || null, specialLines: specialLines };
+  }
+
+  /** Bake-day key for fulfilment. Newest submit's orderDate, else today in Kuching. */
+  function sheetOrderDate() {
+    var orders = loadOrders();
+    var i, p;
+    for (i = 0; i < orders.length; i++) {
+      p = (orders[i] && orders[i].payload) || {};
+      if (p.orderDate) return String(p.orderDate);
+    }
+    return kuchingYmd(new Date());
+  }
+
+  function emptyFulfilment() {
+    return { days: {} };
+  }
+
+  function loadFulfilment() {
+    try {
+      var obj = JSON.parse(localStorage.getItem(FULFIL_KEY) || '{}');
+      if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return emptyFulfilment();
+      if (!obj.days || typeof obj.days !== 'object') obj.days = {};
+      return obj;
+    } catch (e) {
+      return emptyFulfilment();
+    }
+  }
+
+  function saveFulfilment(obj) {
+    try { localStorage.setItem(FULFIL_KEY, JSON.stringify(obj)); } catch (e) {}
+  }
+
+  function fulfilKey(product, outlet) {
+    return String(product) + '\u0001' + String(outlet);
+  }
+
+  /**
+   * DEMO fulfilment cell. Keyed by date + department + product + outlet.
+   * outlet "*" is the baker batch total (not an outlet).
+   * Practice only — never Drive.
+   */
+  function writeFulfilCell(date, dept, product, outlet, field, value) {
+    if (!date || !dept || !product || !outlet) return;
+    if (field !== 'produced' && field !== 'gave') return;
+    var all = loadFulfilment();
+    if (!all.days[date]) all.days[date] = {};
+    if (!all.days[date][dept]) all.days[date][dept] = {};
+    var k = fulfilKey(product, outlet);
+    var cell = all.days[date][dept][k] || {};
+    if (value === '' || value == null) {
+      delete cell[field];
+    } else {
+      var n = Number(value);
+      if (isNaN(n) || n < 0) return;
+      cell[field] = n;
+    }
+    if (cell.produced == null && cell.gave == null) delete all.days[date][dept][k];
+    else all.days[date][dept][k] = cell;
+    saveFulfilment(all);
+  }
+
+  function fulfilProductTotals(date, dept, product) {
+    var all = loadFulfilment();
+    var bucket = ((all.days[date] || {})[dept]) || {};
+    var prefix = String(product) + '\u0001';
+    var outletProduced = 0, outletGave = 0, outletEntries = 0, batch = null;
+    Object.keys(bucket).forEach(function (k) {
+      if (k.indexOf(prefix) !== 0) return;
+      var cell = bucket[k] || {};
+      var outlet = k.slice(prefix.length);
+      if (outlet === '*') {
+        if (cell.produced != null && cell.produced !== '') batch = Number(cell.produced) || 0;
+        return;
+      }
+      if (cell.produced != null && cell.produced !== '') {
+        outletProduced += Number(cell.produced) || 0;
+        outletEntries++;
+      }
+      if (cell.gave != null && cell.gave !== '') outletGave += Number(cell.gave) || 0;
+    });
+    return {
+      outletProduced: outletProduced,
+      outletGave: outletGave,
+      outletEntries: outletEntries,
+      batch: batch
+    };
+  }
+
+  function readFulfilCell(date, dept, product, outlet) {
+    var all = loadFulfilment();
+    var bucket = ((all.days[date] || {})[dept]) || {};
+    var cell = bucket[fulfilKey(product, outlet)] || {};
+    return {
+      produced: cell.produced == null ? '' : cell.produced,
+      gave: cell.gave == null ? '' : cell.gave
+    };
   }
 
   function cellDisplay(v) {
@@ -433,6 +547,7 @@
 
   global.WalnutDemoStore = {
     KEY: KEY,
+    FULFIL_KEY: FULFIL_KEY,
     OUTLETS: OUTLETS,
     OUTLET_NAMES: OUTLET_NAMES,
     OUTLET_BILL_NAMES: OUTLET_BILL_NAMES,
@@ -458,6 +573,11 @@
     statusCounts: statusCounts,
     listOrders: listOrders,
     orderOutletCode: orderOutletCode,
-    kuchingYmd: kuchingYmd
+    kuchingYmd: kuchingYmd,
+    sheetOrderDate: sheetOrderDate,
+    loadFulfilment: loadFulfilment,
+    writeFulfilCell: writeFulfilCell,
+    readFulfilCell: readFulfilCell,
+    fulfilProductTotals: fulfilProductTotals
   };
 })(typeof window !== 'undefined' ? window : this);

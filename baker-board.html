@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>WALNUT BAKERY · Baker totals (DEMO)</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --chrome-grad: linear-gradient(135deg, #e8d5c4 0%, #c4a484 45%, #8b5a2b 100%);
+  --ink: #202124; --muted: #5f6368; --line: #c0c0c0; --warn: #b06000; --brand-ink: #1a1210;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f1ea;color:var(--ink)}
+.chrome{background:var(--chrome-grad);color:var(--brand-ink);padding:12px 16px 10px;box-shadow:0 4px 16px rgba(92,58,30,.12);position:sticky;top:0;z-index:40}
+.chrome h1{margin:0;font-size:16px;font-weight:800}
+.chrome .sub{margin:4px 0 0;font-size:11px;font-weight:600;opacity:.88;max-width:680px;line-height:1.4}
+.badge{display:inline-flex;margin-top:8px;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;background:rgba(255,240,180,.95);color:var(--warn);border:1px solid rgba(176,96,0,.35);padding:5px 10px;border-radius:8px}
+.site-nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:11px;font-weight:700}
+.site-nav a{color:rgba(26,18,16,.75);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid rgba(26,18,16,.15);background:rgba(255,255,255,.25)}
+.site-nav a:hover,.site-nav a.active{background:rgba(255,255,255,.55);color:var(--brand-ink)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.btn{border:1px solid rgba(26,18,16,.2);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;background:rgba(255,255,255,.9);color:var(--brand-ink);text-decoration:none;display:inline-flex;align-items:center}
+.btn-primary{background:#1a1210;color:#f7efe6;border-color:transparent}
+.date-field{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700}
+.date-field input{font:inherit;font-size:12px;padding:4px 6px;border-radius:6px;border:1px solid rgba(26,18,16,.25)}
+.meta{font-size:11px;font-weight:600;opacity:.85}
+.sheet-wrap{padding:12px 10px 40px}
+.board-card{background:#fff;border:1px solid #dadce0;border-radius:4px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.board-head{padding:8px 10px;background:#f1f3f4;border-bottom:1px solid #dadce0;font-size:12px;font-weight:700}
+.hint{margin:0 0 10px;font-size:12px;color:#7a6558;line-height:1.45}
+table.sheet{width:100%;border-collapse:collapse;font-size:12px}
+table.sheet th,table.sheet td{border:1px solid var(--line);padding:6px 8px;text-align:center;background:#fff}
+table.sheet th{background:#e8eaed;font-size:10px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+table.sheet th:first-child,table.sheet td:first-child{text-align:left;font-weight:600;min-width:180px}
+table.sheet td.num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+table.sheet tr.total-row td{background:#fff3cd;font-weight:800}
+table.sheet input.qty{width:84px;padding:4px 6px;border:1px solid #c0c0c0;border-radius:4px;font:inherit;font-size:12px;text-align:right}
+.note{font-size:11px;color:#5f6368;font-weight:600}
+@media (max-width:700px){.chrome h1{font-size:14px}}
+  </style>
+</head>
+<body>
+  <header class="chrome">
+    <h1>WALNUT BAKERY · Baker totals <span style="font-weight:700;opacity:.8">(DEMO — NOT LIVE)</span></h1>
+    <p class="sub">Batch sheet for bakers. One total per product — no outlet columns. Ordered comes from Order UI (fresh weekly / pack changes). Produced is the batch total unless outlet lines were entered on Production.</p>
+    <div class="badge">DEMO · totals only · not live Production</div>
+    <div class="site-nav">
+      <a href="index.html" id="navOrder">← Order</a>
+      <a href="production.html">Production</a>
+      <a href="baker-board.html" class="active">Baker totals</a>
+      <a href="bill.html">Bill</a>
+      <a href="backend.html">Backend</a>
+      <a href="baker.html">Legacy baker</a>
+    </div>
+    <div class="toolbar">
+      <button type="button" class="btn btn-primary" id="btnReload">Reload</button>
+      <label class="date-field">Date <input type="date" id="fulfilDate" /></label>
+      <a class="btn" id="linkProduction" href="production.html">Per-outlet Production</a>
+      <span class="meta" id="statusMeta">…</span>
+    </div>
+  </header>
+  <main class="sheet-wrap">
+    <p class="hint">TOTAL is the sum of Order UI qtys across outlets (SAMPLE baseline is not added). Produced: type the batch here. If Production already has per-outlet Produced for that product, this column shows that sum instead. Gave is the sum of “gave outlet” from the Production BAKER fulfilment lines.</p>
+    <section class="board-card">
+      <div class="board-head">Fresh bun</div>
+      <div id="freshTable"></div>
+    </section>
+    <section class="board-card">
+      <div class="board-head">Pack bun</div>
+      <div id="packTable"></div>
+    </section>
+  </main>
+  <script src="access.js"></script>
+  <script src="demo-store.js"></script>
+  <script>
+(function () {
+  if (!window.WalnutAccess || !WalnutAccess.require('master')) return;
+  try { WalnutAccess.wireNav(document); } catch (eW) {}
+  var S = window.WalnutDemoStore;
+  if (!S) return;
+
+  function fulfilDate() {
+    var input = document.getElementById('fulfilDate');
+    if (input && input.value) return input.value;
+    try {
+      var saved = sessionStorage.getItem('walnutDemoFulfilDate');
+      if (saved) return saved;
+    } catch (e) {}
+    return S.sheetOrderDate();
+  }
+
+  function syncDate() {
+    var input = document.getElementById('fulfilDate');
+    if (!input || input.value) return;
+    var d = '';
+    try { d = sessionStorage.getItem('walnutDemoFulfilDate') || ''; } catch (e) {}
+    input.value = d || S.sheetOrderDate();
+  }
+
+  function orderedTotal(row) {
+    var t = 0, any = false;
+    S.OUTLETS.forEach(function (o) {
+      if (row.sources[o] === 'order' && typeof row.cells[o] === 'number') {
+        t += row.cells[o];
+        any = true;
+      }
+    });
+    return any ? t : 0;
+  }
+
+  function renderTable(el, rows) {
+    syncDate();
+    var date = fulfilDate();
+    var table = document.createElement('table');
+    table.className = 'sheet';
+    var thead = document.createElement('thead');
+    var hr = document.createElement('tr');
+    ['Product', 'TOTAL', 'Produced', 'Gave'].forEach(function (label) {
+      var th = document.createElement('th');
+      th.textContent = label;
+      hr.appendChild(th);
+    });
+    thead.appendChild(hr);
+    table.appendChild(thead);
+    var tb = document.createElement('tbody');
+    var gOrd = 0, gProd = 0, gGave = 0;
+    rows.forEach(function (r) {
+      var product = r.key || r.product;
+      var totals = S.fulfilProductTotals(date, 'baker', product);
+      var ordered = orderedTotal(r);
+      var producedShown = totals.outletEntries > 0 ? totals.outletProduced : (totals.batch == null ? 0 : totals.batch);
+      gOrd += ordered;
+      gProd += producedShown;
+      gGave += totals.outletGave;
+      var tr = document.createElement('tr');
+      var name = document.createElement('td');
+      name.textContent = r.product;
+      var ord = document.createElement('td');
+      ord.className = 'num';
+      ord.textContent = String(ordered);
+      var prod = document.createElement('td');
+      prod.className = 'num';
+      if (totals.outletEntries > 0) {
+        prod.textContent = String(totals.outletProduced);
+        var note = document.createElement('div');
+        note.className = 'note';
+        note.textContent = 'Sum of outlets';
+        prod.appendChild(note);
+      } else {
+        var input = document.createElement('input');
+        input.type = 'number';
+        input.min = '0';
+        input.step = '1';
+        input.className = 'qty';
+        input.value = totals.batch == null ? '' : String(totals.batch);
+        input.setAttribute('aria-label', 'Produced ' + product);
+        input.addEventListener('change', function () {
+          S.writeFulfilCell(date, 'baker', product, '*', 'produced', input.value);
+          render();
+        });
+        prod.appendChild(input);
+      }
+      var gave = document.createElement('td');
+      gave.className = 'num';
+      gave.textContent = String(totals.outletGave || 0);
+      tr.appendChild(name);
+      tr.appendChild(ord);
+      tr.appendChild(prod);
+      tr.appendChild(gave);
+      tb.appendChild(tr);
+    });
+    var foot = document.createElement('tr');
+    foot.className = 'total-row';
+    ['TOTAL', gOrd, gProd, gGave].forEach(function (v, i) {
+      var td = document.createElement('td');
+      td.textContent = String(v);
+      if (i) td.className = 'num';
+      foot.appendChild(td);
+    });
+    tb.appendChild(foot);
+    table.appendChild(tb);
+    el.innerHTML = '';
+    el.appendChild(table);
+  }
+
+  function render() {
+    syncDate();
+    var fresh = S.buildMatrix(S.FRESH_BUN, { source: 'fresh', base: 1 });
+    var pack = S.buildMatrix(S.PACK_BUN, { source: 'pack', base: 4 });
+    renderTable(document.getElementById('freshTable'), fresh);
+    renderTable(document.getElementById('packTable'), pack);
+    var n = Object.keys(S.latestByOutlet()).length;
+    document.getElementById('statusMeta').textContent = n
+      ? (n + (n === 1 ? ' outlet' : ' outlets') + ' with Order UI submits')
+      : 'No Order UI submits yet — totals are 0';
+  }
+
+  document.getElementById('btnReload').onclick = render;
+  document.getElementById('fulfilDate').addEventListener('change', function () {
+    try { sessionStorage.setItem('walnutDemoFulfilDate', document.getElementById('fulfilDate').value || ''); } catch (e) {}
+    render();
+  });
+  window.addEventListener('storage', function (ev) {
+    if (!ev.key || ev.key === S.KEY || ev.key === S.FULFIL_KEY) render();
+  });
+  render();
+})();
+  </script>
+</body>
+</html>

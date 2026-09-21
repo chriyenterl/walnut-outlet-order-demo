@@ -4,47 +4,88 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Walnut Bakery · Baker board (DEMO)</title>
-  <link rel="stylesheet" href="shell.css" />
   <style>
-*{box-sizing:border-box}
-.glass{margin:0 0 28px}
-.glass h2{margin:0 0 4px;font-family:var(--display);font-weight:560;font-size:28px;letter-spacing:-.03em}
-.hint{margin:0 0 12px;font-size:14px;color:var(--muted);line-height:1.45}
-.hint a{color:var(--amber-deep)}
-.chips{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 18px;border-bottom:1px solid var(--line)}
-.chip{border:0;border-bottom:2px solid transparent;background:transparent;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;border-radius:0;cursor:pointer;font-family:inherit}
-.chip.active{color:var(--ink);border-bottom-color:var(--amber)}
-.table-scroll{overflow:auto;border:1px solid #cfc4b4;background:#fff;-webkit-overflow-scrolling:touch}
-table.board{width:100%;min-width:720px;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
-table.board th,table.board td{padding:6px;border:1px solid #d0d0d0;text-align:center;white-space:nowrap;background:#fff}
-table.board th:first-child,table.board td:first-child{text-align:left;position:sticky;left:0;background:#f8f9fa;z-index:2;min-width:160px;padding-left:10px}
-table.board th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#5f6368;position:sticky;top:0;background:#e8eaed;z-index:3}
-table.board th:first-child{z-index:4;background:#e8eaed}
-table.board tr.total td{font-weight:800;background:#fff8e1}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg: #f6f1ea;
+  --brand: #8b5a2b;
+  --brand2: #5c3a1e;
+  --brand-grad: linear-gradient(135deg, #e8d5c4 0%, #c4a484 45%, #8b5a2b 100%);
+  --card: rgba(255,255,255,.72);
+  --card-solid: #ffffff;
+  --ink: #2a1f18;
+  --muted: #7a6558;
+  --line: rgba(92,58,30,.14);
+  --ok: #1f9d63;
+  --warn: #b06000;
+  --danger: #c62828;
+  --shadow: 0 10px 28px rgba(92,58,30,.10);
+  --radius: 16px;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+body{background:radial-gradient(ellipse 80% 50% at 10% -10%,color-mix(in srgb,var(--brand) 12%,transparent),transparent 50%),radial-gradient(ellipse 60% 40% at 100% 0%,color-mix(in srgb,var(--brand2) 8%,transparent),transparent 45%),var(--bg)}
+.app{max-width:960px;margin:0 auto;min-height:100dvh;padding:12px 14px 40px;position:relative;z-index:1}
+.hero{background:var(--brand-grad);border-radius:var(--radius);padding:16px;color:#1a1210;box-shadow:var(--shadow);margin-bottom:12px}
+.hero h1{margin:0;font-size:18px;font-weight:800}
+.hero .sub{margin:4px 0 0;font-size:12px;font-weight:500;opacity:.85}
+.demo-badge{display:inline-flex;margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,236,180,.55);color:var(--warn);border:1px solid rgba(176,96,0,.28);padding:4px 8px;border-radius:8px}
+.glass{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);margin-bottom:12px}
+.glass h2{margin:0 0 4px;font-size:15px;font-weight:700}
+.hint{margin:0 0 12px;font-size:12px;color:var(--muted);line-height:1.45}
+.site-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:4px 0 16px;font-size:11px;font-weight:600}
+.site-nav a{color:var(--muted);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid transparent}
+.site-nav a:hover,.site-nav a.active{color:var(--ink);border-color:var(--line);background:var(--card)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--card-solid);color:var(--muted);font-size:11px;font-weight:700;padding:6px 10px;border-radius:999px;cursor:pointer;font-family:inherit}
+.chip.active{color:#1a1210;background:var(--brand-grad);border-color:transparent}
+.table-scroll{overflow:auto;border-radius:12px;border:1px solid var(--line);background:var(--card-solid);-webkit-overflow-scrolling:touch}
+table.board{width:100%;min-width:720px;border-collapse:separate;border-spacing:0;font-size:12px}
+table.board th,table.board td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+table.board th:first-child,table.board td:first-child{text-align:left;position:sticky;left:0;background:var(--card-solid);z-index:2;min-width:140px;padding-left:12px}
+table.board th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);position:sticky;top:0;background:var(--card-solid);z-index:3}
+table.board th:first-child{z-index:4}
+table.board tr.total td{font-weight:800;background:color-mix(in srgb,var(--brand) 12%,transparent)}
 table.board td.tot{font-weight:800}
-.section-anchor{scroll-margin-top:72px}
+.section-anchor{scroll-margin-top:12px}
+.btn{border:0;border-radius:14px;padding:12px 14px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--card-solid);color:var(--ink);border:1px solid var(--line)}
+.btn-danger{background:color-mix(in srgb,var(--danger) 18%,var(--card-solid));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,transparent)}
+.btn-primary{background:var(--brand-grad);color:#1a1210;border:0}
+.empty{text-align:center;padding:28px 16px;color:var(--muted);font-size:13px}
+.order-card{border:1px solid var(--line);border-radius:12px;background:var(--card-solid);margin-bottom:10px;overflow:hidden}
+.order-card-head{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:flex-start;padding:12px;cursor:pointer}
+.order-card-head:hover{background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.order-meta{font-size:12px;line-height:1.45}
+.order-meta .id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--warn)}
+.order-meta .sum{color:var(--muted);font-size:11px;margin-top:4px}
+.order-body{display:none;border-top:1px solid var(--line);padding:10px 12px;background:#f3ece4}
+.order-card.open .order-body{display:block}
+.order-body pre{margin:0;white-space:pre-wrap;word-break:break-word;font-size:11px;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;max-height:320px;overflow:auto}
+.map-table{width:100%;border-collapse:collapse;font-size:12px}
+.map-table th,.map-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.map-table th{color:var(--muted);font-size:10px;text-transform:uppercase}
+@media (max-width:600px){
+  .app{padding:10px 10px 32px}
+  .hero h1{font-size:16px}
+}
 </style>
 </head>
-<body class="wapp">
-  <header class="wshell">
-    <div class="wshell-inner">
-      <a class="wbrand" href="index.html">
-        <span class="name">Walnut</span>
-        <span class="line">Baker board</span>
-        <span class="demo">LEGACY</span>
-      </a>
-      <nav class="wnav" aria-label="Companion pages">
-        <a href="index.html" id="navOrder">Order</a>
-        <a href="production.html">Production</a>
-        <a href="bill.html">Bill</a>
-        <a href="backend.html">Backend</a>
-        <a href="baker.html" class="active">Baker</a>
-      </nav>
+<body>
+  <div class="app">
+    <div class="site-nav">
+      <a href="index.html" id="navOrder">Order</a>
+      <a href="baker-board.html">Baker totals</a>
+      <a href="production.html">Production clone</a>
+      <a href="bill.html">Bill clone</a>
+      <a href="backend.html">Backend</a>
+      <a href="baker.html" class="active">Baker (legacy)</a>
     </div>
-  </header>
-  <main class="wpage">
-    <h1>Baker board</h1>
-    <p class="wlede">Legacy SAMPLE rollup. Factory testing uses the Production clone (BAKER tab). SAMPLE only — not live production.</p>
+    <div class="hero">
+      <h1>Walnut Bakery · Baker board (DEMO)</h1>
+      <p class="sub">Legacy SAMPLE rollup with outlet columns. Bakers should use <b>Baker totals</b> — product and total only, fed by Order UI.</p>
+    </div>
+        <div class="demo-badge">LEGACY SAMPLE — use <a href="baker-board.html" style="color:inherit">Baker totals</a> for the batch sheet. This page is not live Production.</div>
 
     <div class="chips" id="chips">
       <button type="button" class="chip active" data-target="sec-fresh">Fresh Bun</button>
@@ -70,12 +111,13 @@ table.board td.tot{font-weight:800}
       <div class="table-scroll" id="specTable"></div>
     </div>
 
-    <p class="hint">Order screen submits land in the backend inbox. This board stays a SAMPLE rollup.</p>
-  </main>
+    <p class="hint" style="text-align:center;">← Back via Order UI · Backend inbox shows DEMO submissions</p>
+  </div>
 <script src="access.js"></script>
 <script>
 (function(){
-  try { if (window.WalnutAccess) { WalnutAccess.parse(); WalnutAccess.wireNav(document); } } catch (eA) {}
+  if (!window.WalnutAccess || !WalnutAccess.require('master')) return;
+  try { WalnutAccess.wireNav(document); } catch (eW) {}
   var OUTLETS = ['FS', 'TC', 'KK', 'BV', 'CC', 'PP', 'BN', 'JNY', 'MK1', 'MK2', 'SA'];
   if (/Index-preview/i.test(document.referrer||'')) {
     var a=document.getElementById('navOrder'); if(a) a.href='Index-preview.html';
@@ -143,7 +185,6 @@ table.board td.tot{font-weight:800}
     var t=document.getElementById(btn.getAttribute('data-target'));
     if(t) t.scrollIntoView({behavior:'smooth', block:'start'});
   });
-  try { if (window.WalnutAccess) WalnutAccess.wireNav(document); } catch (eN) {}
 })();
 </script>
 </body>

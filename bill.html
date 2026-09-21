@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>WALNUT BAKERY · Bill For Print (DEMO CLONE)</title>
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,560&family=Outfit:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 :root {
   --chrome-grad: linear-gradient(135deg, #e8d5c4 0%, #c4a484 45%, #8b5a2b 100%);
   --ink: #202124;
@@ -15,34 +15,35 @@
   --brand-ink: #1a1210;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;min-height:100%;font-family:Outfit,Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#e8e4dc;color:var(--ink)}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f1ea;color:var(--ink)}
 .chrome{
-  background:#1c1410;color:#f3e7d6;padding:12px 16px;
-  border-bottom:3px solid #d4892a;position:sticky;top:0;z-index:40
+  background:var(--chrome-grad);color:var(--brand-ink);padding:12px 16px;
+  box-shadow:0 4px 16px rgba(92,58,30,.12);position:sticky;top:0;z-index:40
 }
-.chrome h1{margin:0;font-family:Fraunces,Georgia,serif;font-size:20px;font-weight:560;letter-spacing:-.02em}
-.chrome .sub{margin:4px 0 0;font-size:12px;font-weight:500;color:#d9cbb8;line-height:1.4;max-width:680px}
+.chrome h1{margin:0;font-size:16px;font-weight:800}
+.chrome .sub{margin:4px 0 0;font-size:11px;font-weight:600;opacity:.88;line-height:1.4;max-width:640px}
 .badge{
-  display:inline-flex;margin-top:8px;font-size:10px;font-weight:700;letter-spacing:.12em;
-  text-transform:uppercase;background:transparent;color:#f0c27a;
-  border:1px solid rgba(212,137,42,.75);padding:5px 8px;border-radius:2px
+  display:inline-flex;margin-top:8px;font-size:10px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;background:rgba(255,240,180,.95);color:var(--warn);
+  border:1px solid rgba(176,96,0,.35);padding:5px 10px;border-radius:8px
 }
-.site-nav{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;font-size:11px;font-weight:700}
-.site-nav a{color:#d9cbb8;text-decoration:none;padding:6px 8px;border-radius:0;border:0;border-bottom:2px solid transparent;background:transparent;letter-spacing:.08em;text-transform:uppercase}
-.site-nav a:hover,.site-nav a.active{background:transparent;color:#f6e7c8;border-bottom-color:#d4892a}
+.site-nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:11px;font-weight:700}
+.site-nav a{color:rgba(26,18,16,.75);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid rgba(26,18,16,.15);background:rgba(255,255,255,.25)}
+.site-nav a:hover,.site-nav a.active{background:rgba(255,255,255,.55);color:var(--brand-ink)}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
 .btn{
-  border:1px solid rgba(243,231,214,.35);border-radius:2px;padding:8px 12px;font-size:12px;font-weight:700;
-  font-family:inherit;cursor:pointer;background:transparent;color:#f6e7c8
+  border:0;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;
+  font-family:inherit;cursor:pointer;background:rgba(255,255,255,.9);color:var(--brand-ink);
+  border:1px solid rgba(26,18,16,.2)
 }
-.btn-primary{background:#d4892a;color:#1c1410;border-color:transparent}
-label.out{font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;color:#f3e7d6}
+.btn-primary{background:#1a1210;color:#f7efe6;border:0}
+label.out{font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
 select{
-  font:inherit;font-size:12px;font-weight:700;padding:6px 8px;border-radius:2px;
-  border:1px solid #cfc4b4;background:#fffcf8;color:#1c1410
+  font:inherit;font-size:12px;font-weight:700;padding:6px 8px;border-radius:8px;
+  border:1px solid rgba(26,18,16,.25);background:#fff
 }
-.meta{font-size:11px;font-weight:600;color:#d9cbb8}
-.page{background:#e8e4dc;padding:14px 10px 48px;min-height:70vh}
+.meta{font-size:11px;font-weight:600;opacity:.85}
+.page{background:#f3ece4;padding:14px 10px 48px;min-height:70vh}
 .sheet{
   max-width:900px;margin:0 auto 18px;background:#fff;border:1px solid #c0c0c0;
   box-shadow:0 1px 3px rgba(0,0,0,.08);padding:10px 12px 14px
@@ -79,18 +80,35 @@ table.bill td.from-order{background:#e8f5e9}
 table.bill td.dash{color:#9aa0a6}
 table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.04em}
 .sign{
-  margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:11px;font-weight:600
+  margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;font-size:11px;font-weight:600
 }
-.sign .line{border-bottom:1px solid #333;min-height:28px;padding-top:4px}
+.sign .line{border-bottom:1px solid #222;min-height:36px;padding-top:4px}
 .sign .lbl{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px}
 .hint{max-width:900px;margin:0 auto 10px;font-size:11px;color:#7a6558;line-height:1.45}
+.bill-banner{
+  max-width:900px;margin:0 auto 10px;padding:10px 12px;border-radius:4px;
+  border:1px solid #dadce0;border-left:4px solid #b06000;background:#fff8e1;
+  font-size:14px;font-weight:800;color:#1a1210
+}
+.bill-banner.from-order{border-left-color:#1f9d63;background:#e8f5e9}
+.link-row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:8px;font-size:12px;font-weight:800}
+.link-row a{color:rgba(26,18,16,.8);text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px}
+.link-row a:hover{border-bottom-color:#1a1210;color:#1a1210}
+@page{size:A4;margin:10mm}
 @media print{
-  body{background:#fff}
-  .chrome,.site-nav,.toolbar,.hint,.no-print{display:none!important}
+  html,body{background:#fff}
+  .chrome,.site-nav,.toolbar,.hint,.link-row,.bill-banner,.no-print{display:none!important}
   .page{padding:0;background:#fff}
-  .sheet{box-shadow:none;max-width:100%;page-break-after:always;border:0}
+  .sheet{box-shadow:none;max-width:100%;margin:0 0 0;padding:0 0 8mm;page-break-after:always;border:0}
   .sheet:last-child{page-break-after:auto}
-  .sign{page-break-inside:avoid}
+  .sheet-header{border-bottom:2px solid #000}
+  .sheet-header .co{font-size:16px}
+  .grid2{grid-template-columns:1.15fr .85fr;gap:8px}
+  table.bill{font-size:9.5pt}
+  table.bill th,table.bill td{border-color:#222;padding:2px 4px}
+  table.bill td.from-order{background:#e8f5e9 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  table.bill tr,.sign{page-break-inside:avoid}
+  .sign .line{min-height:28px;border-bottom:1px solid #000}
 }
   </style>
 </head>
@@ -102,6 +120,7 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     <div class="site-nav">
       <a href="index.html" id="navOrder">Order</a>
       <a href="production.html" data-master-only>Production clone</a>
+      <a href="baker-board.html" data-master-only>Baker totals</a>
       <a href="bill.html" class="active" data-master-only>Bill clone</a>
       <a href="backend.html" data-master-only>Backend</a>
       <a href="links.html" data-master-only>All links</a>
@@ -114,10 +133,17 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
       <button type="button" class="btn" id="btnPrint">Print</button>
       <span class="meta" id="statusMeta">…</span>
     </div>
+    <nav class="link-row" aria-label="Factory links">
+      <a href="index.html" id="linkBackOrder">← Order</a>
+      <a href="production.html" id="linkProd">Production</a>
+      <a href="baker-board.html" id="linkBaker">Baker totals</a>
+      <a href="backend.html" id="linkBackend">Backend</a>
+    </nav>
   </header>
 
   <main class="page">
-    <p class="hint no-print">Green qty cells come from the latest DEMO submit for the selected outlet. Empty 1ST/2ND (and 2ND/3RD on pack) left blank for factory fill-in — same as the paper bill workflow.</p>
+    <div class="bill-banner no-print" id="billBanner">Bill for …</div>
+    <p class="hint no-print">Green qty cells come from the latest DEMO submit for the selected outlet. Empty 1ST/2ND (and 2ND/3RD on pack) left blank for factory fill-in — same as the paper bill workflow. SAMPLE numbers are not live Production.</p>
     <div id="billRoot"></div>
   </main>
 
@@ -144,10 +170,24 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     opt.textContent = o + ' — ' + (S.OUTLET_NAMES[o] || o);
     sel.appendChild(opt);
   });
-  try {
-    var q = new URLSearchParams(location.search).get('outlet');
-    if (q && S.OUTLETS.indexOf(q.toUpperCase()) >= 0) sel.value = q.toUpperCase();
-  } catch (e2) {}
+  function readOutletParam() {
+    var code = '';
+    try {
+      var q = new URLSearchParams(location.search).get('outlet');
+      if (q) code = q;
+    } catch (e) {}
+    if (!code) {
+      try {
+        var m = String(location.hash || '').match(/(?:^|[#&])outlet=([^&]+)/i);
+        if (m) code = decodeURIComponent(m[1]);
+      } catch (e2) {}
+    }
+    code = String(code || '').trim().toUpperCase();
+    if (S.OUTLETS.indexOf(code) < 0) return '';
+    return code;
+  }
+  var initialOutlet = readOutletParam();
+  if (initialOutlet) sel.value = initialOutlet;
 
   function esc(s) {
     return String(s == null ? '' : s)
@@ -174,15 +214,24 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     return html;
   }
 
-  function soSidePanel(special) {
-    if (!special || !special.product) {
-      return '<table class="bill"><thead><tr><th>Special Order</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead>' +
-        '<tbody><tr><td colspan="4" style="text-align:left;color:#9aa0a6;font-size:10px">None in latest DEMO submit</td></tr></tbody></table>';
+  function soSidePanel(lines) {
+    var list = lines || [];
+    var html = '<table class="bill"><thead><tr><th>Special order</th><th>QTY</th><th>Bill no</th><th>Customer</th></tr></thead><tbody>';
+    if (!list.length) {
+      html += '<tr><td colspan="4" style="text-align:left;color:#9aa0a6;font-size:10px">None in latest DEMO submit</td></tr>';
+    } else {
+      list.forEach(function (sp) {
+        if (!sp || !sp.product) return;
+        var pickup = (sp.pickUpDate || '') + (sp.pickUpTime ? ' ' + sp.pickUpTime : '');
+        html += '<tr><td>' + esc(sp.product) +
+          (pickup ? '<div style="font-size:10px;color:#5f6368">Pick up ' + esc(pickup) + '</div>' : '') +
+          '</td><td class="num from-order">' + esc(sp.qty || sp.quantity || 1) + '</td>' +
+          '<td>' + esc(sp.billNo || '—') + '</td>' +
+          '<td>' + esc(sp.customerName || '—') + '</td></tr>';
+      });
     }
-    return '<table class="bill"><thead><tr><th>Special Order</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead><tbody>' +
-      '<tr><td>' + esc(special.product) + (special.customer ? ' · ' + esc(special.customer) : '') + '</td>' +
-      '<td class="num from-order">' + esc(special.qty || special.quantity || 1) + '</td><td></td><td></td></tr>' +
-      '</tbody></table>';
+    html += '</tbody></table>';
+    return html;
   }
 
   function signBlock(includeDistributed) {
@@ -225,7 +274,10 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     if (meta.hasOrder) {
       var latest = S.latestByOutlet()[code];
       var p = (latest && latest.payload) || {};
-      Object.keys(p.daily || {}).forEach(function (k) { fromOrderSet[k] = 1; });
+      Object.keys(p.daily || {}).forEach(function (k) {
+        fromOrderSet[k] = 1;
+        if (k.indexOf('::') >= 0) fromOrderSet[k.slice(k.lastIndexOf('::') + 2)] = 1;
+      });
       S.FRESH_BUN.forEach(function (n) {
         // if weekly/daily provided value, mark
         if (p.daily && p.daily[n] != null) fromOrderSet[n] = 1;
@@ -236,6 +288,14 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
       });
     }
 
+    var nice = S.OUTLET_NAMES[code] || code;
+    var banner = document.getElementById('billBanner');
+    if (banner) {
+      banner.textContent = meta.hasOrder
+        ? ('Bill for ' + nice + ' · from latest DEMO submit')
+        : ('Bill for ' + nice + ' · SAMPLE');
+      banner.className = 'bill-banner no-print' + (meta.hasOrder ? ' from-order' : '');
+    }
     document.getElementById('statusMeta').textContent = meta.hasOrder
       ? ('Latest DEMO: ' + meta.orderId + (meta.at ? ' · ' + meta.at : ''))
       : ('No submit for ' + code + ' — SAMPLE placeholders');
@@ -264,7 +324,7 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     html += '<table class="bill"><thead><tr><th>Products</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead><tbody>';
     html += productRows(freshSpec, map, fromOrderSet, 3);
     html += '</tbody></table></div><div>';
-    html += soSidePanel(special);
+    html += soSidePanel(data.specialLines || (special && special.product ? [special] : []));
     html += '</div></div>';
     html += signBlock(false);
     html += '</section>';
@@ -277,7 +337,7 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     html += '<table class="bill"><thead><tr><th>Products</th><th>QTY</th><th>1ST</th><th>2ND</th></tr></thead><tbody>';
     html += productRows(pastryNames, map, fromOrderSet, 3);
     html += '</tbody></table></div><div>';
-    html += soSidePanel(null);
+    html += soSidePanel([]);
     html += '</div></div>';
     html += '<div class="sign"><div><div class="lbl">Double check by:</div><div class="line"></div></div><div></div></div>';
     html += '</section>';
@@ -319,7 +379,7 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     html += '<table class="bill"><thead><tr><th>Products</th><th>QTY</th><th>2ND</th><th>3RD</th></tr></thead><tbody>';
     html += productRows(puffNames, map, fromOrderSet, 3);
     html += '</tbody></table>';
-    html += soSidePanel(special);
+    html += soSidePanel(data.specialLines || (special && special.product ? [special] : []));
     html += '</div></div>';
     html += signBlock(true);
     html += '</section>';
@@ -329,7 +389,11 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
 
   sel.onchange = function () {
     try {
-      history.replaceState(null, '', '?outlet=' + encodeURIComponent(sel.value));
+      var hash = location.hash || '';
+      if (hash.indexOf('access=') < 0 && window.WalnutAccess && WalnutAccess.token()) {
+        hash = '#access=' + encodeURIComponent(WalnutAccess.token());
+      }
+      history.replaceState(null, '', location.pathname + '?outlet=' + encodeURIComponent(sel.value) + hash);
     } catch (e) {}
     render();
   };
@@ -345,6 +409,5 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
   render();
 })();
   </script>
-<link rel="stylesheet" href="gate.css" />
 </body>
 </html>

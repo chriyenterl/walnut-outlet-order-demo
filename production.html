@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>WALNUT BAKERY · Production Sheet (DEMO CLONE)</title>
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,560&family=Outfit:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 :root {
   --chrome: #5c3a1e;
   --chrome2: #8b5a2b;
@@ -23,40 +23,42 @@
   --warn: #b06000;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;min-height:100%;font-family:Outfit,Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#e8e4dc;color:var(--ink)}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f1ea;color:var(--ink)}
 .chrome{
-  background:#1c1410;color:#f3e7d6;
-  padding:12px 16px 10px;border-bottom:3px solid #d4892a;
+  background:var(--chrome-grad);color:var(--brand-ink);
+  padding:12px 16px 10px;box-shadow:0 4px 16px rgba(92,58,30,.12);
   position:sticky;top:0;z-index:40;
 }
 .chrome-top{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between}
-.chrome h1{margin:0;font-family:Fraunces,Georgia,serif;font-size:20px;font-weight:560;letter-spacing:-.02em}
-.chrome .sub{margin:4px 0 0;font-size:12px;font-weight:500;color:#d9cbb8;max-width:680px;line-height:1.4}
+.chrome h1{margin:0;font-size:16px;font-weight:800;letter-spacing:.02em}
+.chrome .sub{margin:4px 0 0;font-size:11px;font-weight:600;opacity:.88;max-width:640px;line-height:1.4}
 .badge{
-  display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;background:transparent;
-  color:#f0c27a;border:1px solid rgba(212,137,42,.75);padding:5px 8px;border-radius:2px;
+  display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;
+  letter-spacing:.05em;text-transform:uppercase;background:rgba(255,240,180,.95);
+  color:var(--warn);border:1px solid rgba(176,96,0,.35);padding:5px 10px;border-radius:8px;
 }
-.site-nav{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;font-size:11px;font-weight:700}
-.site-nav a{color:#d9cbb8;text-decoration:none;padding:6px 8px;border-radius:0;border:0;border-bottom:2px solid transparent;background:transparent;letter-spacing:.08em;text-transform:uppercase}
-.site-nav a:hover,.site-nav a.active{background:transparent;color:#f6e7c8;border-bottom-color:#d4892a}
+.site-nav{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:11px;font-weight:700}
+.site-nav a{color:rgba(26,18,16,.75);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid rgba(26,18,16,.15);background:rgba(255,255,255,.25)}
+.site-nav a:hover,.site-nav a.active{background:rgba(255,255,255,.55);color:var(--brand-ink)}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
 .btn{
-  border:1px solid rgba(243,231,214,.35);border-radius:2px;padding:8px 12px;font-size:12px;font-weight:700;
-  font-family:inherit;cursor:pointer;background:transparent;color:#f6e7c8
+  border:0;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;
+  font-family:inherit;cursor:pointer;background:rgba(255,255,255,.9);color:var(--brand-ink);
+  border:1px solid rgba(26,18,16,.2)
 }
-.btn-primary{background:#d4892a;color:#1c1410;border-color:transparent}
-.meta{font-size:11px;font-weight:600;color:#d9cbb8}
+.btn-primary{background:#1a1210;color:#f7efe6;border-color:transparent}
+.meta{font-size:11px;font-weight:600;opacity:.85}
 .tabs{
-  display:flex;flex-wrap:wrap;gap:0;padding:0 8px;background:#f4f1eb;
-  border-bottom:1px solid #ddd4c6;position:sticky;top:0;z-index:30;
+  display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;background:#efe6db;
+  border-bottom:1px solid rgba(92,58,30,.14);position:sticky;top:0;z-index:30;
 }
-.tabs-wrap{position:sticky;top:0;z-index:35;background:#f4f1eb}
+/* tabs stick under chrome — chrome already sticky; keep tabs sticky within scroll */
+.tabs-wrap{position:sticky;top:0;z-index:35;background:#efe6db}
 .chip{
-  border:0;border-bottom:2px solid transparent;background:transparent;color:#6d6258;
-  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;border-radius:0;cursor:pointer;font-family:inherit
+  border:1px solid rgba(92,58,30,.18);background:#ffffff;color:#7a6558;
+  font-size:11px;font-weight:700;padding:7px 12px;border-radius:999px;cursor:pointer;font-family:inherit
 }
-.chip.active{color:#1c1410;background:transparent;border-bottom-color:#d4892a}
+.chip.active{color:#1a1210;background:var(--chrome-grad);border-color:transparent}
 .sheet-wrap{background:var(--sheet-bg);min-height:70vh;padding:12px 10px 40px}
 .panel{display:none}
 .panel.active{display:block}
@@ -69,6 +71,7 @@ html,body{margin:0;padding:0;min-height:100%;font-family:Outfit,Inter,system-ui,
   padding:8px 10px;background:#f1f3f4;border-bottom:1px solid #dadce0;font-size:12px;font-weight:700
 }
 .board-head .date{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--muted);font-weight:600}
+.board-head a{font-size:11px;font-weight:800;color:#1b5e20;text-decoration:none}
 .table-scroll{overflow:auto;-webkit-overflow-scrolling:touch;max-height:min(70vh,720px)}
 table.sheet{
   width:100%;min-width:860px;border-collapse:collapse;font-size:11px;
@@ -92,8 +95,41 @@ table.sheet td.num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monosp
 table.sheet td.tot,table.sheet th.tot{background:var(--total-cell);font-weight:800}
 table.sheet tr.total-row td{background:#fff3cd;font-weight:800}
 table.sheet td.from-order{background:var(--order-cell)}
+table.sheet th.col-hl{background:#1b5e20;color:#fff}
+table.sheet td.col-hl{background:#c8e6c9;box-shadow:inset 0 0 0 2px #2e7d32}
+table.sheet td.col-hl.from-order{background:#a5d6a7}
 table.sheet td.dash{color:#9aa0a6}
-.hint{margin:0 0 10px;font-size:12px;color:#6d6258;line-height:1.45;padding:0 2px}
+.inbox-banner{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+  background:#fff;border:1px solid #dadce0;border-left:4px solid #1f9d63;
+  border-radius:4px;padding:10px 12px;margin:0 0 10px;font-size:13px;font-weight:650
+}
+.inbox-banner.empty{border-left-color:#b06000;background:#fff8e1}
+.inbox-banner .msg{flex:1;min-width:220px;line-height:1.45;font-weight:700}
+.inbox-banner .actions{display:flex;flex-wrap:wrap;gap:8px}
+.inbox-banner a.btn{text-decoration:none;display:inline-flex;align-items:center}
+.legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:0 0 12px;font-size:11px;font-weight:700;color:#5f6368}
+.legend .swatch{display:inline-block;width:14px;height:14px;border:1px solid #c0c0c0;margin-right:5px;vertical-align:-2px;background:#fff}
+.legend .swatch.order{background:#e8f5e9;border-color:#81c784}
+.legend .swatch.focus{background:#a5d6a7;box-shadow:inset 0 0 0 2px #1b5e20;border-color:#2e7d32}
+.legend .is-off{display:none}
+.fulfil{background:#fff;border:1px solid #dadce0;border-radius:4px;margin:0 0 14px;overflow:hidden}
+.fulfil-head{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;padding:8px 10px;background:#eef6ee;border-bottom:1px solid #dadce0;font-size:12px;font-weight:700}
+.fulfil-head .sub{font-weight:600;color:var(--muted);font-size:11px}
+.fulfil-scroll{overflow:auto}
+table.fulfil{width:100%;border-collapse:collapse;font-size:12px;min-width:520px}
+table.fulfil th,table.fulfil td{border-bottom:1px solid #e6e6e6;padding:6px 8px;text-align:left}
+table.fulfil th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:#fafafa}
+table.fulfil td.num,table.fulfil th.num{text-align:right;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+table.fulfil input.qty{width:72px;padding:4px 6px;border:1px solid #c0c0c0;border-radius:4px;font:inherit;font-size:12px;text-align:right}
+table.fulfil .toggle{border:1px solid #c0c0c0;background:#fff;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+table.fulfil tr.outlets td{background:#f7faf7;padding:0}
+table.mini{width:100%;border-collapse:collapse;font-size:11px}
+table.mini th,table.mini td{border-bottom:1px solid #e6e6e6;padding:4px 8px}
+table.mini th{text-transform:uppercase;font-size:9px;color:var(--muted)}
+.date-field{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700}
+.date-field input{font:inherit;font-size:12px;padding:4px 6px;border-radius:6px;border:1px solid rgba(26,18,16,.25)}
+.hint{margin:0 0 10px;font-size:11px;color:#7a6558;line-height:1.45;padding:0 2px}
 .placeholder-note{
   margin:0;padding:16px;font-size:12px;color:var(--muted);background:#fff;border:1px dashed #dadce0;border-radius:4px
 }
@@ -123,12 +159,14 @@ table.sheet td.dash{color:#9aa0a6}
     <div class="site-nav no-print">
       <a href="index.html" id="navOrder">Order</a>
       <a href="production.html" class="active" data-master-only>Production clone</a>
+      <a href="baker-board.html" data-master-only>Baker totals</a>
       <a href="bill.html" data-master-only>Bill clone</a>
       <a href="backend.html" data-master-only>Backend</a>
       <a href="links.html" data-master-only>All links</a>
     </div>
     <div class="toolbar no-print">
       <button type="button" class="btn btn-primary" id="btnReload">Reload from Order UI</button>
+      <label class="date-field">Fulfilment date <input type="date" id="fulfilDate" /></label>
       <span class="meta" id="statusMeta">Loading…</span>
     </div>
   </header>
@@ -145,13 +183,23 @@ table.sheet td.dash{color:#9aa0a6}
   </div>
 
   <main class="sheet-wrap">
-    <p class="hint no-print">Green cells = qty overridden by a DEMO Order UI submit for that outlet. Other cells = SAMPLE fill. TOTAL recomputed. SO column from special-order lines when product matches.</p>
+    <div class="inbox-banner empty no-print" id="inboxBanner">
+      <div class="msg">No Order UI submits in this browser yet. The grids below are SAMPLE baseline only.</div>
+      <div class="actions"><a class="btn btn-primary" id="bannerOrder" href="index.html">Submit from Order UI first</a></div>
+    </div>
+    <div class="legend no-print" id="sheetLegend">
+      <span><i class="swatch sample"></i>SAMPLE baseline</span>
+      <span><i class="swatch order"></i>Order UI</span>
+      <span id="legendFocus" class="is-off"><i class="swatch focus"></i><span id="legendFocusLbl">Linked outlet</span></span>
+    </div>
+    <p class="hint no-print">Green cells = qty overridden by a DEMO Order UI submit for that outlet. White cells = SAMPLE fill. TOTAL recomputed. SO column from special-order lines when product matches.</p>
 
     <section class="panel" id="panel-brsp">
       <div class="board-card">
         <div class="board-head"><span>BR &amp; SP — Specialty + Bread (SAMPLE board)</span><span class="date" id="dateBrsp"></span></div>
         <div class="table-scroll" id="brspTable"></div>
       </div>
+      <div class="fulfil no-print" id="fulfil-brsp"></div>
     </section>
 
     <section class="panel" id="panel-pastry">
@@ -160,6 +208,7 @@ table.sheet td.dash{color:#9aa0a6}
         <div class="table-scroll" id="pastryTable"></div>
       </div>
       <p class="placeholder-note">DEMO: single QTY column per outlet (not full 1ST/2ND split). Structure matches Production column codes FS…SA + SO.</p>
+      <div class="fulfil no-print" id="fulfil-pastry"></div>
     </section>
 
     <section class="panel" id="panel-cake">
@@ -167,17 +216,20 @@ table.sheet td.dash{color:#9aa0a6}
         <div class="board-head"><span>Cakeroom — Cake / Cartoon / Slice / Others (SAMPLE)</span><span class="date" id="dateCake"></span></div>
         <div class="table-scroll" id="cakeTable"></div>
       </div>
+      <div class="fulfil no-print" id="fulfil-cake"></div>
     </section>
 
     <section class="panel active" id="panel-baker">
       <div class="board-card">
-        <div class="board-head"><span>BAKER · Fresh Bun</span><span class="date" id="dateFresh"></span></div>
+        <div class="board-head"><span>BAKER · Fresh Bun</span><span class="date" id="dateFresh"></span><a href="baker-board.html" id="linkBakerTotals">Baker totals (no outlets) ↗</a></div>
         <div class="table-scroll" id="freshTable"></div>
       </div>
       <div class="board-card">
         <div class="board-head"><span>BAKER · Pack Bun (BAKER BUAT = Σ outlets)</span><span class="date" id="datePack"></span></div>
         <div class="table-scroll" id="packTable"></div>
       </div>
+      <div class="fulfil no-print" id="fulfil-baker-fresh"></div>
+      <div class="fulfil no-print" id="fulfil-baker-pack"></div>
     </section>
 
     <section class="panel" id="panel-packer">
@@ -189,6 +241,8 @@ table.sheet td.dash{color:#9aa0a6}
         <div class="board-head"><span>PACKER · Pack Bun</span><span class="date" id="datePackerPack"></span></div>
         <div class="table-scroll" id="packerPackTable"></div>
       </div>
+      <div class="fulfil no-print" id="fulfil-packer-fresh"></div>
+      <div class="fulfil no-print" id="fulfil-packer-pack"></div>
     </section>
 
     <section class="panel" id="panel-so">
@@ -220,6 +274,97 @@ table.sheet td.dash{color:#9aa0a6}
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  var focusOutlet = '';
+  var fulfilOpen = {};
+
+  function readFocusOutlet() {
+    var code = '';
+    try {
+      var q = new URLSearchParams(location.search).get('outlet');
+      if (q) code = q;
+    } catch (e) {}
+    if (!code) {
+      try {
+        var m = String(location.hash || '').match(/(?:^|[#&])outlet=([^&]+)/i);
+        if (m) code = decodeURIComponent(m[1]);
+      } catch (e2) {}
+    }
+    code = String(code || '').trim().toUpperCase();
+    if (S.OUTLETS.indexOf(code) < 0) return '';
+    return code;
+  }
+
+  function fmtWhen(iso) {
+    if (!iso) return '—';
+    try {
+      return new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Kuching', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false
+      }).format(new Date(iso)) + ' MYT';
+    } catch (e) { return String(iso); }
+  }
+
+  function orderHref() {
+    if (window.WalnutAccess && WalnutAccess.appendAccess) return WalnutAccess.appendAccess('index.html');
+    return 'index.html';
+  }
+
+  function paintBanner(orders, codes) {
+    var el = document.getElementById('inboxBanner');
+    if (!el) return;
+    el.innerHTML = '';
+    var msg = document.createElement('div');
+    msg.className = 'msg';
+    var actions = document.createElement('div');
+    actions.className = 'actions';
+    if (!orders.length) {
+      el.className = 'inbox-banner empty no-print';
+      msg.textContent = 'No Order UI submits in this browser yet. The grids below are SAMPLE baseline only.';
+      var cta = document.createElement('a');
+      cta.className = 'btn btn-primary';
+      cta.href = orderHref();
+      cta.textContent = 'Submit from Order UI first';
+      actions.appendChild(cta);
+    } else {
+      el.className = 'inbox-banner no-print';
+      var newest = orders[0] || {};
+      var code = S.orderOutletCode(newest) || '—';
+      var n = codes.length;
+      msg.textContent = 'Showing Order UI submits · ' + n + (n === 1 ? ' outlet' : ' outlets') +
+        ' · latest: ' + code + ' at ' + fmtWhen(newest.at);
+      var reload = document.createElement('button');
+      reload.type = 'button';
+      reload.className = 'btn';
+      reload.textContent = 'Reload';
+      reload.onclick = refresh;
+      var back = document.createElement('a');
+      back.className = 'btn';
+      back.href = orderHref();
+      back.textContent = '← Order';
+      actions.appendChild(reload);
+      actions.appendChild(back);
+    }
+    el.appendChild(msg);
+    el.appendChild(actions);
+    var focusNote = document.getElementById('legendFocus');
+    var focusLbl = document.getElementById('legendFocusLbl');
+    if (focusNote) focusNote.classList.toggle('is-off', !focusOutlet);
+    if (focusLbl && focusOutlet) focusLbl.textContent = 'Linked outlet ' + focusOutlet;
+  }
+
+  function scrollFocus() {
+    if (!focusOutlet) return;
+    var panel = document.querySelector('.panel.active');
+    if (!panel) return;
+    panel.querySelectorAll('.table-scroll').forEach(function (scroller) {
+      var th = scroller.querySelector('th[data-outlet="' + focusOutlet + '"]');
+      if (!th) return;
+      var sticky = scroller.querySelector('thead th:first-child');
+      var stickyW = sticky ? sticky.getBoundingClientRect().width : 160;
+      var left = th.getBoundingClientRect().left - scroller.getBoundingClientRect().left + scroller.scrollLeft - stickyW - 8;
+      scroller.scrollLeft = Math.max(0, left);
+    });
+  }
+
   function renderMatrix(el, rows, opts) {
     opts = opts || {};
     var bakerBuat = !!opts.bakerBuat;
@@ -227,7 +372,9 @@ table.sheet td.dash{color:#9aa0a6}
     var html = '<table class="sheet"><thead><tr><th>Product</th>';
     if (bakerBuat) html += '<th class="tot">BAKER BUAT</th>';
     if (!totalRight) html += '<th class="tot">TOTAL</th>';
-    S.OUTLETS.forEach(function (o) { html += '<th>' + o + '</th>'; });
+    S.OUTLETS.forEach(function (o) {
+      html += '<th data-outlet="' + o + '"' + (focusOutlet === o ? ' class="col-hl"' : '') + '>' + o + '</th>';
+    });
     html += '<th>SO</th>';
     if (totalRight) html += '<th class="tot">TOTAL</th>';
     html += '</tr></thead><tbody>';
@@ -251,8 +398,9 @@ table.sheet td.dash{color:#9aa0a6}
         var v = r.cells[o];
         var cls = 'num';
         if (r.sources[o] === 'order') cls += ' from-order';
+        if (focusOutlet === o) cls += ' col-hl';
         if (v == null) cls += ' dash';
-        html += '<td class="' + cls + '">' + esc(S.cellDisplay(v)) + '</td>';
+        html += '<td class="' + cls + '" data-outlet="' + o + '">' + esc(S.cellDisplay(v)) + '</td>';
         if (typeof v === 'number') colTot[o] += v;
       });
       html += '<td class="num' + (r.so ? ' from-order' : '') + '">' + esc(S.cellDisplay(r.so || 0)) + '</td>';
@@ -266,7 +414,9 @@ table.sheet td.dash{color:#9aa0a6}
     html += '<tr class="total-row"><td>TOTAL</td>';
     if (bakerBuat) html += '<td class="num tot">' + buatGrand + '</td>';
     if (!totalRight) html += '<td class="num tot">' + grand + '</td>';
-    S.OUTLETS.forEach(function (o) { html += '<td class="num">' + colTot[o] + '</td>'; });
+    S.OUTLETS.forEach(function (o) {
+      html += '<td class="num' + (focusOutlet === o ? ' col-hl' : '') + '" data-outlet="' + o + '">' + colTot[o] + '</td>';
+    });
     html += '<td class="num">' + soGrand + '</td>';
     if (totalRight) html += '<td class="num tot">' + grand + '</td>';
     html += '</tr></tbody></table>';
@@ -289,8 +439,8 @@ table.sheet td.dash{color:#9aa0a6}
           cat: sp.category || '—',
           product: sp.product,
           qty: sp.qty || sp.quantity || 1,
-          bill: sp.billNo || sp.bill || sp.customerName || '—',
-          bake: p.orderDate || '—',
+          billNo: sp.billNo || '',
+          customer: sp.customerName || '',
           id: entry.orderId || entry.id || ''
         });
       });
@@ -300,25 +450,206 @@ table.sheet td.dash{color:#9aa0a6}
       return;
     }
     var html = '<table class="sheet so-table"><thead><tr>' +
-      '<th>Pick Up Date</th><th>Time</th><th>Outlet</th><th>Category</th><th>Product</th><th>Qty</th><th>Bill No</th><th>Baking Date</th><th>DEMO id</th>' +
+      '<th>Pick Up Date</th><th>Time</th><th>Outlet</th><th>Category</th><th>Product</th><th>Qty</th><th>Bill no</th><th>Customer name</th><th>DEMO id</th>' +
       '</tr></thead><tbody>';
     rows.forEach(function (r) {
       html += '<tr>' +
         '<td>' + esc(r.pickup) + '</td><td class="num">' + esc(r.time) + '</td><td>' + esc(r.outlet) + '</td>' +
         '<td>' + esc(r.cat) + '</td><td>' + esc(r.product) + '</td><td class="num from-order">' + esc(r.qty) + '</td>' +
-        '<td>' + esc(r.bill) + '</td><td>' + esc(r.bake) + '</td><td class="num">' + esc(r.id) + '</td></tr>';
+        '<td>' + esc(r.billNo || '—') + '</td><td>' + esc(r.customer || '—') + '</td><td class="num">' + esc(r.id) + '</td></tr>';
     });
     html += '</tbody></table>';
     el.innerHTML = html;
   }
 
+  function fulfilDateValue() {
+    var input = document.getElementById('fulfilDate');
+    if (input && input.value) return input.value;
+    try {
+      var saved = sessionStorage.getItem('walnutDemoFulfilDate');
+      if (saved) return saved;
+    } catch (e) {}
+    return S.sheetOrderDate ? S.sheetOrderDate() : '';
+  }
+
+  function syncFulfilDateInput() {
+    var input = document.getElementById('fulfilDate');
+    if (!input) return;
+    if (!input.value) {
+      var d = '';
+      try { d = sessionStorage.getItem('walnutDemoFulfilDate') || ''; } catch (e) {}
+      input.value = d || (S.sheetOrderDate ? S.sheetOrderDate() : '');
+    }
+  }
+
+  function orderedOutlet(row, outlet) {
+    if (!row || !row.sources || row.sources[outlet] !== 'order') return null;
+    return typeof row.cells[outlet] === 'number' ? row.cells[outlet] : null;
+  }
+
+  function orderedSum(row) {
+    var t = 0, any = false;
+    S.OUTLETS.forEach(function (o) {
+      var v = orderedOutlet(row, o);
+      if (v != null) { t += v; any = true; }
+    });
+    return any ? t : null;
+  }
+
+  function paintFulfil(el, dept, title, rows) {
+    if (!el) return;
+    var date = fulfilDateValue();
+    el.innerHTML = '';
+    var head = document.createElement('div');
+    head.className = 'fulfil-head';
+    var titleEl = document.createElement('span');
+    titleEl.textContent = title;
+    var sub = document.createElement('span');
+    sub.className = 'sub';
+    sub.textContent = 'Ordered is Order UI only · Produced and Gave stay in this browser';
+    head.appendChild(titleEl);
+    head.appendChild(sub);
+    el.appendChild(head);
+    var scroll = document.createElement('div');
+    scroll.className = 'fulfil-scroll';
+    var table = document.createElement('table');
+    table.className = 'fulfil';
+    var thead = document.createElement('thead');
+    var hr = document.createElement('tr');
+    ['Product', 'Ordered', 'Produced', 'Gave outlet', ''].forEach(function (label, i) {
+      var th = document.createElement('th');
+      th.textContent = label;
+      if (i > 0 && i < 4) th.className = 'num';
+      hr.appendChild(th);
+    });
+    thead.appendChild(hr);
+    table.appendChild(thead);
+    var tb = document.createElement('tbody');
+
+    function sumText(n) { return n == null ? '—' : String(n); }
+
+    rows.forEach(function (r) {
+      var product = r.key || r.product;
+      var openKey = dept + '|' + product;
+      var tr = document.createElement('tr');
+      var nameTd = document.createElement('td');
+      nameTd.textContent = r.product;
+      var ordTd = document.createElement('td');
+      ordTd.className = 'num';
+      ordTd.textContent = sumText(orderedSum(r));
+      var prodTd = document.createElement('td');
+      prodTd.className = 'num';
+      var gaveTd = document.createElement('td');
+      gaveTd.className = 'num';
+      function paintSums() {
+        var totals = S.fulfilProductTotals(date, dept, product);
+        prodTd.textContent = String(totals.outletProduced || 0);
+        gaveTd.textContent = String(totals.outletGave || 0);
+      }
+      paintSums();
+      var act = document.createElement('td');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'toggle';
+      btn.textContent = fulfilOpen[openKey] ? 'Hide outlets' : 'Outlets';
+      act.appendChild(btn);
+      tr.appendChild(nameTd);
+      tr.appendChild(ordTd);
+      tr.appendChild(prodTd);
+      tr.appendChild(gaveTd);
+      tr.appendChild(act);
+
+      var detail = document.createElement('tr');
+      detail.className = 'outlets';
+      var detailTd = document.createElement('td');
+      detailTd.colSpan = 5;
+      detail.appendChild(detailTd);
+
+      function buildOutlets() {
+        detailTd.innerHTML = '';
+        var mini = document.createElement('table');
+        mini.className = 'mini';
+        var mh = document.createElement('tr');
+        ['Outlet', 'Ordered', 'Produced', 'Gave outlet'].forEach(function (label) {
+          var th = document.createElement('th');
+          th.textContent = label;
+          mh.appendChild(th);
+        });
+        mini.appendChild(mh);
+        S.OUTLETS.forEach(function (o) {
+          var mr = document.createElement('tr');
+          var c0 = document.createElement('td');
+          c0.textContent = o + (S.OUTLET_NAMES[o] ? ' · ' + S.OUTLET_NAMES[o] : '');
+          var c1 = document.createElement('td');
+          var ov = orderedOutlet(r, o);
+          c1.textContent = ov == null ? '—' : String(ov);
+          var cell = S.readFulfilCell(date, dept, product, o);
+          function field(name, current) {
+            var td = document.createElement('td');
+            var input = document.createElement('input');
+            input.type = 'number';
+            input.min = '0';
+            input.step = '1';
+            input.className = 'qty';
+            input.value = current === '' || current == null ? '' : String(current);
+            input.setAttribute('aria-label', name + ' ' + product + ' ' + o);
+            input.addEventListener('change', function () {
+              S.writeFulfilCell(date, dept, product, o, name, input.value);
+              paintSums();
+            });
+            td.appendChild(input);
+            return td;
+          }
+          mr.appendChild(c0);
+          mr.appendChild(c1);
+          mr.appendChild(field('produced', cell.produced));
+          mr.appendChild(field('gave', cell.gave));
+          mini.appendChild(mr);
+        });
+        detailTd.appendChild(mini);
+      }
+
+      function setOpen(open) {
+        fulfilOpen[openKey] = open;
+        detail.style.display = open ? 'table-row' : 'none';
+        btn.textContent = open ? 'Hide outlets' : 'Outlets';
+        if (open && !detailTd.firstChild) buildOutlets();
+      }
+      btn.addEventListener('click', function () { setOpen(!fulfilOpen[openKey]); });
+      setOpen(!!fulfilOpen[openKey]);
+      tb.appendChild(tr);
+      tb.appendChild(detail);
+    });
+    table.appendChild(tb);
+    scroll.appendChild(table);
+    el.appendChild(scroll);
+  }
+
+  function paintAllFulfilment() {
+    syncFulfilDateInput();
+    var freshRows = S.buildMatrix(S.FRESH_BUN, { source: 'fresh', base: 1 });
+    var packRows = S.buildMatrix(S.PACK_BUN, { source: 'pack', base: 4 });
+    var brsp = S.SPECIALTY.concat(S.BREAD);
+    paintFulfil(document.getElementById('fulfil-brsp'), 'brsp', 'BR & SP fulfilment — Produced and Gave per outlet', S.buildMatrix(brsp, { source: 'daily', base: 7 }));
+    paintFulfil(document.getElementById('fulfil-pastry'), 'pastry', 'Pastry fulfilment — Produced and Gave per outlet', S.buildMatrix(S.PASTRY, { source: 'daily', base: 3 }));
+    var cakeAll = S.CAKE_HALF.concat(S.CAKE_1KG, S.CARTOON, S.SLICE, S.OTHERS);
+    paintFulfil(document.getElementById('fulfil-cake'), 'cake', 'Cakeroom fulfilment — Produced and Gave per outlet', S.buildMatrix(cakeAll, { source: 'daily', base: 2 }));
+    paintFulfil(document.getElementById('fulfil-baker-fresh'), 'baker', 'BAKER fulfilment · Fresh bun — Produced and Gave per outlet', freshRows);
+    paintFulfil(document.getElementById('fulfil-baker-pack'), 'baker', 'BAKER fulfilment · Pack bun — Produced and Gave per outlet', packRows);
+    paintFulfil(document.getElementById('fulfil-packer-fresh'), 'packer', 'PACKER fulfilment · Fresh bun — Produced and Gave per outlet', freshRows);
+    paintFulfil(document.getElementById('fulfil-packer-pack'), 'packer', 'PACKER fulfilment · Pack bun — Produced and Gave per outlet', packRows);
+  }
+
   function refresh() {
+    focusOutlet = readFocusOutlet();
+    var orders = S.loadOrders();
     var latest = S.latestByOutlet();
     var codes = Object.keys(latest);
+    paintBanner(orders, codes);
     var meta = document.getElementById('statusMeta');
     meta.textContent = codes.length
-      ? ('DEMO outlets with submits: ' + codes.join(', ') + ' · ' + S.loadOrders().length + ' inbox entries')
-      : ('No Order UI submits yet — showing SAMPLE fill only · key ' + S.KEY);
+      ? (orders.length + ' inbox entries · green = Order UI' + (focusOutlet ? ' · column ' + focusOutlet : ''))
+      : ('SAMPLE fill only · key ' + S.KEY);
 
     // bake date = tomorrow-ish from first order or today label
     var bakeIso = '';
@@ -345,6 +676,8 @@ table.sheet td.dash{color:#9aa0a6}
     var cakeAll = S.CAKE_HALF.concat(S.CAKE_1KG, S.CARTOON, S.SLICE, S.OTHERS);
     renderMatrix(document.getElementById('cakeTable'), S.buildMatrix(cakeAll, { source: 'daily', base: 2 }), {});
     renderSO(document.getElementById('soTable'));
+    paintAllFulfilment();
+    requestAnimationFrame(scrollFocus);
   }
 
   document.getElementById('tabs').addEventListener('click', function (ev) {
@@ -356,11 +689,19 @@ table.sheet td.dash{color:#9aa0a6}
     document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
     var panel = document.getElementById('panel-' + tab);
     if (panel) panel.classList.add('active');
+    requestAnimationFrame(scrollFocus);
   });
 
   document.getElementById('btnReload').onclick = refresh;
+  var fulfilDateInput = document.getElementById('fulfilDate');
+  if (fulfilDateInput) {
+    fulfilDateInput.addEventListener('change', function () {
+      try { sessionStorage.setItem('walnutDemoFulfilDate', fulfilDateInput.value || ''); } catch (e) {}
+      paintAllFulfilment();
+    });
+  }
   window.addEventListener('storage', function (ev) {
-    if (ev.key === S.KEY || ev.key === null) refresh();
+    if (ev.key === S.KEY || ev.key === S.FULFIL_KEY || ev.key === null) refresh();
   });
   // same-tab submit won't fire storage — poll lightly when visible
   document.addEventListener('visibilitychange', function () {
@@ -370,6 +711,5 @@ table.sheet td.dash{color:#9aa0a6}
   refresh();
 })();
   </script>
-<link rel="stylesheet" href="gate.css" />
 </body>
 </html>
