@@ -280,18 +280,21 @@ table.sheet td.dash{color:#9aa0a6}
     var rows = [];
     orders.forEach(function (entry) {
       var p = entry.payload || {};
-      var sp = p.special;
-      if (!sp || !sp.product) return;
-      rows.push({
-        pickup: sp.pickupDate || sp.date || p.orderDate || '—',
-        time: sp.pickupTime || sp.time || '—',
-        outlet: entry.outlet || p.outlet || '—',
-        cat: sp.category || '—',
-        product: sp.product,
-        qty: sp.qty || sp.quantity || 1,
-        bill: sp.billNo || sp.bill || '—',
-        bake: p.orderDate || '—',
-        id: entry.orderId || entry.id || ''
+      var list = (p.specialLines && p.specialLines.length) ? p.specialLines
+        : (p.special && p.special.product ? [p.special] : []);
+      list.forEach(function (sp) {
+        if (!sp || !sp.product) return;
+        rows.push({
+          pickup: sp.pickUpDate || sp.pickupDate || sp.date || p.orderDate || '—',
+          time: sp.pickUpTime || sp.pickupTime || sp.time || '—',
+          outlet: entry.outlet || p.outlet || '—',
+          cat: sp.category || '—',
+          product: sp.product,
+          qty: sp.qty || sp.quantity || 1,
+          bill: sp.billNo || sp.bill || sp.customerName || '—',
+          bake: p.orderDate || '—',
+          id: entry.orderId || entry.id || ''
+        });
       });
     });
     if (!rows.length) {

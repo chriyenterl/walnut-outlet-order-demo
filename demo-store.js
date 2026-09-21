@@ -223,13 +223,25 @@
   }
 
   function soFromPayload(payload, product) {
-    var sp = payload && payload.special;
-    if (!sp || !sp.product) return null;
-    var name = String(sp.product).toUpperCase();
-    if (name === String(product).toUpperCase() || name.indexOf(String(product).toUpperCase()) >= 0) {
-      return Number(sp.qty) || Number(sp.quantity) || 1;
+    if (!payload) return null;
+    var lines = [];
+    if (payload.specialLines && payload.specialLines.length) {
+      lines = payload.specialLines;
+    } else if (payload.special && payload.special.product) {
+      lines = [payload.special];
     }
-    return null;
+    var want = String(product).toUpperCase();
+    var total = 0;
+    var hit = false;
+    lines.forEach(function (sp) {
+      if (!sp || !sp.product) return;
+      var name = String(sp.product).toUpperCase();
+      if (name === want || name.indexOf(want) >= 0) {
+        hit = true;
+        total += Number(sp.qty) || Number(sp.quantity) || 1;
+      }
+    });
+    return hit ? total : null;
   }
 
   /**
