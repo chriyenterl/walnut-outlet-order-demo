@@ -178,16 +178,16 @@
     css.id = 'walnutAccessGateCss';
     css.textContent = [
       '.walnut-access-gate{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;',
-      'padding:24px;background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(139,90,43,.28),transparent 50%),',
-      'radial-gradient(ellipse 60% 40% at 100% 0%,rgba(92,58,30,.2),transparent 45%),#1c1410;color:#f7efe6;',
+      'padding:24px;background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(139,90,43,.12),transparent 50%),',
+      'radial-gradient(ellipse 60% 40% at 100% 0%,rgba(92,58,30,.08),transparent 45%),#f6f1ea;color:#2a1f18;',
       'font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}',
-      '.walnut-access-gate .card{max-width:420px;width:100%;background:rgba(255,236,210,.08);border:1px solid rgba(210,180,140,.16);',
-      'border-radius:16px;padding:22px 20px;box-shadow:0 12px 40px rgba(0,0,0,.35);text-align:center}',
+      '.walnut-access-gate .card{max-width:420px;width:100%;background:rgba(255,255,255,.85);border:1px solid rgba(92,58,30,.14);',
+      'border-radius:16px;padding:22px 20px;box-shadow:0 10px 28px rgba(92,58,30,.10);text-align:center}',
       '.walnut-access-gate .badge{display:inline-flex;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;',
-      'background:rgba(245,197,66,.2);color:#f5c542;border:1px solid rgba(245,197,66,.35);padding:4px 8px;border-radius:8px;margin-bottom:12px}',
+      'background:rgba(255,236,180,.55);color:#b06000;border:1px solid rgba(176,96,0,.28);padding:4px 8px;border-radius:8px;margin-bottom:12px}',
       '.walnut-access-gate h1{margin:0 0 8px;font-size:18px;font-weight:800;letter-spacing:-.02em}',
-      '.walnut-access-gate p{margin:0 0 10px;font-size:13px;color:#c4a990;line-height:1.5}',
-      '.walnut-access-gate .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#f5c542;word-break:break-all}',
+      '.walnut-access-gate p{margin:0 0 10px;font-size:13px;color:#7a6558;line-height:1.5}',
+      '.walnut-access-gate .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#b06000;word-break:break-all}',
       '.walnut-access-hidden{display:none!important}'
     ].join('');
     document.head.appendChild(css);

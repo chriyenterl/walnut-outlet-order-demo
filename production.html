@@ -9,7 +9,7 @@
 :root {
   --chrome: #5c3a1e;
   --chrome2: #8b5a2b;
-  --chrome-grad: linear-gradient(135deg, #c4a484 0%, #8b5a2b 45%, #5c3a1e 100%);
+  --chrome-grad: linear-gradient(135deg, #e8d5c4 0%, #c4a484 45%, #8b5a2b 100%);
   --sheet-bg: #f3f3f3;
   --cell: #ffffff;
   --cell-alt: #f8f9fa;
@@ -23,10 +23,10 @@
   --warn: #b06000;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#1c1410;color:var(--ink)}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f6f1ea;color:var(--ink)}
 .chrome{
   background:var(--chrome-grad);color:var(--brand-ink);
-  padding:12px 16px 10px;box-shadow:0 4px 20px rgba(0,0,0,.35);
+  padding:12px 16px 10px;box-shadow:0 4px 16px rgba(92,58,30,.12);
   position:sticky;top:0;z-index:40;
 }
 .chrome-top{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between}
@@ -49,13 +49,13 @@ html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-
 .btn-primary{background:#1a1210;color:#f7efe6;border-color:transparent}
 .meta{font-size:11px;font-weight:600;opacity:.85}
 .tabs{
-  display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;background:#2a1f18;
-  border-bottom:1px solid rgba(210,180,140,.2);position:sticky;top:0;z-index:30;
+  display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;background:#efe6db;
+  border-bottom:1px solid rgba(92,58,30,.14);position:sticky;top:0;z-index:30;
 }
 /* tabs stick under chrome — chrome already sticky; keep tabs sticky within scroll */
-.tabs-wrap{position:sticky;top:0;z-index:35;background:#2a1f18}
+.tabs-wrap{position:sticky;top:0;z-index:35;background:#efe6db}
 .chip{
-  border:1px solid rgba(210,180,140,.25);background:#1c1410;color:#c4a990;
+  border:1px solid rgba(92,58,30,.18);background:#ffffff;color:#7a6558;
   font-size:11px;font-weight:700;padding:7px 12px;border-radius:999px;cursor:pointer;font-family:inherit
 }
 .chip.active{color:#1a1210;background:var(--chrome-grad);border-color:transparent}
@@ -95,7 +95,7 @@ table.sheet td.tot,table.sheet th.tot{background:var(--total-cell);font-weight:8
 table.sheet tr.total-row td{background:#fff3cd;font-weight:800}
 table.sheet td.from-order{background:var(--order-cell)}
 table.sheet td.dash{color:#9aa0a6}
-.hint{margin:0 0 10px;font-size:11px;color:#c4a990;line-height:1.45;padding:0 2px}
+.hint{margin:0 0 10px;font-size:11px;color:#7a6558;line-height:1.45;padding:0 2px}
 .placeholder-note{
   margin:0;padding:16px;font-size:12px;color:var(--muted);background:#fff;border:1px dashed #dadce0;border-radius:4px
 }
