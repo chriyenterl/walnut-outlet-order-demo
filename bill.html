@@ -274,7 +274,10 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     if (meta.hasOrder) {
       var latest = S.latestByOutlet()[code];
       var p = (latest && latest.payload) || {};
-      Object.keys(p.daily || {}).forEach(function (k) { fromOrderSet[k] = 1; });
+      Object.keys(p.daily || {}).forEach(function (k) {
+        fromOrderSet[k] = 1;
+        if (k.indexOf('::') >= 0) fromOrderSet[k.slice(k.lastIndexOf('::') + 2)] = 1;
+      });
       S.FRESH_BUN.forEach(function (n) {
         // if weekly/daily provided value, mark
         if (p.daily && p.daily[n] != null) fromOrderSet[n] = 1;

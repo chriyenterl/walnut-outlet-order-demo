@@ -180,11 +180,24 @@
     return (day < 10 ? '0' : '') + day + '/' + months[Number(p[1]) - 1] + '/' + p[0] + ', ' + days[d.getDay()];
   }
 
+  /** Daily map may store "category::Product" (Order UI) or a bare product name. */
+  function lookupDaily(payload, product) {
+    if (!payload || !payload.daily || !product) return null;
+    var daily = payload.daily;
+    if (daily[product] != null) return Number(daily[product]) || 0;
+    var suffix = '::' + product;
+    var keys = Object.keys(daily);
+    for (var i = 0; i < keys.length; i++) {
+      if (keys[i].slice(-suffix.length) === suffix) return Number(daily[keys[i]]) || 0;
+    }
+    return null;
+  }
+
   /** Fresh bun qty for one outlet from DEMO order (weekly day column or daily fresh). */
   function freshFromPayload(payload, product) {
     if (!payload) return null;
-    var daily = payload.daily || {};
-    if (daily[product] != null && Number(daily[product]) > 0) return Number(daily[product]);
+    var dailyHit = lookupDaily(payload, product);
+    if (dailyHit != null && dailyHit > 0) return dailyHit;
     var weekly = payload.weekly;
     if (!weekly) return null;
     var dayKey = dayKeyFromIso(payload.orderDate);
@@ -218,9 +231,7 @@
   }
 
   function dailyFromPayload(payload, product) {
-    if (!payload || !payload.daily) return null;
-    if (payload.daily[product] == null) return null;
-    return Number(payload.daily[product]) || 0;
+    return lookupDaily(payload, product);
   }
 
   function soFromPayload(payload, product) {
@@ -332,9 +343,12 @@
     meta.packBunDate = payload.packBunDate || '';
     meta.label = 'DEMO submit ' + meta.orderId;
 
-    // Override from daily
+    // Override from daily (bare name and category::name)
     Object.keys(payload.daily || {}).forEach(function (k) {
-      map[k] = Number(payload.daily[k]) || 0;
+      var n = Number(payload.daily[k]) || 0;
+      map[k] = n;
+      var bare = k.indexOf('::') >= 0 ? k.slice(k.lastIndexOf('::') + 2) : k;
+      map[bare] = n;
     });
 
     // Fresh from weekly / daily
