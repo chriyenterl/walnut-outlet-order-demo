@@ -75,6 +75,7 @@ table.board td.tot{font-weight:800}
   <div class="app">
     <div class="site-nav">
       <a href="index.html" id="navOrder">Order</a>
+      <a href="baker-board.html">Baker totals</a>
       <a href="production.html">Production clone</a>
       <a href="bill.html">Bill clone</a>
       <a href="backend.html">Backend</a>
@@ -82,9 +83,9 @@ table.board td.tot{font-weight:800}
     </div>
     <div class="hero">
       <h1>Walnut Bakery · Baker board (DEMO)</h1>
-      <p class="sub">Legacy SAMPLE rollup. Replaced for factory testing by <b>Production clone</b> (production.html · BAKER tab). SAMPLE only.</p>
+      <p class="sub">Legacy SAMPLE rollup with outlet columns. Bakers should use <b>Baker totals</b> — product and total only, fed by Order UI.</p>
     </div>
-        <div class="demo-badge">LEGACY SAMPLE board — prefer <a href="production.html" style="color:inherit">Production clone</a> (BAKER tab). DEMO only · not Production</div>
+        <div class="demo-badge">LEGACY SAMPLE — use <a href="baker-board.html" style="color:inherit">Baker totals</a> for the batch sheet. This page is not live Production.</div>
 
     <div class="chips" id="chips">
       <button type="button" class="chip active" data-target="sec-fresh">Fresh Bun</button>
@@ -112,8 +113,11 @@ table.board td.tot{font-weight:800}
 
     <p class="hint" style="text-align:center;">← Back via Order UI · Backend inbox shows DEMO submissions</p>
   </div>
+<script src="access.js"></script>
 <script>
 (function(){
+  if (!window.WalnutAccess || !WalnutAccess.require('master')) return;
+  try { WalnutAccess.wireNav(document); } catch (eW) {}
   var OUTLETS = ['FS', 'TC', 'KK', 'BV', 'CC', 'PP', 'BN', 'JNY', 'MK1', 'MK2', 'SA'];
   if (/Index-preview/i.test(document.referrer||'')) {
     var a=document.getElementById('navOrder'); if(a) a.href='Index-preview.html';

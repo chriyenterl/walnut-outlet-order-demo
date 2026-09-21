@@ -60,12 +60,13 @@ body{background:radial-gradient(ellipse 80% 50% at 10% -10%,color-mix(in srgb,va
       <div class="site-nav" id="siteNav" style="padding:0;justify-content:flex-end">
         <a href="index.html">Order</a>
         <a href="production.html" data-master-only>Production</a>
+        <a href="baker-board.html" data-master-only>Baker totals</a>
         <a href="bill.html" data-master-only>Bill</a>
         <a href="backend.html" data-master-only>Backend</a>
         <a href="links.html" class="active" data-master-only>Links</a>
       </div>
     </header>
-    <p class="hint" style="margin-top:0">Marcus-facing list. Each outlet gets a private <code>#access=…</code> URL — order UI locks to that outlet. One Master token opens Order + Production + Bill + Backend. Practice secrets — rotate for live · no Drive writes.</p>
+    <p class="hint" style="margin-top:0">Marcus-facing list. Each outlet gets a private <code>#access=…</code> URL — order UI locks to that outlet. One Master token opens Order + Production + Baker totals + Bill + Backend. Practice secrets — rotate for live · no Drive writes.</p>
 
     <div class="glass">
       <h2>How it works</h2>
@@ -81,7 +82,7 @@ body{background:radial-gradient(ellipse 80% 50% at 10% -10%,color-mix(in srgb,va
 
     <div class="glass">
       <h2>Outlet order links</h2>
-      <p class="hint">Send each outlet only their own link. They cannot switch outlets or open Production / Bill / Backend.</p>
+      <p class="hint">Send each outlet only their own link. They cannot switch outlets or open Production / Baker totals / Bill / Backend.</p>
       <div id="outletList"></div>
     </div>
   </div>

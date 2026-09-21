@@ -59,6 +59,9 @@ table.board td.tot{font-weight:800}
 .order-meta{font-size:12px;line-height:1.45}
 .order-meta .id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--warn)}
 .order-meta .sum{color:var(--muted);font-size:11px;margin-top:4px}
+.quick-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.quick-links a{font-size:11px;font-weight:700;color:var(--brand2);text-decoration:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 9px}
+.quick-links a:hover{border-color:var(--brand);color:var(--ink)}
 .order-body{display:none;border-top:1px solid var(--line);padding:10px 12px;background:#f3ece4}
 .order-card.open .order-body{display:block}
 .order-body pre{margin:0;white-space:pre-wrap;word-break:break-word;font-size:11px;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;max-height:320px;overflow:auto}
@@ -82,6 +85,7 @@ table.board td.tot{font-weight:800}
       <div class="site-nav" style="padding:0;justify-content:flex-end">
         <a href="index.html" id="navOrder">Order</a>
         <a href="production.html" data-master-only>Production</a>
+        <a href="baker-board.html" data-master-only>Baker totals</a>
         <a href="bill.html" data-master-only>Bill</a>
         <a href="backend.html" class="active" data-master-only>Backend</a>
         <a href="links.html" data-master-only>Links</a>
@@ -165,6 +169,26 @@ table.board td.tot{font-weight:800}
       var pre=document.createElement('pre');
       pre.textContent=JSON.stringify(entry.payload||entry, null, 2);
       body.appendChild(pre);
+      var code=entry.outlet||(entry.payload&&entry.payload.outlet)||'';
+      if(code){
+        var links=document.createElement('div');
+        links.className='quick-links';
+        function addLink(label, href){
+          var a=document.createElement('a');
+          a.textContent=label;
+          a.href=href;
+          a.onclick=function(ev){ ev.stopPropagation(); };
+          links.appendChild(a);
+        }
+        function withAccess(href){
+          if(window.WalnutAccess&&WalnutAccess.appendAccess) return WalnutAccess.appendAccess(href);
+          return href;
+        }
+        addLink('Open Production', withAccess('production.html?outlet='+encodeURIComponent(code)));
+        addLink('Open Bill', withAccess('bill.html?outlet='+encodeURIComponent(code)));
+        var metaEl=head.querySelector('.order-meta');
+        if(metaEl) metaEl.appendChild(links);
+      }
       head.onclick=function(){ card.classList.toggle('open'); };
       card.appendChild(head); card.appendChild(body);
       list.appendChild(card);

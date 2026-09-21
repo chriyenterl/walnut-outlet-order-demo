@@ -129,11 +129,15 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
 .demo-toggle input{width:auto;accent-color:var(--brand)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
 .form-grid .form-span-2,.form-grid .span-2,.form-grid .full{grid-column:1/-1}
-.so-add-row{display:grid;grid-template-columns:1.1fr 1.4fr 70px 1fr auto;gap:10px;align-items:end;margin-bottom:12px}
-.so-lines{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card-solid)}
-.so-line{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px}
-.so-line:last-child{border-bottom:0}.so-line .name{font-weight:700}.so-line .meta{font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}.so-line .qty{font-weight:800}
-.so-line .rm{border:0;background:transparent;color:var(--danger);font-weight:700;cursor:pointer;font-family:inherit;font-size:12px;padding:4px 8px}
+.so-add-actions{display:flex;justify-content:flex-end;margin:4px 0 12px}
+.so-lines{border:1px solid var(--line);border-radius:12px;overflow:auto;background:var(--card-solid)}
+.so-table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+.so-table th{text-align:left;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.so-table td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.so-table tr:last-child td{border-bottom:0}
+.so-table .name{font-weight:700}
+.so-table .sub{font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
+.so-table .rm{border:0;background:transparent;color:var(--danger);font-weight:700;cursor:pointer;font-family:inherit;font-size:12px;padding:4px 8px}
 .so-empty{padding:18px;text-align:center;color:var(--muted);font-size:13px}
 .place-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:28px;padding-top:20px;border-top:1px solid var(--line)}
 .place-footer .items-count{font-size:14px;font-weight:600;color:var(--muted)}.place-footer .items-count strong{color:var(--ink);font-weight:800}
@@ -145,9 +149,17 @@ input.sheet-qty::-webkit-outer-spin-button,input.sheet-qty::-webkit-inner-spin-b
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);max-width:420px;width:calc(100% - 32px);padding:12px 16px;border-radius:14px;font-size:13px;font-weight:600;z-index:60;opacity:0;pointer-events:none;transition:all .35s var(--ease);box-shadow:var(--shadow)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{background:#e8f8ef;color:#14532d;border:1px solid #1f9d63}.toast.err{background:#fdecea;color:#8b1515;border:1px solid #c62828}
-.done-card{text-align:center;padding:36px 18px}
+.done-card{text-align:center;padding:28px 18px 22px}
 .done-card .check{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:var(--brand-grad);display:grid;place-items:center;font-size:30px;color:#fff;box-shadow:var(--shadow);animation:rise .5s var(--ease)}
-.done-card h2{margin:0 0 6px;font-size:22px}.done-card p{margin:0;color:var(--muted);font-size:14px}
+.done-card h2{margin:0 0 8px;font-size:22px}
+.done-card p{margin:0;color:var(--muted);font-size:14px}
+.done-card p.done-note{margin:0 auto;max-width:540px;color:var(--ink);font-size:14px;font-weight:600;line-height:1.5}
+.done-card p.done-outlet-copy{margin:14px auto 0;max-width:540px;color:var(--ink);font-size:14px;font-weight:600;line-height:1.5}
+.done-card p.done-how{margin:8px auto 0;max-width:540px;color:var(--muted);font-size:12px;font-weight:500;line-height:1.5}
+.done-summary{text-align:left;max-width:440px;margin:16px auto 0}
+.done-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.done-actions-secondary{margin-top:8px}
+a.btn{display:inline-block;text-decoration:none;text-align:center;line-height:1.2}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}.hidden{display:none!important}
 .empty{text-align:center;padding:28px 16px;color:var(--muted);font-size:13px}.empty .ico{font-size:32px;margin-bottom:8px;opacity:.7}
 .locked-banner{background:color-mix(in srgb,var(--danger) 12%,transparent);border:1px solid color-mix(in srgb,var(--danger) 35%,transparent);color:var(--danger);border-radius:12px;padding:12px;font-size:13px;font-weight:600;margin-bottom:12px}
@@ -261,8 +273,11 @@ html.landscape .app{max-width:none!important;width:100%;padding-left:max(16px,en
     <section class="tab-panel" data-tab="warehouse" data-master-only id="tabWarehouse">
       <div class="content-card">
         <div class="card-head"><div><h2>Warehouse queue</h2><p class="hint">DEMO Production Sheet clone — prepare stock &amp; dispatch view</p></div></div>
-        <p class="hint">Opens the Production Sheet DEMO (BAKER / PACKER matrices). No Drive writes.</p>
-        <div class="embed-actions"><a class="btn btn-primary" id="linkProduction" href="production.html">Open Production clone ↗</a></div>
+        <p class="hint">Department sheets keep product totals and each outlet. Bakers who only need the batch total use Baker totals. No Drive writes.</p>
+        <div class="embed-actions">
+          <a class="btn btn-primary" id="linkProduction" href="production.html">Open Production clone ↗</a>
+          <a class="btn btn-ghost" id="linkBakerBoard" href="baker-board.html">Baker totals ↗</a>
+        </div>
       </div>
     </section>
 
@@ -272,6 +287,7 @@ html.landscape .app{max-width:none!important;width:100%;padding-left:max(16px,en
         <div class="embed-actions">
           <a class="btn btn-primary" id="linkBackend" href="backend.html">Open Backend inbox ↗</a>
           <a class="btn btn-ghost" id="linkProduction2" href="production.html">Production totals ↗</a>
+          <a class="btn btn-ghost" id="linkBakerBoard2" href="baker-board.html">Baker totals ↗</a>
         </div>
       </div>
     </section>
@@ -362,7 +378,7 @@ html.landscape .app{max-width:none!important;width:100%;padding-left:max(16px,en
           <div class="sec-head">
             <div>
               <h3>Special order</h3>
-              <p class="sec-hint">Optional. Add lines — category · product · qty · bill/customer.</p>
+              <p class="sec-hint">Optional. Product, qty, pick up, bill no, and customer name. No baking date. Bill no stays blank until you type one.</p>
             </div>
           </div>
           <div id="soDisabled" class="empty hidden"><div class="ico">∅</div>This outlet does not raise special orders (JNY / MK / SA).</div>
@@ -371,7 +387,7 @@ html.landscape .app{max-width:none!important;width:100%;padding-left:max(16px,en
               <div class="field-gap"><label class="field">Pick up date</label><input type="date" id="soDate" /></div>
               <div class="field-gap"><label class="field">Pick up time</label><select id="soTime"></select></div>
             </div>
-            <div class="so-add-row">
+            <div class="form-grid">
               <div>
                 <label class="field">Category</label>
                 <select id="soCat">
@@ -395,13 +411,16 @@ html.landscape .app{max-width:none!important;width:100%;padding-left:max(16px,en
                 <input type="number" id="soQty" min="1" step="1" value="1" />
               </div>
               <div>
-                <label class="field">Bill / customer</label>
-                <input type="text" id="soBillCust" placeholder="Bill no or name" />
+                <label class="field">Bill no</label>
+                <input type="text" id="soBill" placeholder="Type a bill no, or leave blank" autocomplete="off" />
               </div>
-              <div class="so-add-btn">
-                <label class="field">&nbsp;</label>
-                <button type="button" class="btn btn-ghost btn-sm" id="btnAddSo" style="width:100%">+ Add item</button>
+              <div class="span-2">
+                <label class="field">Customer name</label>
+                <input type="text" id="soCustomer" placeholder="Customer name" autocomplete="name" />
               </div>
+            </div>
+            <div class="so-add-actions">
+              <button type="button" class="btn btn-ghost btn-sm" id="btnAddSo">+ Add item</button>
             </div>
             <div class="so-lines" id="soLinesList"><div class="so-empty" id="soEmpty">No special items yet.</div></div>
           </div>
@@ -417,9 +436,16 @@ html.landscape .app{max-width:none!important;width:100%;padding-left:max(16px,en
         <div class="done-card">
           <div class="check">✓</div>
           <h2>Order submitted</h2>
+          <p class="done-note" id="doneNote">DEMO only — saved in this browser. Factory views are the Production sheet and Bill for print clones.</p>
           <p id="doneMsg">DEMO confirmation</p>
-          <p class="mono" id="doneId" style="margin-top:10px;"></p>
-          <div style="margin-top:20px"><button type="button" class="btn btn-primary" id="btnDoneNew">+ New order</button></div>
+          <div class="summary-box done-summary" id="doneSummary"></div>
+          <p class="done-outlet-copy hidden" id="doneOutletCopy"></p>
+          <p class="done-how hidden" id="doneHow"></p>
+          <div class="done-actions" id="doneActions"></div>
+          <div class="done-actions done-actions-secondary">
+            <button type="button" class="btn btn-ghost" id="btnDoneOrders">All orders</button>
+            <button type="button" class="btn btn-primary" id="btnDoneNew">+ New order</button>
+          </div>
         </div>
       </div>
     </section>
@@ -1031,29 +1057,58 @@ window.MOCK = (function () {
       updateOrderItemsCount();
       return;
     }
-    var html = '';
-    state.specialLines.forEach(function (line, i) {
-      html += '<div class="so-line" data-i="' + i + '">' +
-        '<div><div class="name"></div><div class="meta"></div></div>' +
-        '<div class="qty"></div>' +
-        '<button type="button" class="rm" data-rm="' + i + '">Remove</button></div>';
+    var table = document.createElement('table');
+    table.className = 'so-table';
+    var thead = document.createElement('thead');
+    var hr = document.createElement('tr');
+    ['Product', 'Qty', 'Pick up', 'Bill no', 'Customer name', ''].forEach(function (label) {
+      var th = document.createElement('th');
+      th.textContent = label;
+      hr.appendChild(th);
     });
-    box.innerHTML = html;
+    thead.appendChild(hr);
+    table.appendChild(thead);
+    var tb = document.createElement('tbody');
     state.specialLines.forEach(function (line, i) {
-      var row = box.children[i];
-      if (!row) return;
-      row.querySelector('.name').textContent = line.product;
-      var meta = (line.category || '') + (line.billNo || line.customerName ? ' · ' + (line.billNo || line.customerName) : '');
-      if (line.pickUpDate) meta += (meta ? ' · ' : '') + line.pickUpDate + (line.pickUpTime ? ' ' + line.pickUpTime : '');
-      row.querySelector('.meta').textContent = meta;
-      row.querySelector('.qty').textContent = '× ' + (line.qty || 1);
-    });
-    box.querySelectorAll('[data-rm]').forEach(function (btn) {
+      var tr = document.createElement('tr');
+      function td(text, cls) {
+        var cell = document.createElement('td');
+        if (cls) cell.className = cls;
+        cell.textContent = text;
+        tr.appendChild(cell);
+        return cell;
+      }
+      var prod = td('');
+      prod.className = 'name';
+      prod.textContent = line.product || '';
+      if (line.category) {
+        var sub = document.createElement('div');
+        sub.className = 'sub';
+        sub.textContent = line.category;
+        prod.appendChild(sub);
+      }
+      td(String(line.qty || 1));
+      var when = (line.pickUpDate || '—') + (line.pickUpTime ? ' ' + line.pickUpTime : '');
+      td(when);
+      td(line.billNo ? line.billNo : '—');
+      td(line.customerName ? line.customerName : '—');
+      var rmTd = document.createElement('td');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'rm';
+      btn.textContent = 'Remove';
+      btn.setAttribute('data-rm', String(i));
       btn.onclick = function () {
-        state.specialLines.splice(Number(btn.getAttribute('data-rm')), 1);
+        state.specialLines.splice(i, 1);
         renderSoLines();
       };
+      rmTd.appendChild(btn);
+      tr.appendChild(rmTd);
+      tb.appendChild(tr);
     });
+    table.appendChild(tb);
+    box.innerHTML = '';
+    box.appendChild(table);
     updateOrderItemsCount();
   }
 
@@ -1062,13 +1117,16 @@ window.MOCK = (function () {
     var product = ($('soProduct').value || '').trim();
     if (!product) { toast('Pick a product', 'err'); return; }
     var qty = Math.max(1, parseInt($('soQty').value, 10) || 1);
-    var billCust = ($('soBillCust').value || '').trim();
+    var billNo = ($('soBill') && $('soBill').value || '').trim();
+    var customerName = ($('soCustomer') && $('soCustomer').value || '').trim();
     state.specialLines.push({
       pickUpDate: $('soDate').value, pickUpTime: $('soTime').value,
       outlet: state.outlet, category: $('soCat').value, product: product, qty: qty,
-      billNo: billCust, customerName: billCust, contact: '', remark: ''
+      billNo: billNo, customerName: customerName, contact: '', remark: ''
     });
-    $('soProduct').value = ''; $('soQty').value = '1'; $('soBillCust').value = '';
+    $('soProduct').value = ''; $('soQty').value = '1';
+    if ($('soBill')) $('soBill').value = '';
+    if ($('soCustomer')) $('soCustomer').value = '';
     renderSoLines();
     toast('Added special item', 'ok');
   }
@@ -1077,6 +1135,129 @@ window.MOCK = (function () {
     if (state.flags.so === false) return null;
     if (state.specialLines && state.specialLines.length) return state.specialLines[0];
     return null;
+  }
+
+  function hrefWithAccess(href) {
+    try {
+      if (window.WalnutAccess && WalnutAccess.appendAccess) return WalnutAccess.appendAccess(href);
+    } catch (e) {}
+    return href;
+  }
+
+  function summarizePayload(payload) {
+    var daily = (payload && payload.daily) || {};
+    var lines = 0, units = 0;
+    Object.keys(daily).forEach(function (k) {
+      var n = Number(daily[k]) || 0;
+      if (n > 0) { lines++; units += n; }
+    });
+    var packChanges = 0;
+    ((payload && payload.packBunChanges) || []).forEach(function (it) {
+      if (it && Number(it.newAmount) !== Number(it.ordered)) packChanges++;
+    });
+    var hasSO = false;
+    if (payload && payload.specialLines && payload.specialLines.length) hasSO = true;
+    else if (payload && payload.special && payload.special.product) hasSO = true;
+    var hasWeekly = !!(payload && payload.weekly);
+    return {
+      dailyLines: lines,
+      dailyUnits: units,
+      packBunChanges: packChanges,
+      hasWeekly: hasWeekly,
+      hasSO: hasSO
+    };
+  }
+
+  function summaryRow(label, value, mono) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    var k = document.createElement('span');
+    k.className = 'k';
+    k.textContent = label;
+    var v = document.createElement('span');
+    v.className = mono ? 'v mono' : 'v';
+    v.textContent = value;
+    row.appendChild(k);
+    row.appendChild(v);
+    return row;
+  }
+
+  function fillDoneNext(payload, res) {
+    var code = (payload && payload.outlet) || state.outlet || '';
+    var names = (window.WalnutDemoStore && WalnutDemoStore.OUTLET_NAMES) || {};
+    var name = names[code] || '';
+    var sum = summarizePayload(payload);
+    var box = $('doneSummary');
+    if (box) {
+      box.innerHTML = '';
+      box.appendChild(summaryRow('Outlet', code + (name ? ' · ' + name : '')));
+      box.appendChild(summaryRow('Order id', (res && res.orderId) || '', true));
+      box.appendChild(summaryRow('Daily', sum.dailyLines + ' lines · ' + sum.dailyUnits + ' units'));
+      box.appendChild(summaryRow('Pack changes', String(sum.packBunChanges)));
+      box.appendChild(summaryRow('Weekly', sum.hasWeekly ? 'yes' : 'no'));
+      box.appendChild(summaryRow('SO', sum.hasSO ? 'yes' : 'no'));
+    }
+    if ($('doneNote')) {
+      $('doneNote').textContent = 'DEMO only — saved in this browser. Factory views are the Production sheet and Bill for print clones.';
+    }
+    var isMaster = !!(window.WalnutAccess && WalnutAccess.isMaster && WalnutAccess.isMaster());
+    var actions = $('doneActions');
+    if (actions) {
+      actions.innerHTML = '';
+      actions.classList.toggle('hidden', !isMaster);
+    }
+    var outletCopy = $('doneOutletCopy');
+    var how = $('doneHow');
+    var ordersBtn = $('btnDoneOrders');
+    var newBtn = $('btnDoneNew');
+    if (ordersBtn) ordersBtn.className = isMaster ? 'btn btn-ghost' : 'btn btn-primary';
+    if (newBtn) newBtn.className = 'btn btn-ghost';
+    var oldInbox = $('btnDoneBackend');
+    if (oldInbox) oldInbox.remove();
+    var oldBaker = $('btnDoneBaker');
+    if (oldBaker) oldBaker.remove();
+    if (isMaster) {
+      if (outletCopy) { outletCopy.textContent = ''; outletCopy.classList.add('hidden'); }
+      if (how) { how.textContent = ''; how.classList.add('hidden'); }
+      if ($('doneMsg')) $('doneMsg').textContent = 'Next: open this outlet on the Production sheet and the Bill for print.';
+      if (actions) {
+        var prod = document.createElement('a');
+        prod.className = 'btn btn-primary';
+        prod.href = hrefWithAccess('production.html' + (code ? '?outlet=' + encodeURIComponent(code) : ''));
+        prod.textContent = 'Production sheet';
+        var bill = document.createElement('a');
+        bill.className = 'btn btn-primary';
+        bill.href = hrefWithAccess('bill.html?outlet=' + encodeURIComponent(code));
+        bill.textContent = 'Bill for print';
+        actions.appendChild(prod);
+        actions.appendChild(bill);
+      }
+      var sec = document.querySelector('.done-actions-secondary');
+      if (sec) {
+        var baker = document.createElement('a');
+        baker.id = 'btnDoneBaker';
+        baker.className = 'btn btn-ghost';
+        baker.href = hrefWithAccess('baker-board.html');
+        baker.textContent = 'Baker totals';
+        var inbox = document.createElement('a');
+        inbox.id = 'btnDoneBackend';
+        inbox.className = 'btn btn-ghost';
+        inbox.href = hrefWithAccess('backend.html');
+        inbox.textContent = 'Backend inbox';
+        sec.insertBefore(inbox, sec.firstChild);
+        sec.insertBefore(baker, sec.firstChild);
+      }
+    } else {
+      if ($('doneMsg')) $('doneMsg').textContent = (res && res.message) || 'Saved in this browser.';
+      if (outletCopy) {
+        outletCopy.textContent = 'Factory / Master will see this order on the Production sheet and Bill for print.';
+        outletCopy.classList.remove('hidden');
+      }
+      if (how) {
+        how.textContent = 'How it works: live later, Ordering tabs write to the real Google Sheets Production and Bill. This practice DEMO stays in this browser.';
+        how.classList.remove('hidden');
+      }
+    }
   }
 
   function buildPayload() {
@@ -1111,15 +1292,16 @@ window.MOCK = (function () {
     state.orderedBy = ($('orderedBy') && $('orderedBy').value) || '';
     var btn = $('btnSubmit');
     if (btn) btn.disabled = true;
-    api('submitOrder', [buildPayload()], function (res) {
+    var sent = buildPayload();
+    api('submitOrder', [sent], function (res) {
       if (btn) btn.disabled = false;
       if (!res || !res.ok) { toast((res && res.error) || 'Submit failed', 'err'); return; }
       state.submitted = true;
       try { refreshStatusCards(); renderAllOrders(); } catch (eR) {}
-      $('doneMsg').textContent = res.message || 'Saved (DEMO)';
-      $('doneId').textContent = res.orderId || '';
+      fillDoneNext(sent, res);
       $('placeFormCard').classList.add('hidden');
       $('donePanel').classList.remove('hidden');
+      try { $('donePanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (eS) {}
       toast('Submitted · DEMO only', 'ok');
     });
   }
@@ -1347,6 +1529,15 @@ window.MOCK = (function () {
     });
     if ($('btnNewOrder')) $('btnNewOrder').onclick = startNewOrder;
     if ($('btnDoneNew')) $('btnDoneNew').onclick = startNewOrder;
+    if ($('btnDoneOrders')) {
+      $('btnDoneOrders').onclick = function () {
+        setShellTab('all-orders');
+        try {
+          var bar = document.querySelector('.tabs-bar');
+          if (bar) bar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (e) {}
+      };
+    }
     if ($('btnShellRefresh')) {
       $('btnShellRefresh').onclick = function () {
         refreshStatusCards();
