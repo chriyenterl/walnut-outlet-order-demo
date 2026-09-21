@@ -51,18 +51,21 @@ body{background:radial-gradient(ellipse 80% 50% at 10% -10%,color-mix(in srgb,va
 </head>
 <body>
   <div class="app">
-    <div class="site-nav" id="siteNav">
-      <a href="index.html">Order</a>
-      <a href="production.html" data-master-only>Production clone</a>
-      <a href="bill.html" data-master-only>Bill clone</a>
-      <a href="backend.html" data-master-only>Backend</a>
-      <a href="links.html" class="active" data-master-only>All links</a>
-    </div>
-    <div class="hero">
-      <h1>Walnut Bakery · DEMO access links</h1>
-      <p class="sub">Marcus-facing list. Each outlet gets a private <code>#access=…</code> URL — order UI locks to that outlet. One Master token opens Order + Production + Bill + Backend.</p>
-    </div>
-    <div class="demo-badge">DEMO PRACTICE SECRETS — rotate later for live · no Drive writes</div>
+    <header style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 14px;border-bottom:1px solid var(--line);margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:34px;height:34px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800">W</div>
+        <div><div style="font-weight:800;font-size:15px;letter-spacing:-.02em">Walnut</div><div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Outlet Order · Access</div></div>
+        <span class="demo-badge" style="margin:0">DEMO</span>
+      </div>
+      <div class="site-nav" id="siteNav" style="padding:0;justify-content:flex-end">
+        <a href="index.html">Order</a>
+        <a href="production.html" data-master-only>Production</a>
+        <a href="bill.html" data-master-only>Bill</a>
+        <a href="backend.html" data-master-only>Backend</a>
+        <a href="links.html" class="active" data-master-only>Links</a>
+      </div>
+    </header>
+    <p class="hint" style="margin-top:0">Marcus-facing list. Each outlet gets a private <code>#access=…</code> URL — order UI locks to that outlet. One Master token opens Order + Production + Bill + Backend. Practice secrets — rotate for live · no Drive writes.</p>
 
     <div class="glass">
       <h2>How it works</h2>

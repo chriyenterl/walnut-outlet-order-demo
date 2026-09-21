@@ -115,6 +115,35 @@
     return (_entry.name || '') + ' (' + (_entry.outlet || '') + ')';
   }
 
+  /** Short outlet display name (no code), e.g. "Beverly". Empty for master. */
+  function outletName() {
+    if (!_entry || _entry.role !== 'outlet') return '';
+    return _entry.name || _entry.outlet || '';
+  }
+
+  /** Header right label: "OUTLET · Beverly" or "MASTER · All outlets" */
+  function headerRoleLabel() {
+    if (!_entry) return '';
+    if (_entry.role === 'master') return 'MASTER · All outlets';
+    var n = outletName() || _entry.outlet || 'Outlet';
+    return 'OUTLET · ' + n;
+  }
+
+  /** Avatar initials for header pill */
+  function initials() {
+    if (!_entry) return 'W';
+    if (_entry.role === 'master') return 'WM';
+    var n = outletName() || _entry.outlet || 'W';
+    var parts = String(n).trim().split(/\s+/);
+    if (parts.length >= 2) return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+    if (_entry.outlet) return String(_entry.outlet).slice(0, 2).toUpperCase();
+    return String(n).slice(0, 2).toUpperCase();
+  }
+
+  function entry() {
+    return _entry;
+  }
+
   function token() {
     return _token;
   }
@@ -306,6 +335,10 @@
     requireOutletOrMaster: requireOutletOrMaster,
     isMaster: isMaster,
     outletCode: outletCode,
+    outletName: outletName,
+    headerRoleLabel: headerRoleLabel,
+    initials: initials,
+    entry: entry,
     role: role,
     label: label,
     token: token,

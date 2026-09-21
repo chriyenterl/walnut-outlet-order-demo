@@ -73,18 +73,21 @@ table.board td.tot{font-weight:800}
 </head>
 <body>
   <div class="app">
-    <div class="site-nav">
-      <a href="index.html" id="navOrder">Order</a>
-      <a href="production.html" data-master-only>Production clone</a>
-      <a href="bill.html" data-master-only>Bill clone</a>
-      <a href="backend.html" class="active" data-master-only>Backend</a>
-      <a href="links.html" data-master-only>All links</a>
-    </div>
-    <div class="hero">
-      <h1>Walnut Bakery · Backend inbox (DEMO)</h1>
-      <p class="sub">How a submitted outlet order looks when received — localStorage only. Not Production.</p>
-    </div>
-    <div class="demo-badge">DEMO SAMPLE — key <code style="text-transform:none">walnutDemoOrders</code> · never live stock</div>
+    <header style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 14px;border-bottom:1px solid var(--line);margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:34px;height:34px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800">W</div>
+        <div><div style="font-weight:800;font-size:15px;letter-spacing:-.02em">Walnut</div><div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Outlet Order · Backend</div></div>
+        <span class="demo-badge" style="margin:0">DEMO</span>
+      </div>
+      <div class="site-nav" style="padding:0;justify-content:flex-end">
+        <a href="index.html" id="navOrder">Order</a>
+        <a href="production.html" data-master-only>Production</a>
+        <a href="bill.html" data-master-only>Bill</a>
+        <a href="backend.html" class="active" data-master-only>Backend</a>
+        <a href="links.html" data-master-only>Links</a>
+      </div>
+    </header>
+    <p class="hint" style="margin-top:0">How a submitted outlet order looks when received — localStorage <code>walnutDemoOrders</code> only. Not Production.</p>
 
     <div class="glass">
       <h2>Destination mapping reminder</h2>

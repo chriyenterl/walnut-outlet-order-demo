@@ -348,6 +348,77 @@
     return String(v);
   }
 
+  function kuchingYmd(d) {
+    try {
+      var parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Kuching', year: 'numeric', month: '2-digit', day: '2-digit'
+      }).formatToParts(d || new Date());
+      var m = {};
+      parts.forEach(function (x) { if (x.type !== 'literal') m[x.type] = x.value; });
+      return (m.year || '') + '-' + (m.month || '') + '-' + (m.day || '');
+    } catch (e) {
+      var x = d || new Date();
+      return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0');
+    }
+  }
+
+  function orderOutletCode(entry) {
+    return (entry && (entry.outlet || (entry.payload && entry.payload.outlet))) || '';
+  }
+
+  /**
+   * DEMO status-card counts from walnutDemoOrders.
+   * Heuristic only — not live Production.
+   * 01 Awaiting packing = submitted today (Kuching) and not demoSeen
+   * 02 Ready for production = submitted today and demoSeen === 'ready' (optional)
+   * 03 On Bill / dispatch = demoSeen === 'bill'
+   * 04 Confirmed = older submits (before today) or demoSeen === 'confirmed'
+   */
+  function statusCounts(opts) {
+    opts = opts || {};
+    var filterOutlet = opts.outlet || null;
+    var orders = loadOrders();
+    if (filterOutlet) {
+      orders = orders.filter(function (e) {
+        return orderOutletCode(e) === filterOutlet;
+      });
+    }
+    var today = kuchingYmd(new Date());
+    var awaiting = 0, ready = 0, onBill = 0, confirmed = 0;
+    orders.forEach(function (e) {
+      var at = e && e.at ? new Date(e.at) : null;
+      var day = at && !isNaN(at.getTime()) ? kuchingYmd(at) : '';
+      var seen = (e && e.demoSeen) || '';
+      if (seen === 'bill') { onBill++; return; }
+      if (seen === 'ready') { ready++; return; }
+      if (seen === 'confirmed') { confirmed++; return; }
+      if (day && day === today) awaiting++;
+      else confirmed++;
+    });
+    return {
+      awaiting: awaiting,
+      ready: ready,
+      onBill: onBill,
+      confirmed: confirmed,
+      total: orders.length,
+      demo: true,
+      label: 'DEMO'
+    };
+  }
+
+  /** Orders list for All-orders tab (newest first). */
+  function listOrders(opts) {
+    opts = opts || {};
+    var filterOutlet = opts.outlet || null;
+    var orders = loadOrders().slice();
+    if (filterOutlet) {
+      orders = orders.filter(function (e) {
+        return orderOutletCode(e) === filterOutlet;
+      });
+    }
+    return orders;
+  }
+
   global.WalnutDemoStore = {
     KEY: KEY,
     OUTLETS: OUTLETS,
@@ -371,6 +442,10 @@
     cellDisplay: cellDisplay,
     fmtDisplayDate: fmtDisplayDate,
     fmtSheetDate: fmtSheetDate,
-    dayKeyFromIso: dayKeyFromIso
+    dayKeyFromIso: dayKeyFromIso,
+    statusCounts: statusCounts,
+    listOrders: listOrders,
+    orderOutletCode: orderOutletCode,
+    kuchingYmd: kuchingYmd
   };
 })(typeof window !== 'undefined' ? window : this);
