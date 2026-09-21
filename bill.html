@@ -102,10 +102,10 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     <div class="badge">DEMO CLONE — Order UI localStorage + SAMPLE · not live Production</div>
     <div class="site-nav">
       <a href="index.html" id="navOrder">Order</a>
-      <a href="production.html">Production clone</a>
-      <a href="bill.html" class="active">Bill clone</a>
-      <a href="backend.html">Backend</a>
-      <a href="baker.html">Baker (legacy)</a>
+      <a href="production.html" data-master-only>Production clone</a>
+      <a href="bill.html" class="active" data-master-only>Bill clone</a>
+      <a href="backend.html" data-master-only>Backend</a>
+      <a href="links.html" data-master-only>All links</a>
     </div>
     <div class="toolbar">
       <label class="out">Outlet
@@ -122,9 +122,12 @@ table.bill tr.sec td{background:#fafafa;font-weight:700;text-align:left;font-siz
     <div id="billRoot"></div>
   </main>
 
+  <script src="access.js"></script>
   <script src="demo-store.js"></script>
   <script>
 (function () {
+  if (!window.WalnutAccess || !WalnutAccess.require('master')) return;
+  try { WalnutAccess.wireNav(document); } catch (eW) {}
   var S = window.WalnutDemoStore;
   if (!S) { document.getElementById('statusMeta').textContent = 'demo-store.js missing'; return; }
 

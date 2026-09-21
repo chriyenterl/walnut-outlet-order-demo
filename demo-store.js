@@ -1,6 +1,7 @@
 /**
  * Walnut DEMO shared store — localStorage key walnutDemoOrders
  * SAMPLE / DEMO only. Never live Production.
+ * Access / role gating lives in access.js (WalnutAccess) — not here.
  */
 (function (global) {
   'use strict';

@@ -98,6 +98,12 @@ textarea{resize:vertical}
 .site-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:8px 14px 4px;font-size:11px;font-weight:600}
 .site-nav a{color:var(--muted);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid transparent}
 .site-nav a:hover,.site-nav a.active{color:var(--ink);border-color:var(--line);background:var(--card)}
+
+.outlet-locked{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card-solid);font-size:14px;font-weight:700}
+.outlet-locked .code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--warn);font-size:12px}
+.outlet-locked .muted{font-size:11px;font-weight:600;color:var(--muted)}
+select.outlet-disabled{opacity:.55;pointer-events:none}
+
 .summary-box{background:var(--card-solid);border:1px dashed var(--line);border-radius:14px;padding:14px;font-size:13px;line-height:1.5}
 .summary-box .row{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
 .summary-box .row:last-child{border-bottom:0}
@@ -324,6 +330,7 @@ html.landscape .bottom-nav {
           <div class="form-grid">
             <div class="field-gap form-span-2">
               <label class="field">Outlet</label>
+              <div id="outletLocked" class="outlet-locked hidden"></div>
               <select id="outletSelect"></select>
             </div>
             <div class="field-gap">
@@ -463,9 +470,10 @@ html.landscape .bottom-nav {
 
     <div class="site-nav" id="siteNav">
       <a href="index.html" class="active">Order</a>
-      <a href="production.html">Production clone</a>
-      <a href="bill.html">Bill clone</a>
-      <a href="backend.html">Backend</a>
+      <a href="production.html" data-master-only>Production clone</a>
+      <a href="bill.html" data-master-only>Bill clone</a>
+      <a href="backend.html" data-master-only>Backend</a>
+      <a href="links.html" data-master-only>All links</a>
     </div>
 
     <nav class="bottom-nav" id="bottomNav">
@@ -475,7 +483,7 @@ html.landscape .bottom-nav {
   </div>
   <div class="toast" id="toast"></div>
 
-
+  <script src="access.js"></script>
 <script>
 /* OFFLINE DEMO MOCK — mirrors Code.gs DEMO APIs. SAMPLE quantities only. */
 window.MOCK = (function () {
@@ -1431,6 +1439,11 @@ window.MOCK = (function () {
   }
 
   function boot() {
+    if (!window.WalnutAccess || !WalnutAccess.requireOutletOrMaster()) return;
+    var accessRole = WalnutAccess.role();
+    var lockedOutlet = WalnutAccess.outletCode();
+    state.accessRole = accessRole;
+    state.lockedOutlet = lockedOutlet;
     $('btnBack').onclick = goBack;
     $('btnNext').onclick = goNext;
     $('prodSearch').oninput = function () { if (state.step === 1) renderProducts(); };
@@ -1464,6 +1477,7 @@ window.MOCK = (function () {
     api('getBootstrap', [], function (boot) {
       state.bootstrap = boot || { outlets: [], demoMode: true };
       var sel = $('outletSelect');
+      var locked = $('outletLocked');
       sel.innerHTML = '<option value="">Select outlet…</option>';
       (state.bootstrap.outlets || []).forEach(function (o) {
         var opt = document.createElement('option');
@@ -1472,7 +1486,27 @@ window.MOCK = (function () {
         sel.appendChild(opt);
       });
       sel.onchange = onOutletChange;
+      if (state.accessRole === 'outlet' && state.lockedOutlet) {
+        sel.value = state.lockedOutlet;
+        sel.classList.add('outlet-disabled');
+        sel.disabled = true;
+        sel.style.display = 'none';
+        if (locked) {
+          locked.classList.remove('hidden');
+          var oName = '';
+          (state.bootstrap.outlets || []).forEach(function (o) {
+            if (o.code === state.lockedOutlet) oName = o.name;
+          });
+          locked.innerHTML = '<div><div>Ordering as: ' + (oName || state.lockedOutlet) +
+            ' <span class="code">' + state.lockedOutlet + '</span></div>' +
+            '<div class="muted">Outlet locked by your access link — cannot switch</div></div>';
+        }
+        onOutletChange();
+      } else if (locked) {
+        locked.classList.add('hidden');
+      }
       if (state.bootstrap.demoMode === false) $('demoBadge').classList.add('hidden');
+      try { WalnutAccess.wireNav(document); WalnutAccess.applyNavVisibility(); } catch (eNav) {}
       renderStep();
     });
   }

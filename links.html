@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Walnut Bakery · DEMO access links</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg: #1c1410;
+  --brand: #8b5a2b;
+  --brand2: #5c3a1e;
+  --brand-grad: linear-gradient(135deg, #c4a484 0%, #8b5a2b 45%, #5c3a1e 100%);
+  --card: rgba(255,236,210,.08);
+  --card-solid: #2a1f18;
+  --ink: #f7efe6;
+  --muted: #c4a990;
+  --line: rgba(210,180,140,.16);
+  --ok: #3ecf8e;
+  --warn: #f5c542;
+  --shadow: 0 12px 40px rgba(0,0,0,.35);
+  --radius: 16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+body{background:radial-gradient(ellipse 80% 50% at 10% -10%,color-mix(in srgb,var(--brand) 28%,transparent),transparent 50%),radial-gradient(ellipse 60% 40% at 100% 0%,color-mix(in srgb,var(--brand2) 20%,transparent),transparent 45%),var(--bg)}
+.app{max-width:720px;margin:0 auto;padding:16px 14px 48px}
+.hero{background:var(--brand-grad);border-radius:var(--radius);padding:16px;color:#1a1210;box-shadow:var(--shadow);margin-bottom:12px}
+.hero h1{margin:0;font-size:18px;font-weight:800}
+.hero .sub{margin:4px 0 0;font-size:12px;font-weight:500;opacity:.85;line-height:1.4}
+.demo-badge{display:inline-flex;margin:0 0 12px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:rgba(245,197,66,.2);color:var(--warn);border:1px solid rgba(245,197,66,.35);padding:6px 10px;border-radius:8px}
+.glass{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+.glass h2{margin:0 0 6px;font-size:15px;font-weight:700}
+.hint{margin:0 0 12px;font-size:12px;color:var(--muted);line-height:1.45}
+.site-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:4px 0 16px;font-size:11px;font-weight:600}
+.site-nav a{color:var(--muted);text-decoration:none;padding:4px 8px;border-radius:8px;border:1px solid transparent}
+.site-nav a:hover,.site-nav a.active{color:var(--ink);border-color:var(--line);background:var(--card)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;justify-content:space-between;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card-solid);margin-bottom:8px}
+.row .meta{flex:1;min-width:180px}
+.row .name{font-size:14px;font-weight:700}
+.row .code{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px}
+.row .tok{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--warn);word-break:break-all;margin-top:6px;opacity:.9}
+.row .url{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:var(--ok);word-break:break-all;margin-top:4px}
+.actions{display:flex;flex-wrap:wrap;gap:6px}
+.btn{border:0;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;background:var(--brand-grad);color:#1a1210}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#2a1f18;border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:12px;font-size:12px;font-weight:700;opacity:0;pointer-events:none;transition:.3s;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.master-row{border-color:color-mix(in srgb,var(--warn) 45%,var(--line));background:color-mix(in srgb,var(--warn) 8%,var(--card-solid))}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="site-nav" id="siteNav">
+      <a href="index.html">Order</a>
+      <a href="production.html" data-master-only>Production clone</a>
+      <a href="bill.html" data-master-only>Bill clone</a>
+      <a href="backend.html" data-master-only>Backend</a>
+      <a href="links.html" class="active" data-master-only>All links</a>
+    </div>
+    <div class="hero">
+      <h1>Walnut Bakery · DEMO access links</h1>
+      <p class="sub">Marcus-facing list. Each outlet gets a private <code>#access=…</code> URL — order UI locks to that outlet. One Master token opens Order + Production + Bill + Backend.</p>
+    </div>
+    <div class="demo-badge">DEMO PRACTICE SECRETS — rotate later for live · no Drive writes</div>
+
+    <div class="glass">
+      <h2>How it works</h2>
+      <p class="hint">No account login. Token lives in the URL hash (and sessionStorage for same-tab nav). Opening any page without a valid token shows a blocking gate. Outlet tokens cannot open Master tools.</p>
+      <p class="hint" id="baseHint"></p>
+    </div>
+
+    <div class="glass">
+      <h2>Master</h2>
+      <p class="hint">Same token works on every page. Prefer Backend as the Master entry, or Order to test any outlet.</p>
+      <div id="masterList"></div>
+    </div>
+
+    <div class="glass">
+      <h2>Outlet order links</h2>
+      <p class="hint">Send each outlet only their own link. They cannot switch outlets or open Production / Bill / Backend.</p>
+      <div id="outletList"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="access.js"></script>
+  <script>
+(function () {
+  var A = window.WalnutAccess;
+  if (!A) return;
+
+  // links.html itself: allow master OR show list anyway for Marcus (this page lists tokens).
+  // Gate lightly: require any valid token OR allow open without (Marcus bookmark). Spec: DEMO tokens visible for testing.
+  // Keep page open without gate so Marcus can always copy links; still wire nav if master hash present.
+  A.parse();
+  A.wireNav(document);
+  A.applyNavVisibility();
+
+  var BASE = 'https://chriyenterl.github.io/walnut-outlet-order-demo/';
+  document.getElementById('baseHint').innerHTML =
+    'Published base: <code style="color:#f5c542">' + BASE + '</code>';
+
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function () { t.classList.remove('show'); }, 1600);
+  }
+
+  function copy(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast('Copied'); }).catch(function () { fallback(text); });
+    } else fallback(text);
+  }
+  function fallback(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('Copied'); } catch (e) { toast('Copy failed'); }
+    document.body.removeChild(ta);
+  }
+
+  function absolute(rel) {
+    return BASE + rel.replace(/^\//, '');
+  }
+
+  function rowHtml(item, isMaster) {
+    var orderRel = 'index.html#access=' + encodeURIComponent(item.token);
+    var backendRel = 'backend.html#access=' + encodeURIComponent(item.token);
+    var orderAbs = absolute(orderRel);
+    var backendAbs = absolute(backendRel);
+    var title = isMaster ? 'Master / Backend' : (item.name + ' (' + item.outlet + ')');
+    var sub = isMaster
+      ? 'Opens all pages · try Backend or Order'
+      : 'Order only · locked to ' + item.outlet;
+    var primary = isMaster ? backendAbs : orderAbs;
+    var primaryRel = isMaster ? backendRel : orderRel;
+    return (
+      '<div class="row' + (isMaster ? ' master-row' : '') + '">' +
+        '<div class="meta">' +
+          '<div class="name">' + title + '</div>' +
+          '<div class="code">' + sub + '</div>' +
+          '<div class="tok">' + item.token + '</div>' +
+          '<div class="url">' + primary + '</div>' +
+        '</div>' +
+        '<div class="actions">' +
+          '<button type="button" class="btn" data-copy="' + primary.replace(/"/g, '&quot;') + '">Copy URL</button>' +
+          '<a class="btn btn-ghost" href="' + primaryRel + '">Open</a>' +
+          (isMaster
+            ? '<button type="button" class="btn btn-ghost" data-copy="' + orderAbs.replace(/"/g, '&quot;') + '">Copy Order URL</button>'
+            : '') +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  var reg = A.listRegistry();
+  var masterEl = document.getElementById('masterList');
+  var outletEl = document.getElementById('outletList');
+  masterEl.innerHTML = '';
+  outletEl.innerHTML = '';
+  reg.forEach(function (item) {
+    if (item.role === 'master') masterEl.innerHTML += rowHtml(item, true);
+    else outletEl.innerHTML += rowHtml(item, false);
+  });
+
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () { copy(btn.getAttribute('data-copy')); });
+  });
+})();
+  </script>
+</body>
+</html>

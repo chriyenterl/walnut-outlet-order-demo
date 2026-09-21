@@ -124,10 +124,10 @@ table.sheet td.dash{color:#9aa0a6}
     </div>
     <div class="site-nav no-print">
       <a href="index.html" id="navOrder">Order</a>
-      <a href="production.html" class="active">Production clone</a>
-      <a href="bill.html">Bill clone</a>
-      <a href="backend.html">Backend</a>
-      <a href="baker.html">Baker (legacy)</a>
+      <a href="production.html" class="active" data-master-only>Production clone</a>
+      <a href="bill.html" data-master-only>Bill clone</a>
+      <a href="backend.html" data-master-only>Backend</a>
+      <a href="links.html" data-master-only>All links</a>
     </div>
     <div class="toolbar no-print">
       <button type="button" class="btn btn-primary" id="btnReload">Reload from Order UI</button>
@@ -201,9 +201,12 @@ table.sheet td.dash{color:#9aa0a6}
     </section>
   </main>
 
+  <script src="access.js"></script>
   <script src="demo-store.js"></script>
   <script>
 (function () {
+  if (!window.WalnutAccess || !WalnutAccess.require('master')) return;
+  try { WalnutAccess.wireNav(document); } catch (eW) {}
   var S = window.WalnutDemoStore;
   if (!S) { document.getElementById('statusMeta').textContent = 'demo-store.js missing'; return; }
 

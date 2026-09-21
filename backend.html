@@ -75,10 +75,10 @@ table.board td.tot{font-weight:800}
   <div class="app">
     <div class="site-nav">
       <a href="index.html" id="navOrder">Order</a>
-      <a href="production.html">Production clone</a>
-      <a href="bill.html">Bill clone</a>
-      <a href="backend.html" class="active">Backend</a>
-      <a href="baker.html">Baker (legacy)</a>
+      <a href="production.html" data-master-only>Production clone</a>
+      <a href="bill.html" data-master-only>Bill clone</a>
+      <a href="backend.html" class="active" data-master-only>Backend</a>
+      <a href="links.html" data-master-only>All links</a>
     </div>
     <div class="hero">
       <h1>Walnut Bakery · Backend inbox (DEMO)</h1>
@@ -109,8 +109,11 @@ table.board td.tot{font-weight:800}
       <div id="list"></div>
     </div>
   </div>
+<script src="access.js"></script>
 <script>
 (function(){
+  if (!window.WalnutAccess || !WalnutAccess.require('master')) return;
+  try { WalnutAccess.wireNav(document); } catch (eW) {}
   try {
     if (location.pathname.indexOf('walnut-outlet-order')>=0 && location.pathname.indexOf('pages')<0) {
       var n=document.getElementById('navOrder'); if(n) n.href='Index-preview.html';
