@@ -1,0 +1,47 @@
+/* Visual override for the access gate. Loaded after access.js injects its sheet.
+   Token registry and gate copy/behavior stay in access.js. */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,560;1,9..144,560&family=Outfit:wght@400;500;600;700&display=swap');
+
+.walnut-access-gate {
+  background: #1c1410;
+  color: #f3e7d6;
+  font-family: Outfit, system-ui, -apple-system, Segoe UI, sans-serif;
+  padding: 28px 20px;
+}
+.walnut-access-gate .card {
+  max-width: 440px;
+  background: #fffcf8;
+  color: #1c1410;
+  border: 0;
+  border-top: 4px solid #d4892a;
+  border-radius: 2px;
+  box-shadow: none;
+  text-align: left;
+  padding: 28px 24px 24px;
+}
+.walnut-access-gate .badge {
+  background: transparent;
+  color: #8f4e12;
+  border: 1px solid #d4892a;
+  border-radius: 2px;
+  letter-spacing: .14em;
+  font-weight: 700;
+  padding: 4px 8px;
+}
+.walnut-access-gate h1 {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 560;
+  font-size: 32px;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+  margin: 0 0 10px;
+}
+.walnut-access-gate p {
+  color: #6d6258;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.walnut-access-gate .mono {
+  color: #8f4e12;
+  font-size: 12px;
+}
