@@ -2,10 +2,16 @@
 
 Static DEMO of the outlet ordering UI (Safari-friendly) + Production / Bill sheet clones + backend inbox.
 
-**Not live Production.** Sample catalogue and DEMO quantities only. Walnut brown theme.  
+**Not live Production.** Sample catalogue and DEMO quantities only.  
 **Never write to Drive folder Walnut Bakery Production.**
 
-## Access links (Ai-Cha style)
+## UI
+
+Outlet ordering uses the **Walnut Counter** shell: a dark walnut side rail on laptop and iPad landscape, bottom navigation on phones, and a flat stone canvas with amber accents (Fraunces titles, Outfit text). Place order is still one page — Daily, Pack bun, Weekly, Special, then Submit. This replaces the earlier cream shell (W mark, status cards, horizontal tabs).
+
+Access tokens, lead-day rules, and the `localStorage.walnutDemoOrders` payload are unchanged. Production and Bill clones keep their spreadsheet grids; the page chrome matches the counter.
+
+## Access links
 
 No account login. Each outlet gets a private URL with a DEMO token in the hash:
 
@@ -71,6 +77,6 @@ cd walnut-outlet-order-pages && python3 -m http.server 8765
 
 ## Design notes
 
-See `../walnut-outlet-order/DESIGN.md` (Production / Bill clone section).
+Counter shell lives in `index.html` (order UI), `shell.css` (companion chrome), and `gate.css` (access gate look only — tokens and gate copy stay in `access.js`). Production / Bill sheet rules are unchanged from the clone notes in the sibling `DESIGN.md` when that file is present.
 
 Owner: Chriyenterl Marcus · Brand: Walnut Bakery

@@ -1,0 +1,131 @@
+/* Shared chrome for companion DEMO pages (links, backend, baker, and page shells).
+   Order UI styles live in index.html. Sheet grids are not styled here. */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,560;0,9..144,640;1,9..144,560&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #e8e4dc;
+  --canvas: #f4f1eb;
+  --surface: #fffcf8;
+  --ink: #1c1410;
+  --muted: #6d6258;
+  --line: #ddd4c6;
+  --amber: #d4892a;
+  --amber-deep: #8f4e12;
+  --rail: #1c1410;
+  --rail-ink: #f3e7d6;
+  --ok: #2c7a45;
+  --warn: #9a5b12;
+  --danger: #a33b32;
+  --font: Outfit, system-ui, -apple-system, Segoe UI, sans-serif;
+  --display: Fraunces, Georgia, "Times New Roman", serif;
+}
+
+body.wapp {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.wshell {
+  background: var(--rail);
+  color: var(--rail-ink);
+  border-bottom: 3px solid var(--amber);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.wshell-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 18px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 12px 18px;
+}
+.wbrand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+.wbrand .name {
+  font-family: var(--display);
+  font-weight: 560;
+  font-style: italic;
+  font-size: 22px;
+  letter-spacing: -.03em;
+  line-height: 1;
+}
+.wbrand .line {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #d9cbb8;
+}
+.wbrand .demo {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #f0c27a;
+  border: 1px solid rgba(212, 137, 42, .7);
+  padding: 2px 6px;
+}
+.wnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+  align-items: center;
+}
+.wnav a {
+  color: #d9cbb8;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  border-bottom: 2px solid transparent;
+}
+.wnav a:hover { color: #fff; }
+.wnav a.active { color: #f6e7c8; border-bottom-color: var(--amber); }
+
+.wpage {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 18px 64px;
+}
+.wpage h1 {
+  font-family: var(--display);
+  font-weight: 560;
+  font-size: clamp(32px, 5vw, 48px);
+  letter-spacing: -.03em;
+  line-height: 1;
+  margin: 0 0 8px;
+}
+.wlede {
+  margin: 0 0 22px;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+@media (max-width: 720px) {
+  .wshell-inner { padding: 10px 14px; }
+  .wbrand .line { display: none; }
+  .wnav a { padding: 8px 8px; letter-spacing: .04em; }
+  .wpage { padding: 20px 14px 48px; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .wshell-inner { padding: 6px 14px; }
+  .wbrand .name { font-size: 18px; }
+  .wpage { padding-top: 14px; }
+}
